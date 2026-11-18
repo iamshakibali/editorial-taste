@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{Brand}} — {{One-line promise}}</title>
+  <meta name="description" content="{{Meta description, 140–160 characters}}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== SVG sprite: logo + icons ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <!-- Replace with the client's logo SVG (keep fill="currentColor") -->
+    <symbol id="logo" viewBox="0 0 125 24"><text x="0" y="20" fill="currentColor" font-family="Geist, sans-serif" font-weight="700" font-size="24" letter-spacing="-0.5">BRAND</text></symbol>
+    <symbol id="i-arrow" viewBox="0 0 12 12"><path d="M1 6h10M7 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-help" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M6.2 6.3a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.1v.4" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="11.4" r=".75" fill="currentColor"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.7" ry="6.5"/><path d="M1.5 8h13"/></g></symbol>
+    <symbol id="i-user" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="6.5"/><circle cx="8" cy="6.6" r="2.2"/><path d="M3.9 13a4.6 4.6 0 0 1 8.2 0"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  </svg>
+
+  <a class="sr-only" href="#main">Skip to content</a>
+
+  <!-- ===== Navigation ===== -->
+  <header class="nav on-dark" id="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="#" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+      <div class="nav__right">
+        <nav aria-label="Primary">
+          <ul class="nav__links">
+            <li><a class="nav__link" href="#products">Products</a></li>
+            <li><a class="nav__link" href="#cases">Work</a></li>
+            <li><a class="nav__link" href="#platform">Platform</a></li>
+            <li><a class="nav__link" href="#news">Journal</a></li>
+            <li><a class="nav__link" href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="nav__utils">
+          <a class="icon-btn" href="#contact" aria-label="Support"><svg><use href="#i-help"/></svg></a>
+          <button class="icon-btn" type="button" aria-label="Region and language"><svg><use href="#i-globe"/></svg></button>
+          <a class="icon-btn" href="#" aria-label="Account"><svg><use href="#i-user"/></svg></a>
+          <button class="icon-btn nav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" id="menuBtn"><svg><use href="#i-menu"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawer on-dark" id="drawer" aria-hidden="true">
+    <ul class="drawer__links h4">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#cases">Work</a></li>
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#news">Journal</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="drawer__meta label-lg">Support · Region · Account</div>
+  </div>
+
+  <main id="main">
+
+    <!-- ===== Hero (Hero) ===== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <img src="images/hero.jpg" alt="{{Describe the hero photograph}}" fetchpriority="high" />
+      </div>
+      <div class="container hero__content">
+        <h1 class="h2 hero__title" id="hero-title">{{Short, declarative headline.}}</h1>
+        <div class="hero__aside">
+          <p class="body-md">{{Two or three sentences on what the brand does, for whom, and why it matters.}}</p>
+          <div class="btn-row">
+            <a class="btn btn--light btn--wide" href="#products">{{Primary action}}</a>
+            <a class="btn btn--glass btn--wide" href="#platform">{{Secondary action}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__scroll label-sm" aria-hidden="true"><span></span>Scroll</div>
+    </section>
+
+    <!-- ===== Highlight Numbers ===== -->
+    <section class="stats" aria-label="Key figures">
+      <div class="container stats__grid">
+        <div class="stat reveal"><span class="h1 stat__value">{{98%}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
+        <div class="stat reveal"><span class="h1 stat__value">{{12Y}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
+        <div class="stat reveal"><span class="h1 stat__value">{{40+}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
+        <div class="stat reveal"><span class="h1 stat__value">{{24/7}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Product (Product cards) ===== -->
+    <section class="section" id="products" aria-labelledby="products-title">
+      <div class="container">
+        <div class="intro reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">01 — Product</span>
+            <h2 class="h3" id="products-title">Product</h2>
+          </div>
+          <div class="intro__aside">
+            <p class="body-md muted">{{One sentence framing the product range.}}</p>
+          </div>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card-product reveal">
+            <div class="card-product__media"><img src="images/product-1.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <div class="card-product__body">
+              <div class="card-product__head">
+                <span class="tag">{{Category}}<i></i>{{Type}}</span>
+                <h3 class="h4">{{Product one}}</h3>
+              </div>
+              <p class="body-md">{{One-line product benefit.}}</p>
+              <a class="btn btn--light btn--pill" href="#contact">Explore</a>
+            </div>
+          </article>
+
+          <article class="card-product reveal">
+            <div class="card-product__media"><img src="images/product-2.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <div class="card-product__body">
+              <div class="card-product__head">
+                <span class="tag">{{Category}}<i></i>{{Type}}</span>
+                <h3 class="h4">{{Product two}}</h3>
+              </div>
+              <p class="body-md">{{One-line product benefit.}}</p>
+              <a class="btn btn--light btn--pill" href="#contact">Explore</a>
+            </div>
+          </article>
+
+          <article class="card-product reveal">
+            <div class="card-product__media"><img src="images/product-3.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <div class="card-product__body">
+              <div class="card-product__head">
+                <span class="tag">{{Category}}<i></i>{{Type}}</span>
+                <h3 class="h4">{{Product three}}</h3>
+              </div>
+              <p class="body-md">{{One-line product benefit.}}</p>
+              <a class="btn btn--light btn--pill" href="#contact">Explore</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Selected Work (Case cards) ===== -->
+    <section class="section" id="cases" aria-labelledby="cases-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">02 — Selected Work</span>
+            <h2 class="h3" id="cases-title">Selected Work</h2>
+          </div>
+          <a class="btn btn--tertiary" href="#news">View all projects <svg><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card-case card-case--image is-expanded reveal">
+            <div class="card-case__media"><img src="images/case-1.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <button class="circle-btn" type="button" aria-expanded="true" aria-label="Collapse details"><svg><use href="#i-plus"/></svg></button>
+            <div class="card-case__title">
+              <h3 class="h5">{{Case study one}}</h3>
+              <div class="card-case__desc"><p class="body-md">{{Outcome in one or two sentences, with a number.}}</p></div>
+            </div>
+          </article>
+
+          <article class="card-case card-case--image reveal">
+            <div class="card-case__media"><img src="images/case-2.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <button class="circle-btn" type="button" aria-expanded="false" aria-label="Expand details"><svg><use href="#i-plus"/></svg></button>
+            <div class="card-case__title">
+              <span class="label-lg card-case__kicker">{{Location}}</span>
+              <h3 class="h5">{{Case study two}}</h3>
+              <div class="card-case__desc">
+                <p class="body-md">{{Outcome in one or two sentences, with a number.}}</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="card-case card-case--image reveal">
+            <div class="card-case__media"><img src="images/case-3.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <button class="circle-btn" type="button" aria-expanded="false" aria-label="Expand details"><svg><use href="#i-plus"/></svg></button>
+            <div class="card-case__title">
+              <span class="label-lg card-case__kicker">{{Location}}</span>
+              <h3 class="h5">{{Case study three}}</h3>
+              <div class="card-case__desc">
+                <p class="body-md">{{Outcome in one or two sentences, with a number.}}</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Platform (Split cards) ===== -->
+    <section class="section" id="platform" aria-labelledby="platform-title">
+      <div class="container">
+        <div class="intro reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">03 — Platform</span>
+            <h2 class="h3" id="platform-title">Platform</h2>
+          </div>
+          <div class="intro__aside">
+            <p class="body-md muted">{{One sentence on the platform or approach.}}</p>
+            <a class="btn btn--secondary btn--icon-right" href="#contact">See the platform <svg><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+
+        <div class="grid grid--2">
+          <article class="card-split reveal">
+            <div class="card-split__media"><img src="images/feature-1.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <div class="card-split__text">
+              <h3 class="h4">{{Feature one}}</h3>
+              <p class="body-md muted">{{Two sentences describing the feature.}}</p>
+            </div>
+          </article>
+          <article class="card-split reveal">
+            <div class="card-split__media"><img src="images/feature-2.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+            <div class="card-split__text">
+              <h3 class="h4">{{Feature two}}</h3>
+              <p class="body-md muted">{{Two sentences describing the feature.}}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Journal (News cards) ===== -->
+    <section class="section" id="news" aria-labelledby="news-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">04 — Journal</span>
+            <h2 class="h3" id="news-title">Latest from {{Brand}}</h2>
+          </div>
+          <a class="btn btn--tertiary" href="#">All news <svg><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="grid grid--4">
+          <a class="card-news reveal" href="#">
+            <div class="card-news__head">
+              <span class="eyebrow">{{Topic}}</span>
+              <h3 class="h4">{{Article headline one}}</h3>
+            </div>
+            <div class="card-news__foot"><span class="body-md">Sep 3, 2025</span><span class="body-sm muted">7 min read</span></div>
+          </a>
+          <a class="card-news reveal" href="#">
+            <div class="card-news__head">
+              <span class="eyebrow">{{Topic}}</span>
+              <h3 class="h4">{{Article headline two}}</h3>
+            </div>
+            <div class="card-news__foot"><span class="body-md">Oct 18, 2025</span><span class="body-sm muted">6 min read</span></div>
+          </a>
+          <a class="card-news reveal" href="#">
+            <div class="card-news__head">
+              <span class="eyebrow">{{Topic}}</span>
+              <h3 class="h4">{{Article headline three}}</h3>
+            </div>
+            <div class="card-news__foot"><span class="body-md">Nov 2, 2025</span><span class="body-sm muted">4 min read</span></div>
+          </a>
+          <a class="card-news reveal" href="#">
+            <div class="card-news__head">
+              <span class="eyebrow">{{Topic}}</span>
+              <h3 class="h4">{{Article headline four}}</h3>
+            </div>
+            <div class="card-news__foot"><span class="body-md">Dec 9, 2025</span><span class="body-sm muted">8 min read</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA (centered) ===== -->
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <div class="cta__media"><img src="images/cta.jpg" alt="{{Alt text}}" loading="lazy" /></div>
+      <div class="container cta__inner reveal">
+        <span class="tag">{{Brand}}<i></i>{{Programme}}</span>
+        <h2 class="h2 cta__title" id="cta-title">{{Closing statement in one line.}}</h2>
+        <p class="body-md">{{Supporting line.}}</p>
+        <div class="btn-row">
+          <a class="btn btn--light btn--wide" href="#platform">How it works</a>
+          <a class="btn btn--glass btn--wide" href="mailto:hello@example.com">Contact us</a>
+        </div>
+        <form class="subscribe" id="subscribe" novalidate>
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" placeholder="Your email for updates" autocomplete="email" required />
+          <button class="btn btn--light" type="submit">Subscribe</button>
+        </form>
+        <p class="subscribe__note label-lg" id="subscribeNote" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer on-dark">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="logo" href="#" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+          <p class="body-sm">{{One-sentence brand summary.}}</p>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Products</h3>
+          <ul class="body-sm">
+            <li><a href="#products">{{Product one}}</a></li>
+            <li><a href="#products">{{Product two}}</a></li>
+            <li><a href="#products">{{Product three}}</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Company</h3>
+          <ul class="body-sm">
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Media</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Resources</h3>
+          <ul class="body-sm">
+            <li><a href="#news">Newsletters</a></li>
+            <li><a href="#cases">Case studies</a></li>
+            <li><a href="#contact">Support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom label-lg">
+        <span>© {{Year}} {{Brand}}. All rights reserved.</span>
+        <span>Privacy · Terms · Cookies</span>
+      </div>
+      <div class="footer__wordmark" aria-hidden="true"><svg viewBox="0 0 125 24.2854"><use href="#logo"/></svg></div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav: transparent over hero → solid after scroll
+    const nav = document.getElementById('nav');
+    const hero = document.querySelector('.hero');
+    const setNav = () => {
+      const past = window.scrollY > hero.offsetHeight - nav.offsetHeight;
+      nav.classList.toggle('is-solid', past);
+      nav.classList.toggle('on-dark', !past);
+    };
+    setNav();
+    window.addEventListener('scroll', setNav, { passive: true });
+
+    // Mobile drawer
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const toggleDrawer = (open) => {
+      drawer.classList.toggle('is-open', open);
+      drawer.setAttribute('aria-hidden', String(!open));
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open) { nav.classList.add('on-dark'); nav.classList.remove('is-solid'); } else { setNav(); }
+    };
+    menuBtn.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('is-open')));
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleDrawer(false)));
+
+    // Case cards: Circle Button toggles Title Default ↔ Expanded
+    document.querySelectorAll('.card-case .circle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.card-case');
+        const open = !card.classList.contains('is-expanded');
+        card.classList.toggle('is-expanded', open);
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Collapse details' : 'Expand details');
+      });
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Newsletter
+    document.getElementById('subscribe').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('email');
+      const note = document.getElementById('subscribeNote');
+      note.textContent = input.checkValidity() && input.value
+        ? 'Thanks — you are on the list.'
+        : 'Please enter a valid email address.';
+      if (input.checkValidity() && input.value) input.value = '';
+    });
+  </script>
+</body>
+</html>

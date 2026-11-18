@@ -30,6 +30,9 @@ Steps: 100 · 88 · 64 · 48 · 32 · 16 · 8 · 4 (%) → hex alpha `FF E0 A3 7
 | tone/faint | #151515 @16% | Disabled text, tag fill |
 | border/subtle | #151515 @16% | Dividers |
 
+### Signal (illustrations only)
+`--signal` #FF4D2E is the one exception to the achromatic palette: a single status dot (with a dashed ring and pulse) on the active object of an isometric illustration. Never use it in UI, text, buttons, or backgrounds. See `illustrations.md`.
+
 ### In-practice usage
 | Use | Value |
 |---|---|
@@ -113,22 +116,16 @@ Scale: `0 5 10 15 20 25 30 35 40 45 50`.
 - `Button Text`: default labels "Primary", "Hover", "Secondary", "Tertiary".
 
 ## Motion
-Motion is weighted and decelerates into place. It should feel like a magazine page settling, never bouncy.
+Buttery, weighted, decelerating. Full spec, recipes, and framework setup are in `motion.md`.
 
 | Token | Value | Use |
 |---|---|---|
-| `--ease` | `cubic-bezier(.2, .7, .2, 1)` | Every transition. Never browser `ease`, `linear`, or `ease-in-out` |
-| `--dur-fast` | 200ms | Color and background on hover (never shorter) |
-| `--dur-base` | 400ms | Small movement, drawer, FAQ toggle, statement words |
-| `--dur-slow` | 800ms | Scroll reveals, image zoom on hover |
+| `--ease-out` (`--ease`) | `cubic-bezier(.16, 1, .3, 1)` | Default for entrances, reveals, hovers |
+| `--ease-in-out` | `cubic-bezier(.65, 0, .35, 1)` | Between two on-screen states |
+| `--ease-in` | `cubic-bezier(.7, 0, .84, 0)` | Exits only |
+| `--dur-fast` / `--dur-base` / `--dur-slow` / `--dur-xslow` | 200 / 450 / 800 / 1200ms | Hover color / small movement / fades / rises and masks |
 
-- Animate only `transform` and `opacity` for movement (plus `color` and `background-color` for hover). Never animate `top`, `left`, `width`, `height`, or `transition: all`.
-- **Scroll reveal:** rise 24px and fade in over 800ms, once per element, with grid children staggered by 80ms. Trigger with `IntersectionObserver`, never an unthrottled `scroll` listener.
-- **Image hover:** `scale(1.04)` over 800ms inside an `overflow: hidden` frame.
-- **Pressed:** `translateY(1px)`.
-- **Drawer links:** arrive in reading order, 24px up with a fade, in 60ms steps, with the whole sequence capped at about 400ms.
-- **Hero:** the image can settle from `scale(1.06)` to 1 over about 1.6s on load. That's the only load animation.
-- `prefers-reduced-motion: reduce` removes all movement and shows final states immediately.
+Animate only compositor properties (`transform`, `translate`, `scale`, `opacity`, `clip-path`). Respect `prefers-reduced-motion`, and keep content visible without JavaScript.
 
 ## Text rendering
 - Headings get `text-wrap: balance`; paragraphs and list items get `text-wrap: pretty`. Don't leave a single word alone on the last line of a heading.

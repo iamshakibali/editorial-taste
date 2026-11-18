@@ -30,6 +30,32 @@ export default function RootLayout({ children }) {
 ```
 Port template sections into components (`Nav`, `Hero`, `Stats`, `ProductCard`, `CaseCard`, `SplitCard`, `NewsCard`, `CtaBand`, `Footer`), keeping the same class names or CSS Modules with the same declarations. Use `next/image` with `fill` + `object-fit: cover` for card and hero media.
 
+## Astro (recommended for marketing sites)
+Static by default, so it ships almost no JavaScript, has great Core Web Vitals, and reads like the plain-HTML template.
+```bash
+npm create astro@latest -- --template minimal
+npm i lenis @fontsource/geist-sans @fontsource/geist-mono
+```
+- `src/styles/styles.css` ← the template's `styles.css`; `src/scripts/motion.js` ← `templates/motion.js`; `public/favicon.svg`; `src/pages/404.astro` ← `templates/404.html`.
+- `src/layouts/Base.astro` holds `<head>` (meta, OG, the inline `js`-class script) and loads Lenis plus `motion.js` (see `motion.md` → Astro).
+- One component per block: `Nav.astro`, `Hero.astro`, `Stats.astro`, `Statement.astro`, `ProductCard.astro`, `CaseCard.astro`, `SplitCard.astro`, `IllustrationSplit.astro`, `NewsCard.astro`, `Faq.astro`, `CtaBand.astro`, `Footer.astro`. Pass content as props or from a content collection (`src/content/`).
+- Images: `astro:assets` `<Image>` with `widths` and `sizes`; the hero gets `loading="eager"` and `fetchpriority="high"`.
+- Isometric SVGs: save the generator output as `src/components/illustrations/IsoModules.astro` (inline, so it animates).
+- Interactivity (drawer, case-card toggle, form) stays in small `<script>` blocks. No UI framework is needed.
+
+## React + Vite
+```bash
+npm create vite@latest site -- --template react-ts
+npm i lenis motion geist
+```
+Same component split as Astro, written as `.tsx`. Use `ReactLenis` plus Framer Motion variants from `motion.md` instead of `motion.js` (or call `motion.js` once in a root `useEffect`, never both). Import the CSS once in `main.tsx`.
+
+## Vue / Nuxt
+Port each block into an SFC and keep the class names. Import the CSS in `app.vue` or `nuxt.config` `css`. Add the `js` class with `useHead({ htmlAttrs: { class: 'js' } })`, and import `motion.js` in `onMounted` in the root layout (client only). Fonts: `@fontsource/geist-sans` and `@fontsource/geist-mono`.
+
+## SvelteKit
+Put blocks in `src/lib/components`, CSS in `+layout.svelte`, the `js` class in `app.html` (`<html class="js">` is fine, because SvelteKit always runs JS when hydrated), and `motion.js` in `onMount` in the root layout. Prerender marketing routes (`export const prerender = true`).
+
 ## Tailwind v4
 ```css
 @import "tailwindcss";

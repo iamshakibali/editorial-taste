@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
-SHARED = ["scripts/lint.py"]
+SHARED = ["scripts/lint.py", "scripts/iso.py"]
 
 
 def frontmatter(text):

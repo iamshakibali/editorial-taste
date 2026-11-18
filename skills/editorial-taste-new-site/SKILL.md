@@ -1,6 +1,6 @@
 ---
 name: editorial-taste-new-site
-description: Editorial Taste — create a brand-new website or landing page from scratch in a monochrome, editorial, photography-led style (Geist + Geist Mono, #151515 / #EDEDED alpha ramps, 5px spacing rhythm, glass blur instead of shadows, full-bleed photos with vignettes, a word-by-word statement section). Covers intake, page structure, editorial copy, a tested starter template, states, and a ship checklist. Use when the user asks to build, create, scaffold, or design a new site, landing page, homepage, or marketing page with Editorial Taste, an editorial / minimal / monochrome / premium look, or "in our style", in code or in Figma. Not for restyling an existing site; use editorial-taste-redesign for that.
+description: Editorial Taste — create a brand-new website or landing page from scratch in a monochrome, editorial, photography-led style (Geist + Geist Mono, #151515 / #EDEDED alpha ramps, 5px spacing rhythm, glass blur instead of shadows, full-bleed photos with vignettes, a word-by-word statement section). Asks which stack to use (Astro, Next.js/React, plain HTML, Vue, Svelte), then covers intake, page structure, editorial copy, a tested starter template, buttery motion (Lenis smooth scroll, masked text reveals, image unmasks, count-up, parallax), isometric hairline illustrations, states, and a ship checklist. Use when the user asks to build, create, scaffold, or design a new site, landing page, homepage, or marketing page with Editorial Taste, an editorial / minimal / monochrome / premium look, or "in our style", in code or in Figma. Not for restyling an existing site; use editorial-taste-redesign for that.
 ---
 
 # Editorial Taste: New site
@@ -11,13 +11,13 @@ Work through **Part A (what the page says)** before **Part B (how it looks)**.
 
 ## Non-negotiable rules
 
-1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Express hierarchy with alpha steps.
+1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Express hierarchy with alpha steps. The single exception is `--signal`, one dot per isometric illustration.
 2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. No bold headings and no italics.
 3. **5px rhythm.** Spacing and radii come from the 5-step scale (the compact-scale exceptions are 8, 12, 32, 56, and 96). Nested radii: `inner = outer − gap`.
 4. **Glass, not shadow.** No `box-shadow`. For depth, use translucent fills plus `backdrop-filter: blur(16px)`. The only gradients allowed are black vignettes over photos.
 5. **Text on photos always sits on a vignette.** Use a white logo on photos and a dark logo on light surfaces.
 6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. Don't mix radii within a row.
-7. **Motion decelerates** (`var(--ease)`, 200/400/800ms). Animate only transform and opacity, and respect reduced motion.
+7. **Motion is buttery and restrained**: expo-out (`--ease-out`), 200/450/800/1200ms, compositor-only properties, one hero sequence, reveals that play once, and full reduced-motion and no-JS fallbacks (`references/motion.md`).
 8. **Never invent facts** for a real business. Missing prices, stats, testimonials, and logos stay as marked `{{placeholders}}`.
 
 ---
@@ -25,15 +25,27 @@ Work through **Part A (what the page says)** before **Part B (how it looks)**.
 # Part A: Strategy and content
 
 ## A1. Intake: ask once, in one batch
-Collect what's missing in **a single message**, never one question at a time:
+Collect what's missing in **a single message**, never one question at a time.
+
+**Always ask which stack to build in**, unless the user already named one or the repo already uses one (check `package.json`, `astro.config.*`, `next.config.*`, `vite.config.*`, `nuxt.config.*`, `svelte.config.*`). If a question tool is available (e.g. `AskUserQuestion`), use it with these options:
+| Option | Best for |
+|---|---|
+| **Astro** (recommended) | Marketing sites and landing pages: static, fast, minimal JS, content collections |
+| **Next.js (React)** | Sites that will grow into an app, or React teams |
+| **React + Vite** | A single-page React site without a server |
+| **Plain HTML/CSS/JS** | The simplest handoff, no build step, any host |
+| Other (Vue/Nuxt, SvelteKit, …) | Match the team's stack |
+
+Also ask about the following (in the same message):
 - **Brand**: name, what it does, for whom, and the one thing that makes it different.
 - **Goal**: the one primary action (book, buy, contact, join a waitlist) and what counts as a conversion.
 - **Audience**: who they are, what they already know when they land, and their top 2–3 objections.
 - **Proof**: real numbers, clients, case studies, testimonials, press.
 - **Assets**: logo SVG, photography (the style depends on it), existing copy.
-- **Constraints**: stack or framework, pages beyond the homepage, deadline, whether it's indexed or campaign-only.
+- **Constraints**: pages beyond the homepage, deadline, whether it's indexed or campaign-only.
+- **Illustrations**: which ideas (a system, process, platform, modules) should be explained with isometric hairline drawings rather than photos.
 
-If the user doesn't answer or says "just build it", make reasonable assumptions, state each in one line, and continue. Don't stall the build.
+If the user doesn't answer or says "just build it", make reasonable assumptions, state each in one line, and continue. Don't stall the build. For the stack, Astro is the default if nothing is said.
 
 ## A2. Choose the page type, and say why
 | Type | Use when | Blocks |
@@ -62,16 +74,21 @@ Follow `references/copy.md`: declarative headlines ending in a period, sentence 
 
 # Part B: Build
 
-## B1. Choose the stack
-- No project or no preference → plain `index.html` + `styles.css` (copy the template).
-- Existing Next.js / React / Vue / Astro project → port the template into components (`references/frameworks.md`).
-- Tailwind → map the tokens in the theme, keeping `tokens.css` as the source of truth.
-- Figma → follow `references/figma.md` (variables, modes, text styles, auto layout, components with every state).
+## B1. Set up the chosen stack
+Follow the matching section of `references/frameworks.md`:
+- **Plain HTML** → copy the template as is.
+- **Astro** → scaffold, then split the template into `.astro` components with a `Base` layout. Lenis and `motion.js` load in the layout.
+- **Next.js / React + Vite** → components in `.tsx`, `ReactLenis` plus Framer Motion variants from `references/motion.md`.
+- **Vue/Nuxt, SvelteKit** → SFCs or Svelte components, with `motion.js` loaded once on mount.
+- **Tailwind** in any of these → map the tokens in the theme, keeping `tokens.css` as the source of truth.
+- **Figma** → follow `references/figma.md`.
+
+Keep the template's class names in every stack so the CSS, motion, and illustration styles work unchanged.
 
 ## B2. Scaffold from the template
-Copy everything in `templates/` from this skill's directory: `index.html`, `styles.css`, `404.html`, `favicon.svg`. The template includes:
+Copy everything in `templates/` from this skill's directory: `index.html`, `styles.css`, `motion.js`, `404.html`, `favicon.svg`. The template includes:
 
-Nav (glass over the hero, solid on scroll, mobile drawer with staggered links) → Hero (split) → Highlight numbers → **Statement** (word-by-word reveal) → Product cards → Case cards (expandable) → Split cards → Journal → **FAQ** → CTA band with an email form → Footer, plus meta and OG tags, a skip link, scroll reveal, and reduced-motion handling.
+Nav (glass over the hero, solid on scroll, hides on scroll down, mobile drawer with staggered links) → Hero (choreographed intro) → Highlight numbers (count-up) → **Statement** (word-by-word reveal) → Product cards → Case cards (expandable) → Split cards (image unmask) → **How it works** (isometric illustration that builds in) → Journal → **FAQ** → CTA band (parallax) with an email form → Footer, plus Lenis smooth scroll, page transitions, meta and OG tags, a skip link, and full reduced-motion and no-JS fallbacks.
 
 ## B3. Build section by section
 Order: Hero → Stats → Statement → main content sections → FAQ → CTA → Footer → 404. For each section:
@@ -80,16 +97,29 @@ Order: Hero → Stats → Statement → main content sections → FAQ → CTA �
 - Swap the `#logo` symbol for the client's SVG logo (keep `fill="currentColor"`), and update the favicon letter.
 - Keep diffs per section. Don't regenerate the whole page on every iteration.
 
-## B4. States and details
+## B4. Motion
+Keep the template's motion system (`references/motion.md`): Lenis smooth scroll, the hero intro sequence, `.reveal` plus `data-stagger` on every content block, `data-reveal="text"` on section titles, `data-reveal="image"` on standalone images, `data-count` on numeric stats, and `data-words` on the statement. Use the motion tokens (`--ease-out`, 200/450/800/1200ms) for anything new. Animate only transforms, opacity, and clip-path. Never add bounce, scroll-jacking, custom cursors, or more than one hero sequence.
+
+## B5. Illustrations
+For the 1–3 ideas that photos can't show (a system, platform layers, a process, modules), generate an isometric hairline illustration and place it in an Illustration split section (`references/illustrations.md`):
+```bash
+python3 <skill-dir>/scripts/iso.py --list
+python3 <skill-dir>/scripts/iso.py --preset stack --spec > iso-platform.json   # edit labels and blocks
+python3 <skill-dir>/scripts/iso.py iso-platform.json > iso-platform.svg
+```
+Inline the SVG inside `<figure class="illo" data-reveal="iso">` so it builds in on scroll. Use labels that match the section's numbered steps, one active block, and at most one `--signal` dot.
+
+## B6. States and details
 Every interactive element has hover, pressed, focus-visible, and disabled states. Forms validate inline. Data areas get loading, empty, and error states. Mark the current nav item with `aria-current="page"`. No dead `href="#"` links. Specs are in `references/components.md` under States and Forms.
 
-## B5. Verify
+## B7. Verify
 1. `python3 <skill-dir>/scripts/lint.py <project-dir>`: fix every ERROR and review the WARNs.
 2. `python3 <skill-dir>/scripts/lint.py --strict index.html`: catches leftover `{{placeholders}}`.
-3. Open the page at 1440, 768, and 390px widths. Check the nav switches state, the drawer opens and closes, the statement lights up word by word, FAQ items toggle, nothing scrolls horizontally, and every photo with text has its vignette.
-4. Work through `references/ship-checklist.md`.
+3. Open the page at 1440, 768, and 390px widths. Check the hero intro plays once, scrolling is smooth, the nav switches state and hides or returns, the drawer opens and pauses scrolling, headings rise word by word, the statement lights up, stats count, the illustration builds in, FAQ items toggle, nothing scrolls horizontally, and every photo with text has its vignette.
+4. Check again with reduced motion turned on, and with JavaScript disabled: everything should be visible.
+5. Work through `references/ship-checklist.md`.
 
-## B6. Report
+## B8. Report
 Summarize the page type, the sections built, the assumptions made, any remaining `{{placeholders}}` (real facts the user must supply), and the missing assets (photos, logo, legal pages).
 
 ---
@@ -106,7 +136,7 @@ Summarize the page type, the sections built, the assumptions made, any remaining
 | Glass on a photo | `--light-16` + `--blur-glass` |
 | Container / margin / gutter | 1280 / 40 / 20 (mobile: fluid / 20 / 12) |
 | Section padding / title→content | 96 / 32 (mobile 64 / 24) |
-| Motion | `--ease`, `--dur-fast` .2s, `--dur-base` .4s, `--dur-slow` .8s |
+| Motion | `--ease-out`, `--dur-fast` .2s, `--dur-base` .45s, `--dur-slow` .8s, `--dur-xslow` 1.2s |
 
 | Role | Style |
 |---|---|
@@ -119,7 +149,10 @@ Summarize the page type, the sections built, the assumptions made, any remaining
 | Eyebrow / tag | `.eyebrow` / `.label-lg` 11/14 mono uppercase |
 
 ## Reference files
-- `templates/`: `index.html`, `styles.css`, `404.html`, `favicon.svg`
+- `templates/`: `index.html`, `styles.css`, `motion.js`, `404.html`, `favicon.svg`
+- `references/motion.md`: motion principles, tokens, every animation, HTML API, framework recipes
+- `references/illustrations.md`: isometric hairline illustration rules, generator spec, compositions
+- `scripts/iso.py`: isometric illustration generator (presets: modules, stack, flow, single)
 - `references/foundations.md`: color, type, spacing, radius, grid, effects, motion, icons, contrast
 - `references/components.md`: anatomy of every component and block, forms, states, layout variety
 - `references/copy.md`: voice, headline formulas, CTAs, content realism, banned words

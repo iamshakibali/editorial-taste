@@ -14,6 +14,7 @@ PALETTE = {
     "ffffff", "fafafa", "f5f5f5", "ededed", "e5e5e5", "d4d4d4", "a3a3a3", "737373",
     "525252", "404040", "262626", "1f1f1f", "171717", "0a0a0a", "050505", "000000",
     "151515", "d9d9d9",
+    "ff4d2e",  # --signal: one status dot per isometric illustration, nowhere else
 }
 ALPHAS = {"ff", "e0", "a3", "7a", "52", "29", "14", "0a"}
 # Off-5 values the compact web scale explicitly allows
@@ -29,7 +30,7 @@ FILLER = re.compile(
     r"\b(revolutioni[sz]e|supercharge|cutting[- ]edge|seamless(?:ly)?|effortless(?:ly)?|"
     r"next[- ]level|world[- ]class|game[- ]chang\w*|harness the power|transform your workflow|"
     r"unlock (?:your|the)|empower(?:ing)?|elevate your)\b", re.I)
-EXTS = {".css", ".scss", ".html", ".htm", ".jsx", ".tsx", ".vue", ".svelte", ".astro"}
+EXTS = {".css", ".scss", ".html", ".htm", ".jsx", ".tsx", ".js", ".mjs", ".ts", ".vue", ".svelte", ".astro"}
 SKIP = {"node_modules", ".git", "dist", "build", ".next", "out", "vendor"}
 
 
@@ -111,6 +112,15 @@ def lint(path, strict):
             add("WARN", "animating a layout property. Animate transform/opacity instead")
         if re.search(r"(transition|animation)[^;]*\s(ease|linear|ease-in-out|ease-in|ease-out)\s*[;,]", line):
             add("WARN", "browser default easing. Use var(--ease)")
+
+        if re.search(r"transition[^;]*\b(?:backdrop-)?filter\b|transition[^;]*box-shadow", line):
+            add("WARN", "animating filter/backdrop-filter/box-shadow repaints every frame. Animate opacity or transform")
+        if re.search(r"will-change\s*:", line):
+            add("WARN", "will-change kept permanently. Set it only while an element animates")
+        if re.search(r"addEventListener\(\s*['\"](?:scroll|wheel|touchmove|touchstart)['\"]", line) and "passive" not in line:
+            add("WARN", "scroll/touch listener without { passive: true }. Throttle work with requestAnimationFrame")
+        if re.search(r"setInterval\([^)]*\b(?:style|scroll|translate|opacity)", line):
+            add("WARN", "setInterval-driven animation. Use CSS transitions or requestAnimationFrame")
 
         # Icons
         if re.search(r"material-icons|material-symbols|Material\+Icons|Material\+Symbols", line):

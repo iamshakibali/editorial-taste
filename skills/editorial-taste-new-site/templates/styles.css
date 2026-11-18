@@ -77,10 +77,15 @@
   --blur-glass: blur(16px);
   --vignette-bottom: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.98) 100%);
   --vignette-top: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%);
-  --ease: cubic-bezier(.2, .7, .2, 1);       /* weighted deceleration; never browser `ease`/`linear` */
-  --dur-fast: .2s;    /* color, opacity on hover */
-  --dur-base: .4s;    /* small movement, drawer */
-  --dur-slow: .8s;    /* reveals, image zoom */
+  /* Motion: weighted, decelerating, never browser `ease`/`linear` (see references/motion.md) */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);     /* expo out: entrances, hovers, reveals */
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1); /* between two on-screen states: drawer, mask wipes */
+  --ease-in: cubic-bezier(.7, 0, .84, 0);      /* exits only */
+  --ease: var(--ease-out);
+  --dur-fast: .2s;    /* color and background on hover */
+  --dur-base: .45s;   /* small movement: label roll, FAQ, drawer */
+  --dur-slow: .8s;    /* fades, nav entrance */
+  --dur-xslow: 1.2s;  /* rises, masks, image zoom */
 
   /* Type — Desktop (compact web scale) */
   --h0-size: 72px; --h0-lh: 68px; --h0-ls: -2.5px;
@@ -278,7 +283,7 @@ p, li, dd { text-wrap: pretty; }
 .nav {
   position: fixed; inset: 0 0 auto 0; z-index: 50;
   padding: 16px 0 8px;
-  transition: background-color .3s var(--ease), color .3s var(--ease), padding .3s var(--ease), border-color .3s var(--ease); /* lint-ok: nav compacts on scroll */
+  transition: background-color .3s var(--ease), color .3s var(--ease), padding .3s var(--ease), border-color .3s var(--ease), transform .6s var(--ease-out); /* lint-ok: nav compacts on scroll */
   border-bottom: 1px solid transparent;
 }
 .nav__inner {
@@ -343,10 +348,7 @@ p, li, dd { text-wrap: pretty; }
   overflow: hidden;
 }
 .hero__media { position: absolute; inset: 0; z-index: -2; }
-.hero__media img {
-  width: 100%; height: 100%; object-fit: cover;
-  transform: scale(1.06); animation: heroZoom 2.4s var(--ease) forwards;
-}
+.hero__media img { width: 100%; height: 100%; object-fit: cover; }
 .hero::before, .hero::after { content: ""; position: absolute; inset-inline: 0; z-index: -1; pointer-events: none; }
 .hero::before { top: 0; height: 240px; background: var(--vignette-top); opacity: .7; }
 .hero::after { bottom: 0; height: 60%; background: var(--vignette-bottom); }
@@ -373,7 +375,6 @@ p, li, dd { text-wrap: pretty; }
   animation: scrollLine 2s var(--ease) infinite;
 }
 
-@keyframes heroZoom { to { transform: scale(1); } }
 @keyframes scrollLine { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
 
 /* ---------- 8. Highlight Numbers ---------- */
@@ -413,7 +414,7 @@ p, li, dd { text-wrap: pretty; }
   padding: 24px 24px 28px;
 }
 .card-product__media { position: absolute; inset: 0; z-index: -2; }
-.card-product__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.card-product__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-xslow) var(--ease-out); }
 .card-product::after {
   content: ""; position: absolute; inset: auto 0 0 0; height: 65%; z-index: -1;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.85) 100%);
@@ -470,7 +471,7 @@ p, li, dd { text-wrap: pretty; }
 /* Split card */
 .card-split { display: flex; flex-direction: column; gap: var(--space-20); }
 .card-split__media { aspect-ratio: 898 / 519; border-radius: var(--radius-10); overflow: hidden; background: var(--neutral-200); }
-.card-split__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.card-split__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-xslow) var(--ease-out); }
 .card-split:hover .card-split__media img { transform: scale(1.03); }
 .card-split__text { display: flex; flex-direction: column; gap: var(--space-10); }
 .card-split__text p { max-width: 64ch; }
@@ -537,7 +538,7 @@ p, li, dd { text-wrap: pretty; }
 .footer__brand p { color: var(--light-64); max-width: 360px; }
 .footer__col h3 { color: var(--light-64); margin-bottom: var(--space-15); }
 .footer__col ul { display: flex; flex-direction: column; gap: var(--space-10); }
-.footer__col a { color: var(--light-100); transition: color .2s var(--ease); }
+.footer__col a { color: var(--light-100); transition: color .2s var(--ease); position: relative; }
 .footer__col a:hover { color: var(--light-64); }
 .footer__bottom {
   display: flex; justify-content: space-between; gap: var(--space-20); flex-wrap: wrap;
@@ -559,6 +560,16 @@ p, li, dd { text-wrap: pretty; }
 .statement__text { max-width: 1040px; }
 .statement__text .w { color: var(--dark-16); transition: color var(--dur-base) var(--ease); }
 .statement__text .w.is-on { color: var(--tone-strong); }
+
+/* ---------- 12c-2. Illustration split (isometric hairline) ---------- */
+.illo-split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--grid-gutter) var(--space-50); align-items: center; }
+.illo-split__text { display: flex; flex-direction: column; gap: var(--space-15); align-items: flex-start; }
+.illo-split__text p { max-width: 460px; }
+.steps { display: flex; flex-direction: column; margin-top: var(--space-15); width: 100%; max-width: 460px; border-top: 1px solid var(--border-subtle); }
+.steps li { display: grid; grid-template-columns: 40px 1fr; gap: var(--space-10); padding: var(--space-15) 0; border-bottom: 1px solid var(--border-subtle); }
+.steps .label-lg { color: var(--text-muted); padding-top: 3px; }
+.illo { margin: 0; background: var(--bg-base); border-radius: var(--radius-10); overflow: hidden; }
+.illo svg { display: block; width: 100%; height: auto; }
 
 /* ---------- 12d. FAQ ---------- */
 .faq { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--grid-gutter); }
@@ -582,11 +593,83 @@ p, li, dd { text-wrap: pretty; }
 .drawer.is-open .drawer__links li:nth-child(n+5) { transition-delay: .24s; }
 
 /* ---------- 13. Reveal on scroll ---------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
-.reveal.is-visible { opacity: 1; transform: none; }
-.grid > .reveal:nth-child(2) { transition-delay: .08s; }
-.grid > .reveal:nth-child(3) { transition-delay: .16s; }
-.grid > .reveal:nth-child(4) { transition-delay: .24s; }
+/* Motion lives in one place. Hidden start states apply only when JS runs (html.js)
+   and the visitor allows motion, so content is never stuck invisible. */
+html.lenis { scroll-behavior: auto; }
+[id] { scroll-margin-top: 80px; }
+
+/* Link underline draws in from the left, leaves to the right */
+.footer__col a::after, .u-link::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform var(--dur-base) var(--ease-out);
+}
+.footer__col a:hover::after, .u-link:hover::after { transform: scaleX(1); transform-origin: left; }
+.u-link { position: relative; }
+
+/* Nav slides away on scroll down, returns on scroll up (motion.js) */
+.nav.is-hidden { transform: translateY(-110%); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Isometric illustration: grid fades in, blocks drop into place back to front, signal pulses */
+  html.js [data-reveal="iso"] .iso-grid { opacity: 0; }
+  html.js [data-reveal="iso"] .iso-block, html.js [data-reveal="iso"] .iso-path { opacity: 0; transform: translateY(-28px); }
+  html.js [data-reveal="iso"].is-in .iso-grid { opacity: 1; transition: opacity var(--dur-xslow) var(--ease-out); }
+  html.js [data-reveal="iso"].is-in .iso-block, html.js [data-reveal="iso"].is-in .iso-path {
+    opacity: 1; transform: none;
+    transition: opacity var(--dur-slow) var(--ease-out) calc(var(--d, 0ms) + 200ms), transform var(--dur-xslow) var(--ease-out) calc(var(--d, 0ms) + 200ms);
+  }
+  html.js [data-reveal="iso"].is-in .iso-path { transition-delay: .7s; }
+
+  /* Fade + rise */
+  html.js .reveal { opacity: 0; translate: 0 32px; }
+  html.js .reveal.is-in {
+    opacity: 1; translate: 0 0;
+    transition: opacity var(--dur-slow) var(--ease-out) var(--d, 0s), translate var(--dur-xslow) var(--ease-out) var(--d, 0s);
+  }
+
+  /* Text: each word rises out of its own mask (padding keeps descenders unclipped) */
+  html.js [data-reveal="text"] .tw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+  html.js [data-reveal="text"] .tw__i { display: inline-block; translate: 0 112%; }
+  html.js [data-reveal="text"].is-in .tw__i { translate: 0 0; transition: translate var(--dur-xslow) var(--ease-out) var(--d, 0s); }
+
+  /* Image: unmasks upward while settling from a slight zoom (uses `scale`, so hover `transform` still works) */
+  html.js [data-reveal="image"] { clip-path: inset(100% 0 0 0); }
+  html.js [data-reveal="image"] img { scale: 1.18; }
+  html.js [data-reveal="image"].is-in { clip-path: inset(0 0 0 0); transition: clip-path var(--dur-xslow) var(--ease-in-out) var(--d, 0s); }
+  html.js [data-reveal="image"].is-in img { scale: 1; transition: scale 1.6s var(--ease-out) var(--d, 0s), transform var(--dur-xslow) var(--ease-out); }
+
+  /* Hero intro: image settles, nav and scroll cue arrive after the headline starts */
+  html.js .hero__media img { scale: 1.12; transition: scale 2.4s var(--ease-out); }
+  html.js.is-loaded .hero__media img { scale: 1; }
+  html.js:not(.is-loaded) .nav, html.js:not(.is-loaded) .hero__scroll { opacity: 0; }
+  html.js.is-loaded .nav { animation: navIn var(--dur-slow) var(--ease-out) .35s both; }
+  html.js.is-loaded .hero__scroll { animation: fadeIn var(--dur-slow) var(--ease-out) 1s both; }
+
+  /* Button and nav labels roll up on hover (motion.js wraps the text) */
+  .roll { display: inline-grid; overflow: hidden; vertical-align: top; }
+  .roll > span { grid-area: 1 / 1; transition: transform var(--dur-base) var(--ease-out); }
+  .roll > span + span { transform: translateY(105%); }
+  :is(.btn, .nav__link):hover .roll > span:first-child { transform: translateY(-105%); }
+  :is(.btn, .nav__link):hover .roll > span + span { transform: none; }
+
+  /* Scroll-linked parallax where the browser supports it; static elsewhere */
+  @supports (animation-timeline: view()) {
+    .hero__media { animation: heroDrift linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
+    .cta__media { inset: -8% 0; animation: drift linear both; animation-timeline: view(); }
+  }
+
+  /* Cross-document page transitions (multi-page sites) */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation: vtOut .3s var(--ease-in) both; }
+  ::view-transition-new(root) { animation: vtIn .6s var(--ease-out) both; }
+}
+
+@keyframes navIn { from { opacity: 0; translate: 0 -12px; } to { opacity: 1; translate: 0 0; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroDrift { to { translate: 0 12%; } }
+@keyframes drift { from { translate: 0 -6%; } to { translate: 0 6%; } }
+@keyframes vtOut { to { opacity: 0; translate: 0 -12px; } }
+@keyframes vtIn { from { opacity: 0; translate: 0 16px; } }
 
 /* ---------- 14. Responsive ---------- */
 @media (max-width: 1280px) {
@@ -599,7 +682,7 @@ p, li, dd { text-wrap: pretty; }
   .nav__menu { display: inline-grid; }
   .nav__right { gap: 0; }
 
-  .hero__content, .intro { grid-template-columns: 1fr; }
+  .hero__content, .intro, .illo-split { grid-template-columns: 1fr; }
   .grid--3 { grid-template-columns: 1fr 1fr; }
   .grid--3 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
   .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-50); }
@@ -622,16 +705,16 @@ p, li, dd { text-wrap: pretty; }
   .stats__grid { gap: var(--space-30) var(--space-15); }
   .subscribe { flex-direction: column; }
   .faq { grid-template-columns: 1fr; gap: var(--space-30); }
+  .illo-split { grid-template-columns: 1fr; gap: var(--space-30); }
   .footer__top { grid-template-columns: 1fr 1fr; gap: var(--space-30) var(--space-20); padding-bottom: var(--space-40); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .reveal, .drawer__links li { opacity: 1; transform: none; }
+  .drawer__links li { opacity: 1; transform: none; }
   .statement__text .w { color: var(--tone-strong); }
-  .hero__media img { transform: none; }
 }
 
 /* Case card image hover zoom (matches product cards) */
-.card-case--image .card-case__media img { transition: transform .8s var(--ease); }
+.card-case--image .card-case__media img { transition: transform var(--dur-xslow) var(--ease-out); }
 .card-case--image:hover .card-case__media img { transform: scale(1.04); }

@@ -36,3 +36,6 @@ These patterns make a site look template-made or AI-generated. On a redesign, li
 | Filler copy ("seamless", "next-level") | Concrete nouns and numbers (see `copy.md`) |
 | Stock illustration of people at laptops | Real photography of the product, place, or work |
 | Fake logo walls and invented testimonials | Real proof from the user, or a marked `{{placeholder}}` |
+| Fade-in on every element, bouncy springs, or slide-ins from the side | One reveal per block (rise 32px with expo-out), staggered in reading order (see `motion.md`) |
+| Scroll-jacking, section snapping, custom cursors, magnetic buttons | Native scroll smoothed by Lenis; standard cursor |
+| Clip-art or 3D-render illustrations, colorful isometric scenes | Isometric hairline drawings from `scripts/iso.py`: white blocks, hairlines, vertex dots, one signal dot |

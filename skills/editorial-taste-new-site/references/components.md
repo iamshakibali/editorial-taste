@@ -91,6 +91,9 @@ One per page. It's the editorial signature: a single large statement of the bran
 </section>
 ```
 
+## Illustration split
+A 5/7 split: on the left, an eyebrow, an H3 (`data-reveal="text"`), Body Medium muted (max 460), and a numbered step list (Label Large mono numbers, hairline dividers, `data-stagger`). On the right, a `figure.illo` on a `--bg-base` panel (radius 10) holding an inline isometric SVG from `scripts/iso.py` with `data-reveal="iso"`. Match the step numbers to the labels in the drawing. It stacks to one column at ≤1024. Rules and recipes are in `illustrations.md`.
+
 ## FAQ
 5/7 split: eyebrow + H3 on the left; on the right, a list of `<details>` items divided by `--border-subtle` hairlines (full width, never borders on a single side of a card). Each question is an H6 `summary` with a 14px "+" icon that rotates 45° when open; each answer is Body Medium muted, max-width 640. Use 6–10 real objections. Add `FAQPage` JSON-LD when the page is indexed.
 
@@ -104,7 +107,7 @@ One per page. It's the editorial signature: a single large statement of the bran
 ## States (every interactive element)
 | State | Treatment |
 |---|---|
-| Hover | Background moves to `--bg-lift` (light) or `--light-32` (glass), over 200ms |
+| Hover | Background moves to `--bg-lift` (light) or `--light-32` (glass), over 200ms. Labels roll up and arrows nudge 2px (see `motion.md`) |
 | Pressed | `translateY(1px)` |
 | Focus | 2px outline in `--tone-strong` (or `--light-100` on photos), offset 2–3px |
 | Disabled | `--dark-4` fill, `--tone-faint` text, `cursor: not-allowed`, `aria-disabled="true"` |
@@ -135,6 +138,6 @@ Align shared elements across side-by-side cards: titles, tags, and buttons start
 | **CTA band** | Photo + vignette, 560 tall (mobile 520), centered tag → H2 → line → CTA row → optional email form |
 | **Footer** | Dark (`--neutral-black`/`--dark-100`), brand blurb + 3 link columns (Label Large headers, Body Small links), bottom bar in light-64, a giant faint wordmark (light-8) |
 
-Default page order: Nav → Hero → Highlight numbers → Statement → Product cards → Case cards → Split cards → Journal → FAQ → CTA band → Footer. Drop blocks the content doesn't need; never invent content to fill a block.
+Default page order: Nav → Hero → Highlight numbers → Statement → Product cards → Case cards → Split cards → Illustration split (How it works) → Journal → FAQ → CTA band → Footer. Drop blocks the content doesn't need; never invent content to fill a block.
 
 Responsive: 3- and 4-column grids → 2 columns at ≤1024 → 1 column at ≤767.

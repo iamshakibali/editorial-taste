@@ -9,6 +9,15 @@ Run this before reporting work as done. Fix failures, or list them explicitly in
 - [ ] Every photo with text on it has a vignette; logo is white on photos and dark on light
 - [ ] Only one radius per card row
 - [ ] Transitions use `var(--ease)` and animate only `transform`, `opacity`, `color`, and `background-color`
+- [ ] `--signal` appears only as the single dot in an isometric illustration
+
+## Motion
+- [ ] `html.js` class set in `<head>`; nothing is hidden with JS disabled
+- [ ] Reduced motion: no smooth scroll, reveals, parallax, count-up, or pulse; final states shown immediately
+- [ ] One hero sequence; sections reveal once; no replay on scroll-up
+- [ ] Smooth scroll stops while the drawer is open; anchors land below the nav and move focus
+- [ ] 60fps while scrolling with the CPU throttled 4×; no long tasks over 50ms; CLS stays at 0
+- [ ] No `transition: all`, no animated `filter`/`box-shadow`, no permanent `will-change`
 
 ## Content
 - [ ] No `{{placeholders}}` left (`grep -n '{{' *.html`), or the remaining ones are listed in the report as needing input from the user

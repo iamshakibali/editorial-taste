@@ -1,11 +1,14 @@
 {
   "name": "editorial-taste",
-  "owner": { "name": "Shakib Ali" },
+  "owner": {
+    "name": "Shakib Ali"
+  },
   "plugins": [
     {
       "name": "editorial-taste",
       "source": "./",
       "description": "Monochrome, editorial, photography-led web design: one skill to build new sites and one to redesign existing ones."
     }
-  ]
+  ],
+  "description": "Editorial Taste: monochrome, editorial, photography-led web design skills."
 }

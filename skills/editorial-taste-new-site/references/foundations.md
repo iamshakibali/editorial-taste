@@ -91,6 +91,8 @@ Scale: `0 5 10 15 20 25 30 35 40 45 50`.
 | Circle button | 50% |
 | Tag chip / pill CTA | 9999px |
 
+**Nested radius rule.** When a rounded shape sits inside another and the gap between them is under 32px, `inner radius = outer radius − gap`. Apply it only when the result is greater than 2; otherwise square the inner corner. Example: a case card (r20) with a 10px inset image gets r10. A product card (r10) with media inset by 8 gets r2, which rounds to 0.
+
 ## Grid and breakpoints
 | | Canvas (1920) | Web |
 |---|---|---|
@@ -109,3 +111,42 @@ Scale: `0 5 10 15 20 25 30 35 40 45 50`.
 ## Other collections
 - `Appearance`: opacity 20–100, step 10.
 - `Button Text`: default labels "Primary", "Hover", "Secondary", "Tertiary".
+
+## Motion
+Motion is weighted and decelerates into place. It should feel like a magazine page settling, never bouncy.
+
+| Token | Value | Use |
+|---|---|---|
+| `--ease` | `cubic-bezier(.2, .7, .2, 1)` | Every transition. Never browser `ease`, `linear`, or `ease-in-out` |
+| `--dur-fast` | 200ms | Color and background on hover (never shorter) |
+| `--dur-base` | 400ms | Small movement, drawer, FAQ toggle, statement words |
+| `--dur-slow` | 800ms | Scroll reveals, image zoom on hover |
+
+- Animate only `transform` and `opacity` for movement (plus `color` and `background-color` for hover). Never animate `top`, `left`, `width`, `height`, or `transition: all`.
+- **Scroll reveal:** rise 24px and fade in over 800ms, once per element, with grid children staggered by 80ms. Trigger with `IntersectionObserver`, never an unthrottled `scroll` listener.
+- **Image hover:** `scale(1.04)` over 800ms inside an `overflow: hidden` frame.
+- **Pressed:** `translateY(1px)`.
+- **Drawer links:** arrive in reading order, 24px up with a fade, in 60ms steps, with the whole sequence capped at about 400ms.
+- **Hero:** the image can settle from `scale(1.06)` to 1 over about 1.6s on load. That's the only load animation.
+- `prefers-reduced-motion: reduce` removes all movement and shows final states immediately.
+
+## Text rendering
+- Headings get `text-wrap: balance`; paragraphs and list items get `text-wrap: pretty`. Don't leave a single word alone on the last line of a heading.
+- Numbers in stats and tables use `font-variant-numeric: tabular-nums`.
+- Don't italicize anything. For emphasis, use `--tone-strong` against muted text, or Body Bold (Medium 500).
+- Keep lines to about 70 characters (`max-width: 640px` for Body Medium).
+
+## Icons
+- Use 1.2–1.5px line icons drawn in `currentColor` on a 12/14/16/20px grid. Use the template's sprite, or **Phosphor (Light)** for anything more. Keep one stroke weight across the site.
+- Never use Material Icons/Symbols, filled or duotone icon sets, or emoji as icons.
+- Icon-only controls need an `aria-label` and a 32×32 hit area at minimum (44×44 on touch).
+
+## Contrast
+| Pair | Ratio | Status |
+|---|---|---|
+| `--tone-strong` on `--bg-base` | ≈16:1 | Body OK |
+| `--neutral-500` on `--neutral-white` | 4.7:1 | Body OK |
+| `--neutral-500` on `--bg-base` | 4.0:1 | Large text only. Use `--neutral-600` for body |
+| `--neutral-500` on `--neutral-200` | 3.8:1 | Large text only. Use `--neutral-600` for body |
+| `--tone-medium` on `--bg-base` | ≈5.6:1 | Body OK |
+| White on a photo with a 98% vignette | ≥7:1 at the text baseline | Check the lightest area behind the text |

@@ -12,9 +12,11 @@ Restyles an existing site in the Editorial Taste style: **monochrome, editorial,
 1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Brand accent colors are removed from the UI; the brand's color lives in its photography. If the user insists on keeping a brand color, confine it to the logo.
 2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. Never use bold headings.
 3. **5px rhythm** for spacing and radii (the compact-scale exceptions are 8, 12, 32, 56, and 96).
-4. **Glass, not shadow.** Remove every shadow; use translucent fills plus `backdrop-filter: blur(16px)`, or a `--border-subtle` hairline.
+4. **Glass, not shadow.** Remove every shadow; use translucent fills plus `backdrop-filter: blur(16px)`, or a `--border-subtle` hairline. The only gradients allowed are black vignettes over photos.
 5. **Text on photos always sits on a vignette.**
-6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full.
+6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. Nested radii: `inner = outer − gap`.
+7. **Motion decelerates** (`var(--ease)`, 200/400/800ms). Animate only transform and opacity, and respect reduced motion.
+8. **Preserve before polishing.** Never drop content, links, or accessibility features in exchange for looks.
 
 ## Workflow
 
@@ -24,8 +26,27 @@ Restyles an existing site in the Editorial Taste style: **monochrome, editorial,
 - Run the token mapper over the source to get a replacement plan:
   `python3 <skill-dir>/scripts/map_tokens.py <src-dir-or-files>`
   It maps every color, font, size, spacing value, radius, shadow, and Tailwind utility to the nearest Editorial Taste token, and flags accents and shadows for removal.
+- Run the linter over the source for a baseline count: `python3 <skill-dir>/scripts/lint.py <src-dir>`.
 - Note what must not break: forms, auth, routing, JavaScript hooks that depend on class names or IDs, CMS-driven content, and tests or snapshots that assert on markup.
 - If the project can run, take "before" screenshots at 1440px and 390px.
+
+### 1b. Diagnose generic patterns
+Go through the "Generic patterns" table in `references/pitfalls.md` (gradient blobs, everything centered, three identical icon cards, badge pills above every heading, soft shadows, rounded-2xl everything, filler copy, fake logo walls) and note every one the site uses. Also check:
+- **Hierarchy:** is there one clear primary action per screen, or do CTAs compete?
+- **Proof:** is proof next to the claims it supports, or buried at the bottom?
+- **States:** are focus, pressed, disabled, loading, empty, and error states missing?
+- **Ship basics:** OG tags, favicon, 404, legal links, alt text, form validation (`references/ship-checklist.md`).
+
+### 1c. Post the audit before changing code
+Post a short audit, then proceed without waiting unless the user asked to review it first:
+
+| Severity | Meaning |
+|---|---|
+| **Critical** | Breaks use or accessibility: no focus states, contrast failures, broken mobile layout, missing alt text |
+| **Style** | Violates Editorial Taste: accents, shadows, wrong fonts, off-scale values, generic patterns |
+| **Polish** | Missing states, ship basics, copy filler, layout monotony |
+
+Include the stack, the section-to-block map (step 2), what will be kept as is, and the assets needed (photography, logo SVG).
 
 ### 2. Map content to Editorial Taste blocks
 Keep the existing content and pick the closest block for each section (see `references/components.md`):
@@ -42,7 +63,9 @@ Keep the existing content and pick the closest block for each section (see `refe
 | Pricing | News-card surfaces (r10, white), H4 plan name, H1 price, Body Medium list, Primary CTA on the featured plan only. No colored badges; use a mono tag chip |
 | FAQ | Hairline-divided list (`--border-subtle`), H6 questions, Body Medium answers, a mono "+" toggle |
 | Newsletter / contact CTA | CTA band |
-| Forms | 40px-high inputs, radius 8, 1px `--border-subtle`, `--neutral-white` fill, mono labels, Primary submit, focus ring `--tone-strong` |
+| Mission / about / manifesto paragraph | **Statement**: one H0 line of 2–4 lines with a word-by-word reveal (`references/components.md`) |
+| Forms | See Forms in `references/components.md`: 40px inputs, radius 8, mono labels, inline errors, focus ring |
+| Repeated "three icon cards" sections | Vary them: a 5/7 split list, feature + list, or split cards (see Layout variety) |
 
 If the site has no photography, say so: the style depends on it. Use the user's existing images with vignettes, or ask for photos. Don't hotlink stock images.
 
@@ -57,7 +80,10 @@ Order: Nav → Footer → Hero → each section top to bottom → remaining page
 - Apply the mapped block anatomy (sizes, gaps, text styles).
 - Swap colors, fonts, spacing, radii, and shadows using the mapper report.
 - Keep the DOM, IDs, `data-*` attributes, ARIA, and event handlers. Change class names only where the styling system requires it, and keep any class that JavaScript or tests query.
-- Tighten copy only if the user asked. Otherwise, keep the wording and change only casing (sentence case for headings, uppercase for mono eyebrows).
+- Tighten copy only if the user asked. Otherwise, keep the wording and change only casing (sentence case for headings, uppercase for mono eyebrows). If they did ask, follow `references/copy.md` and never invent facts.
+- Add the missing states (hover, pressed, focus, disabled, current, loading, empty, error) as you go, using the specs in `references/components.md`.
+- Use the motion tokens (`--ease`, 200/400/800ms) for every transition. Remove `transition: all` and default easing.
+- Work section by section and keep each diff reviewable. Never rewrite the whole site in one pass.
 
 ### 5. Verify
 1. Run the linter on the changed style and markup files and fix every ERROR:
@@ -65,9 +91,14 @@ Order: Nav → Footer → Hero → each section top to bottom → remaining page
 2. Re-run `map_tokens.py`. The Colors table should contain no `ACCENT` rows and the Shadows section should be empty.
 3. Run the project's existing build, type-check, and tests. Nothing that passed before should fail.
 4. Run the app and compare against the "before" screenshots at 1440px and 390px. Check that all content is still present, links and forms work, nothing scrolls horizontally, focus rings are visible, and contrast meets AA.
+5. Work through `references/ship-checklist.md`, and add any missing basics that don't change content (OG tags, favicon, 404, skip link).
 
 ### 6. Report
-List what changed (foundation, components, sections), what was kept deliberately, anything not mapped cleanly (e.g. charts that need a monochrome palette), and what the user should supply (photography, logo SVG).
+- **Before and after:** lint error count and `map_tokens.py` accent and shadow counts, then and now.
+- **Audit items:** each one marked fixed, kept deliberately (with the reason), or needing user input.
+- **What changed:** foundation, primitives, and sections.
+- **Not mapped cleanly:** e.g. charts that need a monochrome palette, or third-party embeds.
+- **What the user should supply:** photography, logo SVG, real proof that replaces placeholders.
 
 ## Quick token reference (web desktop)
 
@@ -95,10 +126,13 @@ List what changed (foundation, components, sections), what was kept deliberately
 `:focus-visible` ring (2px `--tone-strong`, offset 2; `--light-100` on photos) · disabled state (`--tone-faint`) · pressed state · `prefers-reduced-motion` · AA contrast (use `--neutral-600` instead of `--neutral-500` on gray surfaces if needed). Never remove existing accessibility features during a redesign.
 
 ## Reference files
-- `references/foundations.md`: full color, type, spacing, radius, grid, and effects tables
-- `references/components.md`: anatomy of every component and page block
+- `references/foundations.md`: color, type, spacing, radius, grid, effects, motion, icons, contrast
+- `references/components.md`: anatomy of every component and block, forms, states, layout variety
+- `references/pitfalls.md`: common mistakes plus the generic-pattern diagnosis table
+- `references/copy.md`: voice, CTAs, content realism, banned words (for copy passes)
+- `references/ship-checklist.md`: final QA, SEO, and ship requirements
 - `references/tokens.css`: the drop-in token set
 - `references/frameworks.md`: Next.js, Tailwind v3/v4, and shadcn/MUI theme mapping
-- `references/pitfalls.md`: common mistakes to check before finishing
+- `references/figma.md`: redesigning a Figma file instead of code
 - `scripts/map_tokens.py`: inventories existing styles and maps them to tokens
 - `scripts/lint.py`: rule checker

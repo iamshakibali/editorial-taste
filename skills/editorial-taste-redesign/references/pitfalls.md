@@ -16,3 +16,23 @@ These mistakes come up repeatedly when applying the system. Check for each one b
 | 10 | Missing focus, disabled and pressed states | Always add them (see SKILL.md, Accessibility) |
 | 11 | Colorful stock illustrations or icons | Photography only; icons are 1.2px line icons in `currentColor` |
 | 12 | Title Case, exclamation marks, emoji in headlines | Sentence case, short declarative headlines ending in a period |
+
+## Generic patterns to diagnose and remove
+These patterns make a site look template-made or AI-generated. On a redesign, list every one you find in the audit. On a new site, never introduce them.
+
+| Pattern | Replace with |
+|---|---|
+| Purple, blue, or rainbow gradient backgrounds and blobs | Flat `--bg-base` or a full-bleed photo with a vignette |
+| Gradient text on headlines | Solid `--tone-strong`, or white on a photo |
+| Everything centered, section after section | Left-aligned editorial layouts. Center only the centered hero and the CTA band |
+| Three identical icon + title + text cards | Product, case, or split cards with real photography, or a 5/7 split list |
+| Emoji or colorful icon bullets | 1.2px line icons, or none |
+| Pill "badge" above every heading ("✨ New") | One numbered mono eyebrow per section ("02 — Selected work") |
+| Glassmorphism on light backgrounds | Glass only over photos. On light surfaces use `--dark-8` |
+| Soft drop shadows on every card | No shadow. Separate with surface tone (`--neutral-200` vs white) or a hairline |
+| Rounded-2xl everything | 8 for buttons, 10 for cards, 20 for case cards |
+| Inter/Roboto with semibold headings | Geist Medium with negative tracking |
+| "Get started", "Learn more" | Verb plus object ("Book a site visit") |
+| Filler copy ("seamless", "next-level") | Concrete nouns and numbers (see `copy.md`) |
+| Stock illustration of people at laptops | Real photography of the product, place, or work |
+| Fake logo walls and invented testimonials | Real proof from the user, or a marked `{{placeholder}}` |

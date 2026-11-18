@@ -1,81 +1,138 @@
 #!/usr/bin/env python3
-"""Editorial Taste linter: flags CSS/HTML that breaks Editorial Taste rules.
+"""Editorial Taste linter: flags CSS/HTML/JSX that breaks Editorial Taste rules.
 
-Usage: python3 lint.py <file> [<file> ...]
+Usage: python3 lint.py [--strict] <file|dir> [...]
+  --strict  also fail on leftover {{placeholders}} (use before delivery)
 Exit code 1 if any ERROR is found; WARN entries are advisory.
+Add "lint-ok" in a comment on a line to accept a deliberate exception.
 """
+import os
 import re
 import sys
 
 PALETTE = {
-    # neutral
     "ffffff", "fafafa", "f5f5f5", "ededed", "e5e5e5", "d4d4d4", "a3a3a3", "737373",
     "525252", "404040", "262626", "1f1f1f", "171717", "0a0a0a", "050505", "000000",
-    # base + semantic
     "151515", "d9d9d9",
 }
 ALPHAS = {"ff", "e0", "a3", "7a", "52", "29", "14", "0a"}
-SHORT = {"fff": "ffffff", "000": "000000"}
-
-# Off-5 values the compact web scale explicitly allows (DESIGN.md §5.3)
+# Off-5 values the compact web scale explicitly allows
 ALLOWED_PX = {0, 1, 2, 3, 4, 6, 8, 12, 14, 16, 18, 22, 24, 26, 28, 32, 36, 44, 48, 56,
-              64, 68, 72, 92, 96, 104, 160, 200, 220, 240, 340, 420, 480, 520, 560, 760, 820,
-              1020, 1280, 9999}
+              64, 68, 72, 92, 96, 104, 110, 160, 200, 220, 240, 340, 420, 480, 520, 560, 640,
+              760, 820, 1020, 1040, 1280, 9999}
+ALLOWED_RADII = {0, 2, 4, 8, 10, 20, 9999}
 SPACING_PROPS = re.compile(
     r"^\s*(margin|padding|gap|row-gap|column-gap|inset|top|right|bottom|left)"
     r"(-[a-z-]+)?\s*:\s*([^;]+);", re.I)
 RADIUS_PROP = re.compile(r"^\s*border(-[a-z-]+)?-radius\s*:\s*([^;]+);", re.I)
-ALLOWED_RADII = {0, 4, 8, 10, 20, 9999}
+FILLER = re.compile(
+    r"\b(revolutioni[sz]e|supercharge|cutting[- ]edge|seamless(?:ly)?|effortless(?:ly)?|"
+    r"next[- ]level|world[- ]class|game[- ]chang\w*|harness the power|transform your workflow|"
+    r"unlock (?:your|the)|empower(?:ing)?|elevate your)\b", re.I)
+EXTS = {".css", ".scss", ".html", ".htm", ".jsx", ".tsx", ".vue", ".svelte", ".astro"}
+SKIP = {"node_modules", ".git", "dist", "build", ".next", "out", "vendor"}
 
 
-def check_color(hexv):
-    h = hexv.lower()
+def check_color(h):
+    h = h.lower()
     if len(h) in (3, 4):
-        h = SHORT.get(h[:3], "".join(c * 2 for c in h[:3]))
+        h = "".join(c * 2 for c in h[:3])
     if len(h) == 6:
         return h in PALETTE
     if len(h) == 8:
-        return h[:6] in {"ededed", "151515"} and h[6:] in ALPHAS or h[:6] in PALETTE and h[6:] == "ff"
+        return (h[:6] in {"ededed", "151515"} and h[6:] in ALPHAS) or (h[:6] in PALETTE and h[6:] == "ff")
     return False
 
 
-def lint(path):
+def lint(path, strict):
     issues = []
     try:
         text = open(path, encoding="utf-8").read()
     except OSError as e:
         return [("ERROR", 0, f"cannot read: {e}")]
+    is_markup = os.path.splitext(path)[1].lower() in {".html", ".htm", ".jsx", ".tsx", ".vue", ".svelte", ".astro"}
     in_root = False
+    in_svg_symbol = False
     for n, line in enumerate(text.splitlines(), 1):
         s = line.strip()
         if s.startswith(":root"):
             in_root = True
         if in_root and s.startswith("}"):
             in_root = False
+        if "<symbol" in line:
+            in_svg_symbol = True
+        if "</symbol>" in line or "</svg>" in line:
+            in_svg_symbol = False
 
+        def add(level, msg):
+            if "lint-ok" not in line:
+                issues.append((level, n, msg))
+
+        # Elevation
         if re.search(r"(box|text)-shadow\s*:\s*(?!none)", line, re.I):
-            issues.append(("ERROR", n, "shadow used. use glass blur, never shadows"))
+            add("ERROR", "shadow used. Use glass blur or a hairline, never shadows")
         if re.search(r"drop-shadow\(", line, re.I):
-            issues.append(("ERROR", n, "drop-shadow filter is not allowed"))
+            add("ERROR", "drop-shadow filter is not allowed")
+        if re.search(r"\bshadow-(?:sm|md|lg|xl|2xl|inner)\b|\bshadow\b(?=[\s\"'])", line) and "class" in line:
+            add("ERROR", "Tailwind shadow utility")
 
+        # Color
         for m in re.finditer(r"#([0-9a-fA-F]{3,8})\b", line):
             if len(m.group(1)) in (3, 4, 6, 8) and not check_color(m.group(1)):
-                issues.append(("ERROR", n, f"off-palette color #{m.group(1)}"))
-        for m in re.finditer(r"rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)", line):
+                add("ERROR", f"off-palette color #{m.group(1)}")
+        for m in re.finditer(r"rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)", line):
             r, g, b = map(int, m.groups())
-            if not (r == g == b):
-                issues.append(("ERROR", n, f"chromatic color rgb({r},{g},{b}). The palette is achromatic"))
-        if re.search(r"\bhsla?\(", line) and not re.search(r"hsla?\(\s*\d+\s*,?\s*0%", line):
-            issues.append(("WARN", n, "hsl() color, verify it is achromatic"))
+            if not r == g == b:
+                add("ERROR", f"chromatic color rgb({r},{g},{b}). The palette is achromatic")
+        if re.search(r"\b(?:bg|text|border|ring|from|via|to)-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b", line):
+            add("ERROR", "Tailwind chromatic color utility")
+        if re.search(r"background(?:-image)?\s*:[^;]*linear-gradient", line) and "rgba(0,0,0" not in line.replace(" ", "") and "var(--vignette" not in line:
+            add("WARN", "gradient background. Only black vignettes over photos are allowed")
+        if re.search(r"background-clip\s*:\s*text", line):
+            add("ERROR", "gradient text. Headlines are solid")
 
-        if re.search(r"font-weight\s*:\s*(bold|[6-9]00)", line, re.I):
-            issues.append(("ERROR", n, "bold weight. Headings are Medium (500), body is 400/500"))
+        # Type
+        if re.search(r"font-weight\s*:\s*(bold|bolder|[6-9]00)", line, re.I) and not in_svg_symbol:
+            add("ERROR", "bold weight. Headings are Medium (500), body is 400/500")
+        if re.search(r"\bfont-(?:semibold|bold|extrabold|black)\b", line):
+            add("ERROR", "Tailwind bold weight utility")
         fam = re.search(r"font-family\s*:\s*([^;]+)", line, re.I)
-        if fam and not re.search(r"var\(--font-|Geist", fam.group(1)) and "inherit" not in fam.group(1):
-            issues.append(("ERROR", n, f"off-system font: {fam.group(1).strip()}"))
-        if re.search(r"IBM Plex", line):
-            issues.append(("ERROR", n, "IBM Plex Mono. Use Geist Mono"))
+        if fam and not re.search(r"var\(--font-|Geist|inherit", fam.group(1)):
+            add("ERROR", f"off-system font: {fam.group(1).strip()}")
+        if re.search(r"IBM Plex|\bInter\b|Roboto|Open Sans|Helvetica|Arial", line) and ("font" in line.lower()):
+            add("ERROR", "off-system font family referenced")
+        if re.search(r"font-style\s*:\s*italic|\bitalic\b(?=[\s\"'])", line):
+            add("WARN", "italic. Use tone or weight for emphasis")
 
+        # Motion
+        if re.search(r"transition\s*:\s*all\b|transition-property\s*:\s*all", line):
+            add("ERROR", "transition: all. List only transform, opacity, and color properties")
+        if re.search(r"transition[^;]*\b(width|height|top|left|right|bottom|margin|padding)\b", line, re.I):
+            add("WARN", "animating a layout property. Animate transform/opacity instead")
+        if re.search(r"(transition|animation)[^;]*\s(ease|linear|ease-in-out|ease-in|ease-out)\s*[;,]", line):
+            add("WARN", "browser default easing. Use var(--ease)")
+
+        # Icons
+        if re.search(r"material-icons|material-symbols|Material\+Icons|Material\+Symbols", line):
+            add("ERROR", "Material icons. Use 1.2px line icons or Phosphor Light")
+
+        # Markup checks
+        if is_markup:
+            for m in re.finditer(r"<img\b[^>]*>", line):
+                if not re.search(r"\balt=", m.group(0)):
+                    add("ERROR", "<img> without alt")
+            if re.search(r"href=\"#\"(?![^>]*aria-disabled)", line):
+                add("WARN", 'dead link href="#". Wire it up or mark it aria-disabled="true"')
+            if re.search(r"\balert\(", line):
+                add("ERROR", "alert(). Show messages inline with aria-live")
+            for m in FILLER.finditer(line):
+                add("WARN", f"filler word '{m.group(0)}'. Say what it does instead")
+            if re.search(r"lorem ipsum", line, re.I):
+                add("ERROR", "lorem ipsum. Write real copy")
+            if strict and "{{" in line:
+                add("ERROR", "unreplaced {{placeholder}}")
+
+        # Scales
         if not in_root:
             for regex, allowed, label in ((SPACING_PROPS, ALLOWED_PX, "spacing"), (RADIUS_PROP, ALLOWED_RADII, "radius")):
                 m = regex.match(line)
@@ -83,20 +140,35 @@ def lint(path):
                     for px in re.findall(r"(-?\d+(?:\.\d+)?)px", m.group(m.lastindex)):
                         v = abs(float(px))
                         if v % 5 != 0 and v not in allowed:
-                            issues.append(("WARN", n, f"{label} {px}px is off the 5px scale"))
+                            add("WARN", f"{label} {px}px is off the 5px scale")
     return issues
 
 
+def expand(paths):
+    for p in paths:
+        if os.path.isdir(p):
+            for root, dirs, files in os.walk(p):
+                dirs[:] = [d for d in dirs if d not in SKIP and not d.startswith(".")]
+                for f in files:
+                    if os.path.splitext(f)[1].lower() in EXTS:
+                        yield os.path.join(root, f)
+        else:
+            yield p
+
+
 def main(argv):
-    if not argv:
+    strict = "--strict" in argv
+    paths = [a for a in argv if a != "--strict"]
+    if not paths:
         print(__doc__)
         return 2
-    errors = 0
-    for path in argv:
-        for level, n, msg in lint(path):
+    errors = warns = 0
+    for path in expand(paths):
+        for level, n, msg in lint(path, strict):
             errors += level == "ERROR"
+            warns += level == "WARN"
             print(f"{path}:{n}: {level}: {msg}")
-    print(f"\n{errors} error(s)." if errors else "\nNo errors. Editorial Taste approved.")
+    print(f"\n{errors} error(s), {warns} warning(s)." if errors or warns else "\nNo issues.")
     return 1 if errors else 0
 
 

@@ -78,6 +78,51 @@ Tag chip: Label Large mono, uppercase, `tone-faint` (or light-16 on a photo) + b
 ## Highlight numbers
 Full-width row, block padding 56 (mobile 40), equal grid columns, items centered. Each item: an **H1** value (`98%`, `12Y`, `40+`) over a **Body Large** muted caption, gap 10. Use `font-variant-numeric: tabular-nums`. 3–4 items.
 
+## Statement (word-by-word reveal)
+One per page. It's the editorial signature: a single large statement of the brand's core idea, set apart from the hero. Place it after the stats or between two card sections, never directly under the hero.
+- Copy: 2–4 lines, one idea, written as a statement (see `copy.md`). It isn't a section heading.
+- Type: `.h0` (`.h1` if the statement is over about 18 words), max-width about 1040px, left-aligned.
+- Motion: each word starts at `--dark-16` and turns `--tone-strong` in reading order as it crosses a trigger line about 60% down the viewport, over 400ms with `--ease`. Use one `IntersectionObserver` per word (see the template script), never an unthrottled scroll handler. Under reduced motion, show the full color immediately.
+- Padding: 1.5 × the section padding.
+
+```html
+<section class="statement" aria-label="Brand in one statement">
+  <div class="container"><p class="h0 statement__text" data-words>We build the quiet infrastructure that keeps a city running.</p></div>
+</section>
+```
+
+## FAQ
+5/7 split: eyebrow + H3 on the left; on the right, a list of `<details>` items divided by `--border-subtle` hairlines (full width, never borders on a single side of a card). Each question is an H6 `summary` with a 14px "+" icon that rotates 45° when open; each answer is Body Medium muted, max-width 640. Use 6–10 real objections. Add `FAQPage` JSON-LD when the page is indexed.
+
+## Forms
+- Input: 40px high, padding 0 14px, radius 8, 1px `--border-subtle`, fill `--neutral-white`, Body Medium text, placeholder `--neutral-400`.
+- Label: Label Large mono uppercase, above the field, gap 8. Never use the placeholder as the only label.
+- States: hover → border `--dark-32`; focus → 2px `--tone-strong` outline, offset 2; error → border `--tone-strong` plus an inline message with a "!" icon (state is never shown by color alone); disabled → fill `--dark-4`, text `--tone-faint`.
+- Messages: Label Large in `aria-live="polite"` beneath the field. Validate required fields and email format on the client.
+- Submit: Primary button. On photos, the input is glass (`--light-16` + blur) with light text and the button is `.btn--light`.
+
+## States (every interactive element)
+| State | Treatment |
+|---|---|
+| Hover | Background moves to `--bg-lift` (light) or `--light-32` (glass), over 200ms |
+| Pressed | `translateY(1px)` |
+| Focus | 2px outline in `--tone-strong` (or `--light-100` on photos), offset 2–3px |
+| Disabled | `--dark-4` fill, `--tone-faint` text, `cursor: not-allowed`, `aria-disabled="true"` |
+| Current | Nav link with `aria-current="page"`: solid `--tone-strong` chip (white chip on photos) |
+| Loading | Skeleton blocks in `--neutral-200` with radius matching the real element and a gentle opacity pulse. No spinners |
+| Empty | A composed view: H5, one line of muted Body Medium, one Secondary button that tells the user what to do next |
+| Error | Inline, specific, in mono Label Large, with a retry action. Never `alert()` |
+
+## Layout variety
+Don't default to three equal cards in every section. Rotate layouts across the page:
+- **3-up**: product cards and case cards.
+- **2-up split**: split cards, 1:1.
+- **Asymmetric 5/7 or 4/8**: intro and FAQ, or a large image beside a text column.
+- **Feature + list**: one large case card (span 2) beside two stacked small ones.
+- **Full-bleed**: hero and CTA band. Use one or two per page, not more.
+
+Align shared elements across side-by-side cards: titles, tags, and buttons start at the same height (use a grid with `align-items: stretch` and `margin-top: auto` on the card footer).
+
 ## Page blocks
 | Block | Recipe |
 |---|---|
@@ -90,6 +135,6 @@ Full-width row, block padding 56 (mobile 40), equal grid columns, items centered
 | **CTA band** | Photo + vignette, 560 tall (mobile 520), centered tag → H2 → line → CTA row → optional email form |
 | **Footer** | Dark (`--neutral-black`/`--dark-100`), brand blurb + 3 link columns (Label Large headers, Body Small links), bottom bar in light-64, a giant faint wordmark (light-8) |
 
-Default page order: Nav → Hero → Highlight numbers → Product cards → Case cards → Split cards → Journal → CTA band → Footer. Drop blocks the content doesn't need; never invent content to fill a block.
+Default page order: Nav → Hero → Highlight numbers → Statement → Product cards → Case cards → Split cards → Journal → FAQ → CTA band → Footer. Drop blocks the content doesn't need; never invent content to fill a block.
 
 Responsive: 3- and 4-column grids → 2 columns at ≤1024 → 1 column at ≤767.

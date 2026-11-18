@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{Brand}} — {{One-line promise}}</title>
   <meta name="description" content="{{Meta description, 140–160 characters}}" />
+  <link rel="canonical" href="{{https://example.com/}}" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#EDEDED" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{Brand}} — {{One-line promise}}" />
+  <meta property="og:description" content="{{Meta description}}" />
+  <meta property="og:image" content="{{https://example.com/og.jpg (1200×630)}}" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400&display=swap" rel="stylesheet" />
@@ -29,7 +37,7 @@
   <!-- ===== Navigation ===== -->
   <header class="nav on-dark" id="nav">
     <div class="container nav__inner">
-      <a class="logo" href="#" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+      <a class="logo" href="/" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
       <div class="nav__right">
         <nav aria-label="Primary">
           <ul class="nav__links">
@@ -43,7 +51,7 @@
         <div class="nav__utils">
           <a class="icon-btn" href="#contact" aria-label="Support"><svg><use href="#i-help"/></svg></a>
           <button class="icon-btn" type="button" aria-label="Region and language"><svg><use href="#i-globe"/></svg></button>
-          <a class="icon-btn" href="#" aria-label="Account"><svg><use href="#i-user"/></svg></a>
+          <a class="icon-btn" href="{{/url}}" aria-label="Account"><svg><use href="#i-user"/></svg></a>
           <button class="icon-btn nav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" id="menuBtn"><svg><use href="#i-menu"/></svg></button>
         </div>
       </div>
@@ -88,6 +96,13 @@
         <div class="stat reveal"><span class="h1 stat__value">{{12Y}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
         <div class="stat reveal"><span class="h1 stat__value">{{40+}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
         <div class="stat reveal"><span class="h1 stat__value">{{24/7}}</span><span class="body-lg muted">{{Metric caption}}</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Statement (word-by-word reveal; one per page, two to four lines) ===== -->
+    <section class="statement" aria-label="{{Brand}} in one statement">
+      <div class="container">
+        <p class="h0 statement__text" data-words>{{The single idea the brand stands for, written as a statement of two to four lines.}}</p>
       </div>
     </section>
 
@@ -233,38 +248,62 @@
             <span class="eyebrow intro__eyebrow">04 — Journal</span>
             <h2 class="h3" id="news-title">Latest from {{Brand}}</h2>
           </div>
-          <a class="btn btn--tertiary" href="#">All news <svg><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--tertiary" href="{{/url}}">All news <svg><use href="#i-arrow"/></svg></a>
         </div>
 
         <div class="grid grid--4">
-          <a class="card-news reveal" href="#">
+          <a class="card-news reveal" href="{{/url}}">
             <div class="card-news__head">
               <span class="eyebrow">{{Topic}}</span>
               <h3 class="h4">{{Article headline one}}</h3>
             </div>
             <div class="card-news__foot"><span class="body-md">Sep 3, 2025</span><span class="body-sm muted">7 min read</span></div>
           </a>
-          <a class="card-news reveal" href="#">
+          <a class="card-news reveal" href="{{/url}}">
             <div class="card-news__head">
               <span class="eyebrow">{{Topic}}</span>
               <h3 class="h4">{{Article headline two}}</h3>
             </div>
             <div class="card-news__foot"><span class="body-md">Oct 18, 2025</span><span class="body-sm muted">6 min read</span></div>
           </a>
-          <a class="card-news reveal" href="#">
+          <a class="card-news reveal" href="{{/url}}">
             <div class="card-news__head">
               <span class="eyebrow">{{Topic}}</span>
               <h3 class="h4">{{Article headline three}}</h3>
             </div>
             <div class="card-news__foot"><span class="body-md">Nov 2, 2025</span><span class="body-sm muted">4 min read</span></div>
           </a>
-          <a class="card-news reveal" href="#">
+          <a class="card-news reveal" href="{{/url}}">
             <div class="card-news__head">
               <span class="eyebrow">{{Topic}}</span>
               <h3 class="h4">{{Article headline four}}</h3>
             </div>
             <div class="card-news__foot"><span class="body-md">Dec 9, 2025</span><span class="body-sm muted">8 min read</span></div>
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ (six to ten real objections, plain answers) ===== -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container faq">
+        <div class="reveal">
+          <span class="eyebrow intro__eyebrow">05 — Questions</span>
+          <h2 class="h3" id="faq-title">Questions, answered.</h2>
+        </div>
+        <div class="faq__list reveal">
+          <details class="faq__item">
+            <summary class="h6">{{Question one?}} <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">{{Plain, specific answer in one to three sentences.}}</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">{{Question two?}} <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">{{Plain, specific answer in one to three sentences.}}</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">{{Question three?}} <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">{{Plain, specific answer in one to three sentences.}}</p>
+          </details>
         </div>
       </div>
     </section>
@@ -295,7 +334,7 @@
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
-          <a class="logo" href="#" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+          <a class="logo" href="/" aria-label="{{Brand}} home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
           <p class="body-sm">{{One-sentence brand summary.}}</p>
         </div>
         <div class="footer__col">
@@ -309,10 +348,10 @@
         <div class="footer__col">
           <h3 class="label-lg">Company</h3>
           <ul class="body-sm">
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Media</a></li>
+            <li><a href="{{/url}}">Pricing</a></li>
+            <li><a href="{{/url}}">About</a></li>
+            <li><a href="{{/url}}">Careers</a></li>
+            <li><a href="{{/url}}">Media</a></li>
           </ul>
         </div>
         <div class="footer__col">
@@ -326,7 +365,7 @@
       </div>
       <div class="footer__bottom label-lg">
         <span>© {{Year}} {{Brand}}. All rights reserved.</span>
-        <span>Privacy · Terms · Cookies</span>
+        <span><a href="{{/privacy}}">Privacy</a> · <a href="{{/terms}}">Terms</a> · <a href="{{/cookies}}">Cookies</a></span>
       </div>
       <div class="footer__wordmark" aria-hidden="true"><svg viewBox="0 0 125 24.2854"><use href="#logo"/></svg></div>
     </div>
@@ -374,6 +413,16 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Statement: split into words, each one lights up as it crosses the trigger line
+    document.querySelectorAll('[data-words]').forEach(el => {
+      el.innerHTML = el.textContent.trim().split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const wio = new IntersectionObserver((entries) => {
+        entries.forEach(e => e.target.classList.toggle('is-on', e.boundingClientRect.top < innerHeight * 0.6));
+      }, { rootMargin: '0px 0px -40% 0px', threshold: 0 });
+      el.querySelectorAll('.w').forEach(w => wio.observe(w));
+    });
 
     // Newsletter
     document.getElementById('subscribe').addEventListener('submit', (e) => {

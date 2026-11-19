@@ -15,6 +15,10 @@ Usage:
   images.py --spec > images.json                     # print an example manifest
   images.py images.json --out site/                  # pick photos, write site/unsplash.json + site/credits.html
   images.py images.json --out site/ --placeholders   # no key or offline: neutral local stand-ins
+  images.py --apply site/unsplash.json site/index.html   # write src/srcset into <img data-slot="name">
+
+Mark every image in the markup with data-slot="<name>" so --apply can fill it, and so a site
+built with placeholders can switch to Unsplash photos later with two commands.
 
 Manifest: a list of slots
   {"name": "hero", "query": "wooden day boat misty lake morning", "w": 2400, "h": 1500,
@@ -31,6 +35,7 @@ delete review/ before shipping).
 """
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -223,7 +228,44 @@ def write_credits_page(out, summary):
     (out / "credits.html").write_text(html)
 
 
+def apply(summary_path, pages):
+    """Write each slot's src, srcset, width, and height into <img data-slot="name"> tags."""
+    summary = json.loads(Path(summary_path).read_text())
+    for page in pages:
+        html = Path(page).read_text()
+        count = 0
+
+        def fill(m):
+            nonlocal count
+            tag = m.group(0)
+            slot = re.search(r'data-slot="([^"]+)"', tag).group(1)
+            c = summary.get(slot)
+            if not c:
+                return tag
+            for attr in ("src", "srcset", "width", "height"):
+                tag = re.sub(rf'\s{attr}="[^"]*"', "", tag)
+            extra = f' src="{esc(c["src"])}"'
+            if c.get("srcset"):
+                extra += f' srcset="{esc(c["srcset"])}"'
+                if " sizes=" not in tag:
+                    extra += ' sizes="(max-width: 767px) 100vw, 60vw"'
+            extra += f' width="{c["w"]}" height="{c["h"]}"'
+            if c.get("color"):
+                tag = re.sub(r'\sstyle="[^"]*"', "", tag)
+                extra += f' style="background:{c["color"]}"'
+            count += 1
+            return tag.replace("<img", "<img" + extra, 1)
+
+        html = re.sub(r'<img\b[^>]*\bdata-slot="[^"]+"[^>]*>', fill, html)
+        Path(page).write_text(html)
+        print(f"  {page}: filled {count} image(s)", file=sys.stderr)
+    return 0
+
+
 def main(argv):
+    if "--apply" in argv:
+        rest = [a for a in argv if a != "--apply"]
+        return apply(rest[0], rest[1:])
     if "--spec" in argv:
         print(json.dumps(EXAMPLE, indent=2))
         return 0

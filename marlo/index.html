@@ -73,28 +73,32 @@
     <section class="ihero" aria-labelledby="hero-title">
       <div class="container ihero__grid">
         <div class="ihero__text">
-          <span class="eyebrow muted reveal" style="--d: .1s">Independent publisher · Edinburgh</span>
-          <h1 class="h2" id="hero-title" data-reveal="text" style="--d: .15s">Books for people who walk slowly.</h1>
-          <p class="body-md muted reveal" style="--d: .55s">Marlo publishes field guides and nature writing about the north of Britain. Four books a season, printed in Scotland on recycled paper, sewn so they lie flat on a rock.</p>
-          <div class="btn-row reveal" style="--d: .7s">
-            <a class="btn btn--primary btn--wide" href="#new">Browse new books</a>
+          <div class="ihero__intro">
+            <span class="eyebrow muted reveal" style="--d: .1s">Independent publisher · Edinburgh</span>
+            <h1 class="h2" id="hero-title" data-reveal="text" style="--d: .15s">Books for people who walk slowly.</h1>
+            <p class="body-md muted reveal" style="--d: .55s">Field guides and nature writing about the north of Britain. Four books a season, printed in Scotland on recycled paper, sewn so they lie flat on a rock.</p>
+            <div class="btn-row reveal" style="--d: .7s">
+              <a class="btn btn--primary btn--wide" href="#new">Browse new books</a>
+            </div>
           </div>
-        </div>
-        <div class="ihero__index">
-          <span class="label-lg muted reveal" style="--d: .5s">Four series</span>
-          <ol class="series" data-stagger="80">
-            <li class="reveal" style="--d: .55s"><a class="series__row is-active" href="#new" data-preview="0"><span class="label-lg muted">01</span><span class="h4">Shore</span><span class="body-sm muted">Coasts, tides, and rock pools · 9 books</span></a></li>
-            <li class="reveal" style="--d: .55s"><a class="series__row" href="#new" data-preview="1"><span class="label-lg muted">02</span><span class="h4">Moor</span><span class="body-sm muted">Peat, heather, and high ground · 7 books</span></a></li>
-            <li class="reveal" style="--d: .55s"><a class="series__row" href="#new" data-preview="2"><span class="label-lg muted">03</span><span class="h4">Field guides</span><span class="body-sm muted">Pocket sized, waterproof covers · 14 books</span></a></li>
-            <li class="reveal" style="--d: .55s"><a class="series__row" href="#new" data-preview="3"><span class="label-lg muted">04</span><span class="h4">Woodland</span><span class="body-sm muted">Oaks, lichens, and slow seasons · 6 books</span></a></li>
+          <ol class="series" data-stagger="80" aria-label="Four series">
+            <li class="reveal" style="--d: .6s"><a class="series__row is-active" href="#new" data-preview="0"><span class="label-lg">01</span><span class="h5">Shore</span><span class="label-lg series__count">9 books</span></a></li>
+            <li class="reveal" style="--d: .6s"><a class="series__row" href="#new" data-preview="1"><span class="label-lg">02</span><span class="h5">Moor</span><span class="label-lg series__count">7 books</span></a></li>
+            <li class="reveal" style="--d: .6s"><a class="series__row" href="#new" data-preview="2"><span class="label-lg">03</span><span class="h5">Field guides</span><span class="label-lg series__count">14 books</span></a></li>
+            <li class="reveal" style="--d: .6s"><a class="series__row" href="#new" data-preview="3"><span class="label-lg">04</span><span class="h5">Woodland</span><span class="label-lg series__count">6 books</span></a></li>
           </ol>
-          <div class="series__preview" aria-hidden="true" data-reveal="image" style="--d: .4s">
-            <img class="is-active" data-slot="series-1" src="images/series-1.svg" width="800" height="1000" alt="" fetchpriority="high" />
-            <img data-slot="series-2" src="images/series-2.svg" width="800" height="1000" alt="" />
-            <img data-slot="series-3" src="images/series-3.svg" width="800" height="1000" alt="" />
-            <img data-slot="series-4" src="images/series-4.svg" width="800" height="1000" alt="" />
-          </div>
         </div>
+        <figure class="series__preview" data-reveal="image" style="--d: .3s">
+          <img class="is-active" data-slot="series-1" src="images/series-1.svg" width="800" height="1000" alt="Open field guide showing hand drawn waders" fetchpriority="high" />
+          <img data-slot="series-2" src="images/series-2.svg" width="800" height="1000" alt="Path across a misty moor" />
+          <img data-slot="series-3" src="images/series-3.svg" width="800" height="1000" alt="Rock pool with seaweed at low tide" />
+          <img data-slot="series-4" src="images/series-4.svg" width="800" height="1000" alt="Mossy oak woodland in morning light" />
+          <figcaption class="series__caption" aria-live="polite">
+            <span class="label-lg" id="seriesKicker">Series 01 · 9 books</span>
+            <span class="h4" id="seriesName">Shore</span>
+            <span class="body-md" id="seriesLine">Coasts, tides, and rock pools, from the Forth to the Pentland Firth.</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -413,18 +417,28 @@
     menuBtn.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('is-open')));
     drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleDrawer(false)));
 
-    // Index hero: hovering or focusing a series swaps the preview photo
+    // Index hero: hovering or focusing a series swaps the photo and its caption
+    const series = [
+      ['Series 01 · 9 books', 'Shore', 'Coasts, tides, and rock pools, from the Forth to the Pentland Firth.'],
+      ['Series 02 · 7 books', 'Moor', 'Peat, heather, and high ground across the Flow Country and the Cairngorms.'],
+      ['Series 03 · 14 books', 'Field guides', 'Pocket sized, life size drawings, waterproof covers.'],
+      ['Series 04 · 6 books', 'Woodland', 'Atlantic oakwoods, lichens, and the slow turn of the seasons.'],
+    ];
     const rows = document.querySelectorAll('.series__row');
     const previews = document.querySelectorAll('.series__preview img');
     rows.forEach((row) => {
       const show = () => {
-        rows.forEach(r => r.classList.toggle('is-active', r === row));
         const i = Number(row.dataset.preview);
+        rows.forEach(r => r.classList.toggle('is-active', r === row));
         previews.forEach((img, k) => img.classList.toggle('is-active', k === i));
+        [seriesKicker.textContent, seriesName.textContent, seriesLine.textContent] = series[i];
       };
       row.addEventListener('mouseenter', show);
       row.addEventListener('focus', show);
     });
+    const seriesKicker = document.getElementById('seriesKicker');
+    const seriesName = document.getElementById('seriesName');
+    const seriesLine = document.getElementById('seriesLine');
 
     // Case cards: circle button toggles the description
     document.querySelectorAll('.card-case .circle-btn').forEach(btn => {

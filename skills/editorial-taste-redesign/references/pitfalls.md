@@ -36,7 +36,7 @@ These patterns make a site look template-made or AI-generated. On a redesign, li
 | "Get started", "Learn more" | Verb plus object ("Book a site visit") |
 | Filler copy ("seamless", "next-level") | Concrete nouns and numbers (see `copy.md`) |
 | Stock illustration of people at laptops | Real photography of the product, place, or work |
-| Gray placeholder blocks shipped as final, or hotlinked stock URLs | Photos fetched with `scripts/images.py`, reviewed on the contact sheet, stored locally, credited |
+| Gray placeholder blocks shipped as final, or random stock URLs pasted in | Unsplash photos picked with `scripts/images.py`, reviewed on the contact sheet, credited to the photographer |
 | Fake logo walls and invented testimonials | Real proof from the user, or a marked `{{placeholder}}` |
 | Fade-in on every element, bouncy springs, or slide-ins from the side | One reveal per block (rise 32px with expo-out), staggered in reading order (see `motion.md`) |
 | Scroll-jacking, section snapping, custom cursors, magnetic buttons | Native scroll smoothed by Lenis; standard cursor |

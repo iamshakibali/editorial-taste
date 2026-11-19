@@ -42,7 +42,7 @@ Also ask about the following (in the same message):
 - **Goal**: the one primary action (book, buy, contact, join a waitlist) and what counts as a conversion.
 - **Audience**: who they are, what they already know when they land, and their top 2–3 objections.
 - **Proof**: real numbers, clients, case studies, testimonials, press.
-- **Assets**: logo SVG, photography (the style depends on it; without it, licensed photos are fetched in B3), existing copy.
+- **Assets**: logo SVG, photography (the style depends on it; without it, photos come from Unsplash in B3, so ask for an Unsplash Access Key if none is set), existing copy.
 - **Constraints**: pages beyond the homepage, deadline, whether it's indexed or campaign-only.
 - **Illustrations**: which ideas (a system, process, platform, modules) should be explained with isometric hairline drawings rather than photos.
 
@@ -94,19 +94,20 @@ From `templates/`, copy `styles.css` (tokens, base, every component), `motion.js
 
 Nav (glass over the hero, solid on scroll, hides on scroll down, mobile drawer with staggered links) → Hero (choreographed intro) → Highlight numbers (count-up) → **Statement** (word-by-word reveal) → Product cards → Case cards (expandable) → Split cards (image unmask) → **How it works** (isometric illustration that builds in) → Journal → **FAQ** → CTA band (parallax) with an email form → Footer, plus Lenis smooth scroll, page transitions, meta and OG tags, a skip link, and full reduced-motion and no-JS fallbacks.
 
-## B3. Photography (added by default)
-Every page ships with real photos. If the user supplied photos, use those. Otherwise, fetch licensed photos for every image slot before building the sections:
+## B3. Photography (Unsplash by default)
+Every page ships with real photos. If the user supplied photos, use those. Otherwise, pull photos from **Unsplash** for every image slot before building the sections:
 ```bash
-python3 <skill-dir>/scripts/images.py --spec > images.json   # one slot per <img>: name, query, w, h, alt
+export UNSPLASH_ACCESS_KEY=...                                # free key: unsplash.com/developers → New Application
+python3 <skill-dir>/scripts/images.py --spec > images.json    # one slot per <img>: name, query, w, h, alt
 python3 <skill-dir>/scripts/images.py images.json --out <project-dir>
 ```
-- The script searches Unsplash (if `UNSPLASH_ACCESS_KEY` is set), then Pexels (if `PEXELS_API_KEY` is set), then Openverse, which needs no key and returns only CC0, Public Domain, CC BY, and CC BY-SA photos. It downloads each photo into `images/`, crops it to the slot size, and writes `images/credits.json`, `credits.html`, and `review/contact-sheet.jpg`.
+- The script searches the Unsplash API per slot, triggers Unsplash's download tracking for each photo it picks, and writes `unsplash.json` (for each slot: `src`, `srcset`, `color`, photographer and photo links), `credits.html`, and `review/contact-sheet.jpg`.
+- If `UNSPLASH_ACCESS_KEY` is missing, ask the user for it in the intake batch. If they can't provide one, run with `--placeholders` (neutral local blocks), keep building, and report every slot as a missing photo in B9.
 - Write queries the way a photo editor would brief: 3 to 6 concrete words for the subject, material, place, and light (`oak kitchen lime plaster daylight`, not `modern home`). Size each slot to its use: hero 2400×1500, product cards 1200×900, case cards 1000×1250, splits 1600×1000, CTA band 2400×1200.
-- **Look at the contact sheet.** Reject anything off-subject, low quality, with watermarks or visible logos, with people at laptops, or with an accent-heavy look that fights the monochrome UI. Rerun with a sharper query, or with `"offset": n` on that slot to take the next result. Delete `review/` when done.
+- **Look at the contact sheet.** Reject anything off-subject, low quality, with visible logos or text, with people at laptops, or with a colour cast that fights the monochrome UI. Rerun with a sharper query, or set `"offset": n` on that slot to take the next result. Delete `review/` when done.
+- Use the URLs exactly as returned: `<img src="{src}" srcset="{srcset}" sizes="…" width="{w}" height="{h}" alt="…">`, and set the media wrapper's background to `{color}` so the frame isn't empty while the photo loads. Unsplash's API guidelines require hotlinking from `images.unsplash.com`, so don't download or re-host these files. Every other image is a local file.
 - Write the final `alt` text from what the chosen photo actually shows, not from the query.
-- Link `credits.html` from the footer's legal row ("Photo credits") whenever any photo is not CC0, Public Domain, or the user's own. CC BY and CC BY-SA require that attribution.
-- If no provider is reachable, the script writes neutral placeholders and says so. Report those slots as missing photos in B9.
-- Never hotlink: every image is a local file.
+- Credit every Unsplash photo ("Photo by {name} on Unsplash", with the links from `unsplash.json`). Link `credits.html` from the footer's legal row as "Photo credits".
 
 ## B4. Build section by section
 Build in the order of your planned outline, hero first, then 404. For each section:
@@ -133,14 +134,14 @@ Every interactive element has hover, pressed, focus-visible, and disabled states
 ## B8. Verify
 1. `python3 <skill-dir>/scripts/lint.py <project-dir>`: fix every ERROR and review the WARNs.
 2. `python3 <skill-dir>/scripts/lint.py --strict index.html`: catches leftover `{{placeholders}}`.
-   Check that every `<img>` points at a file that exists, that `credits.html` is linked when it lists anything, and that `review/` is gone.
+   Check that every `<img>` loads, that Unsplash photos use the returned `images.unsplash.com` URLs, that `credits.html` is linked from the footer, and that `review/` is gone.
 3. Compare the section sequence and hero against the template and any other site in the repo. If they match, recompose before polishing.
 4. Open the page at 1440, 768, and 390px widths. Check the hero intro plays once, scrolling is smooth, the nav switches state and hides or returns, the drawer opens and pauses scrolling, headings rise word by word, the statement lights up, stats count, the illustration builds in, FAQ items toggle, nothing scrolls horizontally, and every photo with text has its vignette.
 5. Check again with reduced motion turned on, and with JavaScript disabled: everything should be visible.
 6. Work through `references/ship-checklist.md`.
 
 ## B9. Report
-Summarize the page type, the sections built, the assumptions made, any remaining `{{placeholders}}` (real facts the user must supply), the fetched photos and their licenses (suggest replacing them with the brand's own photography), and the missing assets (logo, legal pages, any placeholder photos).
+Summarize the page type, the sections built, the assumptions made, any remaining `{{placeholders}}` (real facts the user must supply), the Unsplash photos used (suggest replacing them with the brand's own photography), and the missing assets (logo, legal pages, any placeholder photos).
 
 ---
 
@@ -174,7 +175,7 @@ Summarize the page type, the sections built, the assumptions made, any remaining
 - `references/motion.md`: motion principles, tokens, every animation, HTML API, framework recipes
 - `references/illustrations.md`: isometric hairline illustration rules, generator spec, compositions
 - `scripts/iso.py`: isometric illustration generator (presets: modules, stack, flow, single)
-- `scripts/images.py`: fetches licensed photos (Unsplash, Pexels, Openverse), crops them, writes credits
+- `scripts/images.py`: pulls photos from Unsplash per image slot, writes URLs and credits
 - `references/foundations.md`: color, type, spacing, radius, grid, effects, motion, icons, contrast
 - `references/components.md`: anatomy of every component and block, forms, states, layout variety
 - `references/copy.md`: voice, headline formulas, CTAs, content realism, banned words

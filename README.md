@@ -54,7 +54,7 @@ skills/
     └── scripts/
         ├── map_tokens.py   maps an existing site's styles to tokens
         ├── iso.py          isometric illustration generator
-        ├── images.py       fetches licensed photos (Unsplash, Pexels, Openverse) with credits
+        ├── images.py       pulls photos from Unsplash with credits
         └── lint.py
 ```
 
@@ -81,7 +81,8 @@ python3 skills/editorial-taste-new-site/scripts/lint.py ./site
 # Generate an isometric hairline illustration (presets: modules, stack, flow, single)
 python3 skills/editorial-taste-new-site/scripts/iso.py --preset modules > modules.svg
 
-# Fetch licensed photos for every image slot (Openverse needs no key)
+# Pull Unsplash photos for every image slot (free key: unsplash.com/developers)
+export UNSPLASH_ACCESS_KEY=your_key
 python3 skills/editorial-taste-new-site/scripts/images.py --spec > images.json
 python3 skills/editorial-taste-new-site/scripts/images.py images.json --out ./site
 

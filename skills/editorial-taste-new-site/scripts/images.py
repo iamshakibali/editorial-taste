@@ -1,45 +1,46 @@
 #!/usr/bin/env python3
-"""Fetch real, licensed photography for an Editorial Taste site.
+"""Pull photography from Unsplash for an Editorial Taste site.
 
-Every image slot in the page gets a search query. The script finds a photo,
-downloads it into the project (never hotlinked), crops it to the slot size,
-records the credit, and writes credits.html for the attribution that open
-licenses require.
+Every image slot in the page gets a search query. The script searches the
+Unsplash API, picks a photo per slot, and returns a ready-to-use image URL
+plus the photographer credit. It follows the Unsplash API guidelines:
+  - images are hotlinked from images.unsplash.com (never re-hosted)
+  - the download endpoint is triggered for every photo the page uses
+  - each photo credits the photographer and Unsplash, with utm referral links
 
-Providers, tried in order:
-  unsplash   if UNSPLASH_ACCESS_KEY is set   (Unsplash License)
-  pexels     if PEXELS_API_KEY is set        (Pexels License)
-  openverse  always, no key needed           (CC0, Public Domain, CC BY, CC BY-SA only)
-  placeholder  last resort, offline           (neutral monochrome block, flagged for replacement)
+Needs an Unsplash Access Key (free: https://unsplash.com/developers, "New Application"):
+  export UNSPLASH_ACCESS_KEY=...
 
 Usage:
-  images.py --spec > images.json          # print an example manifest
-  images.py images.json --out site/       # fetch into site/images/, write site/credits.html
-  images.py images.json --out site/ --provider openverse
+  images.py --spec > images.json                     # print an example manifest
+  images.py images.json --out site/                  # pick photos, write site/unsplash.json + site/credits.html
+  images.py images.json --out site/ --placeholders   # no key or offline: neutral local stand-ins
 
 Manifest: a list of slots
   {"name": "hero", "query": "wooden day boat misty lake morning", "w": 2400, "h": 1500,
    "alt": "Wooden day boat at a misty mooring", "offset": 0}
-  name    file name without extension (images/<name>.jpg)
+  name    slot name (matches the <img> it fills)
   query   3-6 concrete words: subject, material, place, light. No "people working on laptops".
-  w, h    output size in px (crop to fill). Hero 2400x1500, cards 1200x900 or 1000x1250, splits 1600x1000.
+  w, h    display size in px. Hero 2400x1500, cards 1200x900 or 1000x1250, splits 1600x1000.
   offset  optional: skip the first N results (use it to swap a photo you rejected)
 
-Output: prints a JSON summary {name: {file, alt, credit, provider}}, writes images/credits.json,
-credits.html, and review/contact-sheet.jpg (look at it, then rerun with a better query or an
-offset for any photo that is off-subject; delete review/ before shipping).
-Pillow is used for cropping when installed; without it the original file is saved as is.
+Output (also printed): <out>/unsplash.json
+  {name: {src, srcset, w, h, alt, color, photo_id, photographer, photographer_url, photo_url}}
+plus <out>/credits.html and <out>/review/contact-sheet.jpg (small previews to check every pick;
+delete review/ before shipping).
 """
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
-UA = "editorial-taste-images/1.0"
+API = "https://api.unsplash.com"
+UA = "editorial-taste-images/2.0"
 TIMEOUT = 25
-OPENVERSE_LICENSES = {"cc0", "pdm", "by", "by-sa"}
+UTM = "utm_source=editorial_taste&utm_medium=referral"
 
 EXAMPLE = [
     {"name": "hero", "query": "concrete stair light well architecture", "w": 2400, "h": 1500,
@@ -51,237 +52,122 @@ EXAMPLE = [
 ]
 
 
-def get_json(url, headers=None):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, **(headers or {})})
+def api(path, key, params=None):
+    url = API + path + ("?" + urllib.parse.urlencode(params) if params else "")
+    req = urllib.request.Request(url, headers={
+        "User-Agent": UA, "Accept-Version": "v1", "Authorization": f"Client-ID {key}"})
     with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
         return json.load(r)
 
 
-def download(url, headers=None):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, **(headers or {})})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        data = r.read()
-    if len(data) < 5000:
-        raise ValueError("file too small")
-    return data
-
-
 def orientation(w, h):
     r = w / h
-    return "wide" if r > 1.15 else "tall" if r < 0.87 else "square"
+    return "landscape" if r > 1.15 else "portrait" if r < 0.87 else "squarish"
 
 
-# ---------- providers: each returns a list of candidate dicts ----------
-def unsplash(q, w, h):
-    key = os.environ.get("UNSPLASH_ACCESS_KEY")
-    if not key:
-        return None
-    o = {"wide": "landscape", "tall": "portrait", "square": "squarish"}[orientation(w, h)]
-    url = "https://api.unsplash.com/search/photos?" + urllib.parse.urlencode(
-        {"query": q, "orientation": o, "per_page": 15, "content_filter": "high"})
-    data = get_json(url, {"Authorization": f"Client-ID {key}", "Accept-Version": "v1"})
-    out = []
-    for p in data.get("results", []):
-        out.append({
-            "id": p["id"],
-            "url": p["urls"]["raw"] + f"&w={w}&h={h}&fit=crop&q=82&fm=jpg",
-            "creator": p["user"]["name"],
-            "creator_url": p["user"]["links"]["html"] + "?utm_source=editorial_taste&utm_medium=referral",
-            "source_url": p["links"]["html"],
-            "license": "Unsplash License",
-            "license_url": "https://unsplash.com/license",
-            "provider": "Unsplash",
-            "track": p["links"].get("download_location"),
-            "headers": {"Authorization": f"Client-ID {key}"},
-        })
-    return out
+def with_utm(url):
+    return url + ("&" if "?" in url else "?") + UTM
 
 
-def pexels(q, w, h):
-    key = os.environ.get("PEXELS_API_KEY")
-    if not key:
-        return None
-    o = {"wide": "landscape", "tall": "portrait", "square": "square"}[orientation(w, h)]
-    url = "https://api.pexels.com/v1/search?" + urllib.parse.urlencode(
-        {"query": q, "orientation": o, "per_page": 15, "size": "large"})
-    data = get_json(url, {"Authorization": key})
-    return [{
-        "id": str(p["id"]),
-        "url": p["src"]["original"] + f"?auto=compress&cs=tinysrgb&fit=crop&w={w}&h={h}",
-        "creator": p["photographer"],
-        "creator_url": p["photographer_url"],
-        "source_url": p["url"],
-        "license": "Pexels License",
-        "license_url": "https://www.pexels.com/license/",
-        "provider": "Pexels",
-    } for p in data.get("photos", [])]
+def sized(raw, w, h):
+    return f"{raw}&w={w}&h={h}&fit=crop&crop=entropy&auto=format&q=80"
 
 
-def openverse(q, w, h):
-    # Widen the search step by step: exact orientation, any orientation, then a shorter query.
-    words = q.split()
-    tries = [(q, orientation(w, h)), (q, None)] + ([(" ".join(words[:2]), None)] if len(words) > 2 else [])
-    out = []
-    for query, aspect in tries:
-        params = {"q": query, "license_type": "commercial,modification", "category": "photograph",
-                  "page_size": 20, "mature": "false"}
-        if aspect:
-            params["aspect_ratio"] = aspect
-        data = get_json("https://api.openverse.org/v1/images/?" + urllib.parse.urlencode(params))
-        out = _openverse_results(data, w, h)
-        if out:
-            break
-    return out
+def search(key, query, w, h):
+    """Exact orientation first, then any orientation, then the first two words."""
+    words = query.split()
+    tries = [(query, orientation(w, h)), (query, None)]
+    if len(words) > 2:
+        tries.append((" ".join(words[:2]), None))
+    for q, o in tries:
+        params = {"query": q, "per_page": 20, "content_filter": "high"}
+        if o:
+            params["orientation"] = o
+        results = api("/search/photos", key, params).get("results", [])
+        if results:
+            return results
+    return []
 
 
-def _openverse_results(data, w, h):
-    out = []
-    for p in data.get("results", []):
-        if p.get("license") not in OPENVERSE_LICENSES:
-            continue
-        pw, ph = p.get("width") or 0, p.get("height") or 0
-        if pw and ph and max(pw, ph) < min(1000, max(w, h) * 0.5):
-            continue  # too small to look sharp
-        lic = "CC0" if p["license"] == "cc0" else "Public Domain" if p["license"] == "pdm" \
-            else f"CC {p['license'].upper()} {p.get('license_version') or ''}".strip()
-        out.append({
-            "id": p["id"],
-            "url": p["url"],
-            "creator": p.get("creator") or "Unknown",
-            "creator_url": p.get("creator_url") or p.get("foreign_landing_url"),
-            "source_url": p.get("foreign_landing_url"),
-            "license": lic,
-            "license_url": p.get("license_url"),
-            "provider": f"Openverse ({p.get('source', 'web')})",
-            "title": p.get("title"),
-        })
-    return out
+def track_download(key, location):
+    """Required by the API guidelines whenever a photo is used."""
+    u = urllib.parse.urlparse(location)
+    api(u.path, key, dict(urllib.parse.parse_qsl(u.query)))
 
 
-PROVIDERS = {"unsplash": unsplash, "pexels": pexels, "openverse": openverse}
-
-
-# ---------- image processing ----------
-def crop_save(data, w, h, dest):
-    try:
-        from io import BytesIO
-        from PIL import Image, ImageOps
-    except ImportError:
-        dest.write_bytes(data)
-        return False
-    im = Image.open(BytesIO(data))
-    im = ImageOps.exif_transpose(im).convert("RGB")
-    im = ImageOps.fit(im, (w, h), Image.LANCZOS, centering=(0.5, 0.5))
-    im.save(dest, "JPEG", quality=82, optimize=True, progressive=True)
-    return True
-
-
-def placeholder(w, h, dest, seed):
-    """Neutral monochrome block (#D4D4D4 to #A3A3A3), clearly a stand-in."""
-    try:
-        from PIL import Image, ImageDraw
-    except ImportError:
-        svg = dest.with_suffix(".svg")
-        svg.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
-                       f'<rect width="{w}" height="{h}" fill="#D4D4D4"/></svg>')
-        return svg
-    im = Image.new("L", (w, h))
-    d = ImageDraw.Draw(im)
-    for y in range(h):
-        d.line([(0, y), (w, y)], fill=int(212 - 49 * y / h))
-    im.convert("RGB").save(dest, "JPEG", quality=80)
-    return dest
-
-
-# ---------- main ----------
-def main(argv):
-    if "--spec" in argv:
-        print(json.dumps(EXAMPLE, indent=2))
-        return 0
-    args = [a for a in argv if not a.startswith("--")]
-    if not args:
-        print(__doc__)
-        return 1
-    out = Path(argv[argv.index("--out") + 1]) if "--out" in argv else Path(".")
-    only = argv[argv.index("--provider") + 1] if "--provider" in argv else None
-    if "--out" in argv:
-        args.remove(str(out))
-    if only:
-        args.remove(only)
-    slots = json.loads(Path(args[0]).read_text())
-    img_dir = out / "images"
-    img_dir.mkdir(parents=True, exist_ok=True)
-
-    order = [only] if only else ["unsplash", "pexels", "openverse"]
+def pick(key, slots):
     used, summary = set(), {}
-    for i, s in enumerate(slots):
+    for s in slots:
         name, q, w, h = s["name"], s["query"], int(s["w"]), int(s["h"])
-        dest = img_dir / f"{name}.jpg"
-        done = False
-        for prov in order:
-            try:
-                cands = PROVIDERS[prov](q, w, h)
-            except Exception as e:  # network blocked, rate limited, bad key
-                print(f"  {name}: {prov} unavailable ({e.__class__.__name__}: {e})", file=sys.stderr)
-                continue
-            if not cands:
-                continue
-            cands = [c for c in cands if c["id"] not in used][int(s.get("offset", 0)):]
-            for c in cands[:6]:
-                try:
-                    data = download(c["url"], c.get("headers"))
-                    crop_save(data, w, h, dest)
-                except Exception as e:
-                    print(f"  {name}: skip {c['id']} ({e})", file=sys.stderr)
-                    continue
-                if c.get("track"):  # Unsplash API guideline: register the download
-                    try:
-                        get_json(c["track"], c.get("headers"))
-                    except Exception:
-                        pass
-                used.add(c["id"])
-                summary[name] = {"file": f"images/{dest.name}", "alt": s.get("alt", ""), "query": q,
-                                 "provider": c["provider"], "creator": c["creator"],
-                                 "creator_url": c["creator_url"], "source_url": c["source_url"],
-                                 "license": c["license"], "license_url": c["license_url"],
-                                 "title": c.get("title")}
-                print(f"  {name}: {c['provider']} · {c['creator']} · {c['license']}", file=sys.stderr)
-                done = True
-                break
-            if done:
-                break
-        if not done:
-            f = placeholder(w, h, dest, i)
-            summary[name] = {"file": f"images/{f.name}", "alt": s.get("alt", ""), "query": q,
-                             "provider": "placeholder"}
-            print(f"  {name}: PLACEHOLDER (no provider reachable). Replace before shipping.", file=sys.stderr)
+        results = [p for p in search(key, q, w, h) if p["id"] not in used][int(s.get("offset", 0)):]
+        if not results:
+            print(f"  {name}: no Unsplash results for '{q}'. Try a broader query.", file=sys.stderr)
+            continue
+        p = results[0]
+        used.add(p["id"])
+        try:
+            track_download(key, p["links"]["download_location"])
+        except Exception as e:
+            print(f"  {name}: download tracking failed ({e})", file=sys.stderr)
+        raw = p["urls"]["raw"]
+        summary[name] = {
+            "src": sized(raw, w, h),
+            "srcset": f"{sized(raw, w // 2, h // 2)} {w // 2}w, {sized(raw, w, h)} {w}w",
+            "w": w, "h": h,
+            "alt": s.get("alt") or p.get("alt_description") or "",
+            "unsplash_alt": p.get("alt_description"),
+            "color": p.get("color"),
+            "photo_id": p["id"],
+            "photographer": p["user"]["name"],
+            "photographer_url": with_utm(p["user"]["links"]["html"]),
+            "photo_url": with_utm(p["links"]["html"]),
+            "preview": p["urls"]["small"],
+            "query": q,
+        }
+        print(f"  {name}: {p['id']} · {p['user']['name']} · {p.get('alt_description') or ''}", file=sys.stderr)
+    return summary
 
-    (img_dir / "credits.json").write_text(json.dumps(summary, indent=2))
-    contact_sheet(out, summary)
-    write_credits_page(out, summary)
-    print(json.dumps(summary, indent=2))
-    return 0
+
+def placeholders(slots, out):
+    """Offline stand-ins: neutral local blocks, flagged for replacement."""
+    img = out / "images"
+    img.mkdir(parents=True, exist_ok=True)
+    summary = {}
+    for s in slots:
+        w, h = int(s["w"]), int(s["h"])
+        f = img / f"{s['name']}.svg"
+        f.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
+                     f'<rect width="{w}" height="{h}" fill="#D4D4D4"/></svg>')
+        summary[s["name"]] = {"src": f"images/{f.name}", "w": w, "h": h, "alt": s.get("alt", ""),
+                              "placeholder": True, "query": s["query"]}
+    return summary
 
 
 def contact_sheet(out, summary):
-    """Write review/contact-sheet.jpg (outside images/) so every pick can be checked in one look."""
+    """review/contact-sheet.jpg: every pick in one image, for checking subject and quality."""
     try:
+        from io import BytesIO
         from PIL import Image, ImageDraw
     except ImportError:
         return
-    files = [(n, out / c["file"]) for n, c in summary.items() if c["file"].endswith(".jpg")]
-    if not files:
+    picks = [(n, c["preview"]) for n, c in summary.items() if c.get("preview")]
+    if not picks:
         return
-    cols, cw, chh = 4, 360, 300
-    rows = (len(files) + cols - 1) // cols
-    sheet = Image.new("RGB", (cols * cw, rows * (chh + 24)), "white")
+    cols, cw, ch = 4, 360, 300
+    rows = (len(picks) + cols - 1) // cols
+    sheet = Image.new("RGB", (cols * cw, rows * (ch + 24)), "white")
     d = ImageDraw.Draw(sheet)
-    for i, (n, f) in enumerate(files):
-        im = Image.open(f)
-        im.thumbnail((cw - 10, chh - 10))
-        x, y = (i % cols) * cw, (i // cols) * (chh + 24)
-        sheet.paste(im, (x + 5, y + 5))
-        d.text((x + 6, y + chh), n, fill="black")
+    for i, (n, url) in enumerate(picks):
+        x, y = (i % cols) * cw, (i // cols) * (ch + 24)
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                im = Image.open(BytesIO(r.read())).convert("RGB")
+            im.thumbnail((cw - 10, ch - 10))
+            sheet.paste(im, (x + 5, y + 5))
+        except Exception:
+            d.rectangle([x + 5, y + 5, x + cw - 5, y + ch - 5], outline="black")
+        d.text((x + 6, y + ch), n, fill="black")
     rev = out / "review"
     rev.mkdir(exist_ok=True)
     sheet.save(rev / "contact-sheet.jpg", quality=80)
@@ -295,15 +181,13 @@ def esc(t):
 def write_credits_page(out, summary):
     rows = []
     for name, c in summary.items():
-        if c["provider"] == "placeholder":
+        if c.get("placeholder"):
             continue
-        who = f'<a class="u-link" href="{esc(c["creator_url"])}">{esc(c["creator"])}</a>' if c.get("creator_url") else esc(c["creator"])
-        lic = f'<a class="u-link" href="{esc(c["license_url"])}">{esc(c["license"])}</a>' if c.get("license_url") else esc(c["license"])
-        src = f'<a class="u-link" href="{esc(c["source_url"])}">Source</a>' if c.get("source_url") else ""
-        rows.append(f'        <li class="credits__row"><span class="label-lg muted">{esc(name)}</span>'
-                    f'<span class="body-md">{esc(c.get("title") or c["alt"])}</span>'
-                    f'<span class="body-md">{who} · {lic} · {esc(c["provider"])}</span>'
-                    f'<span class="body-md">{src}</span></li>')
+        rows.append(
+            f'        <li class="credits__row"><span class="label-lg muted">{esc(name)}</span>'
+            f'<span class="body-md">{esc(c["alt"])}</span>'
+            f'<span class="body-md">Photo by <a class="u-link" href="{esc(c["photographer_url"])}">{esc(c["photographer"])}</a>'
+            f' on <a class="u-link" href="{esc(c["photo_url"])}">Unsplash</a></span></li>')
     html = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -320,7 +204,7 @@ def write_credits_page(out, summary):
     .credits {{ padding-block: 120px var(--section-pad); }}
     .credits h1 {{ margin-bottom: var(--section-gap); }}
     .credits__list {{ border-top: 1px solid var(--border-subtle); }}
-    .credits__row {{ display: grid; grid-template-columns: 160px minmax(0, 3fr) minmax(0, 4fr) 80px; gap: var(--space-20);
+    .credits__row {{ display: grid; grid-template-columns: 160px minmax(0, 3fr) minmax(0, 4fr); gap: var(--space-20);
       padding-block: var(--space-20); border-bottom: 1px solid var(--border-subtle); align-items: baseline; }}
     @media (max-width: 767px) {{ .credits__row {{ grid-template-columns: 1fr; gap: var(--space-5); }} }}
   </style>
@@ -330,13 +214,54 @@ def write_credits_page(out, summary):
     <a class="btn btn--tertiary" href="index.html">Back to home</a>
     <h1 class="h2">Photo credits</h1>
     <ul class="credits__list">
-{chr(10).join(rows) if rows else '        <li class="credits__row"><span class="body-md muted">No third-party photos yet.</span></li>'}
+{chr(10).join(rows) if rows else '        <li class="credits__row"><span class="body-md muted">No Unsplash photos yet.</span></li>'}
     </ul>
   </main>
 </body>
 </html>
 """
     (out / "credits.html").write_text(html)
+
+
+def main(argv):
+    if "--spec" in argv:
+        print(json.dumps(EXAMPLE, indent=2))
+        return 0
+    out = Path(argv[argv.index("--out") + 1]) if "--out" in argv else Path(".")
+    skip = {argv.index("--out") + 1} if "--out" in argv else set()
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and i not in skip]
+    if not args:
+        print(__doc__)
+        return 1
+    slots = json.loads(Path(args[0]).read_text())
+    out.mkdir(parents=True, exist_ok=True)
+
+    if "--placeholders" in argv:
+        summary = placeholders(slots, out)
+        print("  wrote neutral placeholders. Replace them with Unsplash photos before shipping.", file=sys.stderr)
+    else:
+        key = os.environ.get("UNSPLASH_ACCESS_KEY")
+        if not key:
+            print("UNSPLASH_ACCESS_KEY is not set.\n"
+                  "Create a free app at https://unsplash.com/developers, copy its Access Key, then:\n"
+                  "  export UNSPLASH_ACCESS_KEY=your_key\n"
+                  "Or run with --placeholders to build with neutral stand-ins for now.", file=sys.stderr)
+            return 2
+        try:
+            summary = pick(key, slots)
+        except urllib.error.HTTPError as e:
+            msg = {401: "the Access Key is invalid", 403: "rate limit reached (50 requests an hour in demo mode)"}
+            print(f"Unsplash API error {e.code}: {msg.get(e.code, e.reason)}.", file=sys.stderr)
+            return 2
+        except urllib.error.URLError as e:
+            print(f"Cannot reach api.unsplash.com ({e.reason}). Run with --placeholders to continue offline.", file=sys.stderr)
+            return 2
+        contact_sheet(out, summary)
+
+    (out / "unsplash.json").write_text(json.dumps(summary, indent=2))
+    write_credits_page(out, summary)
+    print(json.dumps(summary, indent=2))
+    return 0
 
 
 if __name__ == "__main__":

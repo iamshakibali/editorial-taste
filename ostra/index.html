@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ostra — A small hotel above the Atlantic</title>
+  <meta name="description" content="Ostra is a twelve room hotel above the Atlantic on Portugal's Alentejo coast, with a fish kitchen, a sea pool, and paths down to empty beaches." />
+  <link rel="canonical" href="https://ostra.example/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#EDEDED" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ostra — A small hotel above the Atlantic" />
+  <meta property="og:description" content="Twelve rooms, one fish kitchen, and paths down to empty beaches on the Alentejo coast." />
+  <meta property="og:image" content="https://ostra.example/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css" integrity="sha384-gvLq/iOMNnPchdosgVym5huSVkKipHCQaqSw2Eg0V52Mzmlf169ZOsXcNc2cNu8x" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" integrity="sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw" crossorigin="anonymous" defer></script>
+  <script src="motion.js" defer></script>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="logo" viewBox="0 0 125 24"><text x="0" y="20" fill="currentColor" font-family="Geist, sans-serif" font-weight="700" font-size="24" letter-spacing="-0.5">OSTRA</text></symbol>
+    <symbol id="i-arrow" viewBox="0 0 12 12"><path d="M1 6h10M7 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 12 12"><path d="M11 6H1M5 2L1 6l4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  </svg>
+
+  <a class="sr-only" href="#main">Skip to content</a>
+
+  <header class="nav is-solid" id="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/" aria-label="Ostra home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+      <div class="nav__right">
+        <nav aria-label="Primary">
+          <ul class="nav__links">
+            <li><a class="nav__link" href="#rooms">Rooms</a></li>
+            <li><a class="nav__link" href="#days">A day here</a></li>
+            <li><a class="nav__link" href="#kitchen">Kitchen</a></li>
+            <li><a class="nav__link" href="#faq">Questions</a></li>
+            <li><a class="nav__link" href="#book">Book</a></li>
+          </ul>
+        </nav>
+        <div class="nav__utils">
+          <button class="icon-btn nav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" id="menuBtn"><svg><use href="#i-menu"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawer on-dark" id="drawer" aria-hidden="true">
+    <ul class="drawer__links h4">
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#days">A day here</a></li>
+      <li><a href="#kitchen">Kitchen</a></li>
+      <li><a href="#faq">Questions</a></li>
+      <li><a href="#book">Book</a></li>
+    </ul>
+    <div class="drawer__meta label-lg">Vila Nova de Milfontes · Portugal</div>
+  </div>
+
+  <main id="main">
+
+    <!-- ===== Hero H7: mosaic ===== -->
+    <section class="mhero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="mhero__head">
+          <div>
+            <span class="eyebrow muted reveal" style="--d: .1s">Alentejo coast · 12 rooms</span>
+            <h1 class="h1 mhero__title" id="hero-title" data-reveal="text" style="--d: .15s">A small hotel above the Atlantic.</h1>
+          </div>
+          <div class="mhero__aside reveal" style="--d: .55s">
+            <p class="body-md muted">Twelve whitewashed rooms on a cliff above Vila Nova de Milfontes. A fish kitchen, a salt water pool, and four paths down to beaches you will mostly have to yourself.</p>
+            <div class="btn-row">
+              <a class="btn btn--primary btn--wide" href="#book">Check dates</a>
+              <a class="btn btn--secondary btn--wide" href="#rooms">See the rooms</a>
+            </div>
+          </div>
+        </div>
+        <div class="mosaic" data-stagger="120">
+          <div class="mosaic__item mosaic__item--lead" data-reveal="image" style="--d: .3s"><img data-slot="hero-1" src="images/hero-1.svg" width="1400" height="1600" alt="Whitewashed courtyard with a fig tree in morning light" fetchpriority="high" /></div>
+          <div class="mosaic__item" data-reveal="image" style="--d: .45s"><img data-slot="hero-2" src="images/hero-2.svg" width="1000" height="760" alt="Linen bed against a stone wall with a sea window" /></div>
+          <div class="mosaic__item" data-reveal="image" style="--d: .6s"><img data-slot="hero-3" src="images/hero-3.svg" width="1000" height="760" alt="Atlantic cliffs below the hotel" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Statement on dark, with figures ===== -->
+    <section class="statement statement--dark on-dark" aria-label="Ostra in one statement">
+      <div class="container">
+        <p class="h0 statement__text" data-words>We kept the house small on purpose. Twelve rooms means we learn your name, your coffee, and which beach you liked best.</p>
+        <dl class="figures" data-stagger="90">
+          <div class="reveal"><dt class="label-lg muted">Rooms</dt><dd class="h2" data-count>12</dd></div>
+          <div class="reveal"><dt class="label-lg muted">To the nearest beach</dt><dd class="h2" data-count>6 min</dd></div>
+          <div class="reveal"><dt class="label-lg muted">Days of sun a year</dt><dd class="h2" data-count>288</dd></div>
+          <div class="reveal"><dt class="label-lg muted">From Lisbon by car</dt><dd class="h2" data-count>2 h 10</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== Rooms: rail ===== -->
+    <section class="section" id="rooms" aria-labelledby="rooms-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">01 — Rooms</span>
+            <h2 class="h3" id="rooms-title" data-reveal="text">Four kinds of room.</h2>
+          </div>
+          <div class="rail-nav">
+            <button class="circle-btn circle-btn--line" type="button" data-rail="prev" aria-label="Previous rooms"><svg><use href="#i-arrow-l"/></svg></button>
+            <button class="circle-btn circle-btn--line" type="button" data-rail="next" aria-label="Next rooms"><svg><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="rail" id="rail" tabindex="0" aria-label="Rooms, scroll sideways" data-stagger="80">
+        <article class="card-product rail__card reveal">
+          <div class="card-product__media"><img data-slot="room-1" src="images/room-1.svg" width="1000" height="1250" alt="Room with terracotta floor and a low oak bed" loading="lazy" /></div>
+          <div class="card-product__body">
+            <div class="card-product__head">
+              <span class="tag">6 rooms<i></i>22 m²</span>
+              <h3 class="h4">Courtyard room</h3>
+            </div>
+            <p class="body-md">Opens onto the fig courtyard. Quiet, cool in August, from €180 a night.</p>
+          </div>
+        </article>
+        <article class="card-product rail__card reveal">
+          <div class="card-product__media"><img data-slot="room-2" src="images/room-2.svg" width="1000" height="1250" alt="Stone bathtub under a deep window" loading="lazy" /></div>
+          <div class="card-product__body">
+            <div class="card-product__head">
+              <span class="tag">3 rooms<i></i>30 m²</span>
+              <h3 class="h4">Sea room</h3>
+            </div>
+            <p class="body-md">A deep window over the water and a stone bath beneath it. From €240 a night.</p>
+          </div>
+        </article>
+        <article class="card-product rail__card reveal">
+          <div class="card-product__media"><img data-slot="room-3" src="images/room-3.svg" width="1000" height="1250" alt="Private terrace with two chairs facing the sea" loading="lazy" /></div>
+          <div class="card-product__body">
+            <div class="card-product__head">
+              <span class="tag">2 rooms<i></i>38 m²</span>
+              <h3 class="h4">Terrace room</h3>
+            </div>
+            <p class="body-md">Your own terrace on the cliff edge, made for long breakfasts. From €310 a night.</p>
+          </div>
+        </article>
+        <article class="card-product rail__card reveal">
+          <div class="card-product__media"><img data-slot="room-4" src="images/room-4.svg" width="1000" height="1250" alt="Cottage living room with a fireplace" loading="lazy" /></div>
+          <div class="card-product__body">
+            <div class="card-product__head">
+              <span class="tag">1 cottage<i></i>64 m²</span>
+              <h3 class="h4">The cottage</h3>
+            </div>
+            <p class="body-md">Two bedrooms, a fireplace, and a garden gate to the cliff path. From €460 a night.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== A day here: timeline ===== -->
+    <section class="section surface-white" id="days" aria-labelledby="days-title">
+      <div class="container">
+        <div class="intro reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">02 — A day here</span>
+            <h2 class="h3" id="days-title" data-reveal="text">Nothing is scheduled. This is what usually happens.</h2>
+          </div>
+          <div class="intro__aside">
+            <p class="body-md muted">Breakfast runs until noon, the pool is open until midnight, and the kitchen will pack lunch for anywhere you want to walk.</p>
+          </div>
+        </div>
+        <ol class="timeline" data-stagger="90">
+          <li class="reveal"><span class="label-lg">08:30</span><h3 class="h5">Bread from the village</h3><p class="body-md muted">Still warm, with goat cheese, figs from the courtyard, and coffee roasted in Odemira.</p></li>
+          <li class="reveal"><span class="label-lg">11:00</span><h3 class="h5">Down to the water</h3><p class="body-md muted">Four paths, from a 6 minute scramble to a 40 minute walk along the Rota Vicentina.</p></li>
+          <li class="reveal"><span class="label-lg">17:00</span><h3 class="h5">Salt water pool</h3><p class="body-md muted">Filled from the sea, heated by the sun, deep enough to swim proper lengths.</p></li>
+          <li class="reveal"><span class="label-lg">20:30</span><h3 class="h5">Dinner at one table</h3><p class="body-md muted">Whatever the boats brought in, cooked over vine wood, served to everyone together.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Kitchen: feature + list ===== -->
+    <section class="section" id="kitchen" aria-labelledby="kitchen-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">03 — Kitchen</span>
+            <h2 class="h3" id="kitchen-title" data-reveal="text">Fish, fire, and the garden.</h2>
+          </div>
+        </div>
+        <div class="feature-list">
+          <article class="card-case card-case--image feature-list__lead reveal">
+            <div class="card-case__media"><img data-slot="kitchen" src="images/kitchen.svg" width="1600" height="1200" alt="Grilled fish served on a long wooden table" loading="lazy" /></div>
+            <div class="card-case__title">
+              <span class="label-lg card-case__kicker">Every evening · 20:30</span>
+              <h3 class="h4">One long table, one menu.</h3>
+              <p class="body-md">Dinner is €48 a head with wine from the Alentejo. Guests from the village are welcome on Thursdays.</p>
+            </div>
+          </article>
+          <div class="feature-list__side" data-stagger="90">
+            <article class="card-news reveal">
+              <div class="card-news__head">
+                <span class="eyebrow">From the boats</span>
+                <h3 class="h4">Bought on the harbour wall at 7 every morning.</h3>
+              </div>
+              <div class="card-news__foot"><span class="body-md">Sea bream, octopus, sardines</span></div>
+            </article>
+            <article class="card-news reveal">
+              <div class="card-news__head">
+                <span class="eyebrow">From the garden</span>
+                <h3 class="h4">Two terraces of vegetables, figs, and lemons.</h3>
+              </div>
+              <div class="card-news__foot"><span class="body-md">Tomatoes June to October</span></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== The place: image + caption ===== -->
+    <section class="section" aria-labelledby="place-title">
+      <div class="container">
+        <figure class="wide-figure">
+          <div class="wide-figure__media" data-reveal="image"><img data-slot="place" src="images/place.svg" width="2400" height="1000" alt="The fishing village and coast seen from above" loading="lazy" /></div>
+          <figcaption class="wide-figure__caption reveal">
+            <span class="label-lg muted">37.72° N, 8.79° W</span>
+            <div>
+              <h2 class="h4" id="place-title">Vila Nova de Milfontes, where the Mira river meets the sea.</h2>
+              <p class="body-md muted">A fishing town of 5,000 people inside the Southwest Alentejo natural park. Lisbon is 2 hours 10 minutes north, Faro airport 2 hours south.</p>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== FAQ: two columns ===== -->
+    <section class="section surface-white" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="reveal faq-wide__head">
+          <span class="eyebrow intro__eyebrow">04 — Questions</span>
+          <h2 class="h3" id="faq-title" data-reveal="text">Good to know before you come.</h2>
+        </div>
+        <div class="faq-wide">
+          <div class="faq__list reveal">
+            <details class="faq__item">
+              <summary class="h6">Is there a minimum stay? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">Two nights from April to October, three in July and August. One night is fine the rest of the year.</p>
+            </details>
+            <details class="faq__item">
+              <summary class="h6">Can we bring children? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">Yes, in the cottage and the courtyard rooms. The terrace rooms sit on the cliff edge, so they are for guests over 12.</p>
+            </details>
+            <details class="faq__item">
+              <summary class="h6">Do we need a car? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">It helps. Without one, we collect you from the Odemira bus stop for €25, and the village is a 15 minute walk.</p>
+            </details>
+          </div>
+          <div class="faq__list reveal">
+            <details class="faq__item">
+              <summary class="h6">Are dogs allowed? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">One well behaved dog is welcome in the cottage for €20 a night. The beach paths are dog friendly outside July and August.</p>
+            </details>
+            <details class="faq__item">
+              <summary class="h6">Is the water warm enough to swim? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">The Atlantic here is 17 to 21 °C in summer. The river beach is calmer and a few degrees warmer, and the pool is always the easy option.</p>
+            </details>
+            <details class="faq__item">
+              <summary class="h6">What is the cancellation policy? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+              <p class="body-md">Free cancellation up to 14 days before arrival. After that, we keep the first night.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA: type band ===== -->
+    <section class="type-cta on-dark" id="book" aria-labelledby="book-title">
+      <div class="container type-cta__inner">
+        <span class="eyebrow muted reveal">05 — Book</span>
+        <h2 class="h0" id="book-title" data-reveal="text">Spring is quiet here. Come in April.</h2>
+        <div class="type-cta__row reveal">
+          <p class="body-md">Rooms from €180 a night with breakfast. We reply to every booking request within 4 hours.</p>
+          <a class="btn btn--light btn--wide btn--icon-right" href="mailto:stay@ostra.example?subject=Booking%20request">Request dates <svg><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer: dark with subscribe and sitemap ===== -->
+  <footer class="footer on-dark">
+    <div class="container">
+      <div class="footer__top footer__top--form">
+        <div class="footer__brand">
+          <a class="logo" href="/" aria-label="Ostra home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+          <p class="body-sm">Rua do Cais 14, 7645 Vila Nova de Milfontes, Portugal</p>
+          <form class="subscribe" id="subscribe" novalidate>
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" type="email" placeholder="Letters from the coast, four a year" autocomplete="email" required />
+            <button class="btn btn--light" type="submit">Subscribe</button>
+          </form>
+          <p class="subscribe__note label-lg" id="subscribeNote" aria-live="polite"></p>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Stay</h3>
+          <ul class="body-sm">
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#days">A day here</a></li>
+            <li><a href="#book">Book</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Eat</h3>
+          <ul class="body-sm">
+            <li><a href="#kitchen">Kitchen</a></li>
+            <li><a href="#kitchen">Thursday tables</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3 class="label-lg">Contact</h3>
+          <ul class="body-sm">
+            <li><a href="mailto:stay@ostra.example">stay@ostra.example</a></li>
+            <li><a href="tel:+351283000000">+351 283 000 000</a></li>
+            <li><a href="#faq">Questions</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom label-lg">
+        <span>© 2026 Ostra</span>
+        <span><a href="#faq">Privacy</a> · <a href="#faq">Terms</a> · <a href="credits.html">Photo credits</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const toggleDrawer = (open) => {
+      drawer.classList.toggle('is-open', open);
+      drawer.setAttribute('aria-hidden', String(!open));
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (window.__lenis) open ? window.__lenis.stop() : window.__lenis.start();
+      nav.classList.toggle('on-dark', open);
+      nav.classList.toggle('is-solid', !open);
+    };
+    menuBtn.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('is-open')));
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleDrawer(false)));
+
+    // Rooms rail: arrow buttons move one card, buttons disable at the ends
+    const rail = document.getElementById('rail');
+    const prev = document.querySelector('[data-rail="prev"]');
+    const next = document.querySelector('[data-rail="next"]');
+    const step = () => rail.querySelector('.rail__card').getBoundingClientRect().width + 20;
+    const ends = () => {
+      prev.disabled = rail.scrollLeft < 4;
+      next.disabled = rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 4;
+    };
+    prev.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+    rail.addEventListener('scroll', ends, { passive: true });
+    addEventListener('resize', ends);
+    ends();
+
+    // Newsletter
+    document.getElementById('subscribe').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('email');
+      const note = document.getElementById('subscribeNote');
+      const ok = input.checkValidity() && input.value;
+      note.textContent = ok ? 'Thanks. The next letter arrives in spring.' : '! Enter an email like name@example.com';
+      if (ok) input.value = '';
+    });
+  </script>
+</body>
+</html>

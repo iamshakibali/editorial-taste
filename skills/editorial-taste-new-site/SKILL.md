@@ -12,14 +12,15 @@ Work through **Part A (what the page says)** before **Part B (how it looks)**.
 ## Non-negotiable rules
 
 1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Express hierarchy with alpha steps. The single exception is `--signal`, one dot per isometric illustration.
-2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. No bold headings and no italics.
-3. **5px rhythm.** Spacing and radii come from the 5-step scale (the compact-scale exceptions are 8, 12, 32, 56, and 96). Nested radii: `inner = outer − gap`.
+2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. No bold headings and no italics. **Type roles are fixed**: the hero headline (`h1`) is always `.h2`, `.h0` belongs only to the statement, section titles are `.h3`, stat values and prices `.h1`.
+3. **5px rhythm.** Spacing and radii come from the 5-step scale through the `--space-*` tokens (the compact-scale exceptions are 8, 12, 32, 56, and 96). Never reference a token that `styles.css` doesn't define. Nested radii: `inner = outer − gap`.
 4. **Glass, not shadow.** No `box-shadow`. For depth, use translucent fills plus `backdrop-filter: blur(16px)`. The only gradients allowed are black vignettes over photos.
 5. **Text on photos always sits on a vignette.** Use a white logo on photos and a dark logo on light surfaces.
-6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. Don't mix radii within a row.
+6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. **20 is for case cards only**: photos, frames, mosaics, panels, and forms use 10. Don't mix radii within a row.
 7. **Motion is buttery and restrained**: expo-out (`--ease-out`), 200/450/800/1200ms, compositor-only properties, one hero sequence, reveals that play once, and full reduced-motion and no-JS fallbacks (`references/motion.md`).
-8. **Every site gets its own layout.** Choose the hero, signature moves, surface rhythm, and section patterns per site (`references/layouts.md`). Shipping the template's composition with new copy is a failure, not a starting point.
-9. **Never invent facts** for a real business. Missing prices, stats, testimonials, and logos stay as marked `{{placeholders}}`.
+8. **One statement per page, never directly under the hero.** At least one section sits between them.
+9. **Every site gets its own layout.** Choose the hero, signature moves, surface rhythm, and section patterns per site (`references/layouts.md`). Shipping the template's composition with new copy is a failure, not a starting point. Layouts vary, the rules above never do (`references/layouts.md` §2).
+10. **Never invent facts** for a real business. Missing prices, stats, testimonials, and logos stay as marked `{{placeholders}}`.
 
 ---
 
@@ -42,7 +43,7 @@ Also ask about the following (in the same message):
 - **Goal**: the one primary action (book, buy, contact, join a waitlist) and what counts as a conversion.
 - **Audience**: who they are, what they already know when they land, and their top 2–3 objections.
 - **Proof**: real numbers, clients, case studies, testimonials, press.
-- **Assets**: logo SVG, photography (the style depends on it), existing copy.
+- **Assets**: logo SVG, photography (the style depends on it; without it, photos come from Unsplash in B3, so ask for an Unsplash Access Key if none is set), existing copy.
 - **Constraints**: pages beyond the homepage, deadline, whether it's indexed or campaign-only.
 - **Illustrations**: which ideas (a system, process, platform, modules) should be explained with isometric hairline drawings rather than photos.
 
@@ -90,21 +91,37 @@ Follow the matching section of `references/frameworks.md`:
 Keep the template's class names for the components you reuse, so the CSS, motion, and illustration styles work unchanged. New patterns get their own BEM classes.
 
 ## B2. Take the system from the template, not the layout
-From `templates/`, copy `styles.css` (tokens, base, every component), `motion.js`, `404.html`, and `favicon.svg`. Read `index.html` as a component reference only: copy the nav, drawer, and footer markup and any component you need, then compose the page from your layout signature. Add CSS for new patterns in a separate block of `styles.css` (recipes in `references/layouts.md` §5) and delete CSS for components the page doesn't use. The reference `index.html` demonstrates:
+From `templates/`, copy `styles.css` (tokens, base, every component), `motion.js`, `404.html`, and `favicon.svg`. Read `index.html` as a component reference only: copy the nav, drawer, and footer markup and any component you need, then compose the page from your layout signature. Add CSS for new patterns in a separate block of `styles.css` (recipes in `references/layouts.md` §6) and delete CSS for components the page doesn't use. The reference `index.html` demonstrates:
 
 Nav (glass over the hero, solid on scroll, hides on scroll down, mobile drawer with staggered links) → Hero (choreographed intro) → Highlight numbers (count-up) → **Statement** (word-by-word reveal) → Product cards → Case cards (expandable) → Split cards (image unmask) → **How it works** (isometric illustration that builds in) → Journal → **FAQ** → CTA band (parallax) with an email form → Footer, plus Lenis smooth scroll, page transitions, meta and OG tags, a skip link, and full reduced-motion and no-JS fallbacks.
 
-## B3. Build section by section
+## B3. Photography (Unsplash by default)
+Every page ships with real photos. If the user supplied photos, use those. Otherwise, pull photos from **Unsplash** for every image slot before building the sections:
+```bash
+export UNSPLASH_ACCESS_KEY=...                                # free key: unsplash.com/developers → New Application
+python3 <skill-dir>/scripts/images.py --spec > images.json    # one slot per <img>: name, query, w, h, alt
+python3 <skill-dir>/scripts/images.py images.json --out <project-dir>
+```
+- The script searches the Unsplash API per slot, triggers Unsplash's download tracking for each photo it picks, and writes `unsplash.json` (for each slot: `src`, `srcset`, `color`, photographer and photo links), `credits.html`, and `review/contact-sheet.jpg`.
+- If `UNSPLASH_ACCESS_KEY` is missing, ask the user for it in the intake batch. If they can't provide one, run with `--placeholders` (neutral local blocks), keep building, and report every slot as a missing photo in B9.
+- Write queries the way a photo editor would brief: 3 to 6 concrete words for the subject, material, place, and light (`oak kitchen lime plaster daylight`, not `modern home`). Size each slot to its use: hero 2400×1500, product cards 1200×900, case cards 1000×1250, splits 1600×1000, CTA band 2400×1200.
+- **Look at the contact sheet.** Reject anything off-subject, low quality, with visible logos or text, with people at laptops, or with a colour cast that fights the monochrome UI. Rerun with a sharper query, or set `"offset": n` on that slot to take the next result. Delete `review/` when done.
+- Give every `<img>` a `data-slot="<name>"` matching its slot, then fill them all with `python3 <skill-dir>/scripts/images.py --apply <project-dir>/unsplash.json <project-dir>/index.html`. A site built with `--placeholders` switches to Unsplash later by running the fetch and `--apply` again.
+- Use the URLs exactly as returned: `<img src="{src}" srcset="{srcset}" sizes="…" width="{w}" height="{h}" alt="…">`, and set the media wrapper's background to `{color}` so the frame isn't empty while the photo loads. Unsplash's API guidelines require hotlinking from `images.unsplash.com`, so don't download or re-host these files. Every other image is a local file.
+- Write the final `alt` text from what the chosen photo actually shows, not from the query.
+- Credit every Unsplash photo ("Photo by {name} on Unsplash", with the links from `unsplash.json`). Link `credits.html` from the footer's legal row as "Photo credits".
+
+## B4. Build section by section
 Build in the order of your planned outline, hero first, then 404. For each section:
-- Replace its `{{placeholders}}` with the planned copy, and point images at real photography. With no photos, use neutral blocks (`background: var(--neutral-300)`) with descriptive alt text, and ask for photos. Never hotlink random stock images.
-- **Use the planned pattern**, from `references/layouts.md` or built from the system. Leave out sections the content doesn't support. Follow the variation rules in `references/layouts.md` §2: adjacent sections differ in grid and surface, and at least half the sections use patterns the template doesn't show.
+- Replace its `{{placeholders}}` with the planned copy, and point images at the photos fetched in B3. The user's own photos always win over fetched ones.
+- **Use the planned pattern**, from `references/layouts.md` or built from the system. Leave out sections the content doesn't support. Keep the fixed rules in `references/layouts.md` §2 and follow the variation rules in §3: adjacent sections differ in grid and surface, and at least half the sections use patterns the template doesn't show.
 - Swap the `#logo` symbol for the client's SVG logo (keep `fill="currentColor"`), and update the favicon letter.
 - Keep diffs per section. Don't regenerate the whole page on every iteration.
 
-## B4. Motion
+## B5. Motion
 Keep the template's motion system (`references/motion.md`): Lenis smooth scroll, the hero intro sequence, `.reveal` plus `data-stagger` on every content block, `data-reveal="text"` on section titles, `data-reveal="image"` on standalone images, `data-count` on numeric stats, and `data-words` on the statement. Use the motion tokens (`--ease-out`, 200/450/800/1200ms) for anything new. Animate only transforms, opacity, and clip-path. Never add bounce, scroll-jacking, custom cursors, or more than one hero sequence.
 
-## B5. Illustrations
+## B6. Illustrations
 For the 1–3 ideas that photos can't show (a system, platform layers, a process, modules), generate an isometric hairline illustration and place it in an Illustration split section (`references/illustrations.md`):
 ```bash
 python3 <skill-dir>/scripts/iso.py --list
@@ -113,19 +130,20 @@ python3 <skill-dir>/scripts/iso.py iso-platform.json > iso-platform.svg
 ```
 Inline the SVG inside `<figure class="illo" data-reveal="iso">` so it builds in on scroll. Use labels that match the section's numbered steps, one active block, and at most one `--signal` dot.
 
-## B6. States and details
+## B7. States and details
 Every interactive element has hover, pressed, focus-visible, and disabled states. Forms validate inline. Data areas get loading, empty, and error states. Mark the current nav item with `aria-current="page"`. No dead `href="#"` links. Specs are in `references/components.md` under States and Forms.
 
-## B7. Verify
+## B8. Verify
 1. `python3 <skill-dir>/scripts/lint.py <project-dir>`: fix every ERROR and review the WARNs.
 2. `python3 <skill-dir>/scripts/lint.py --strict index.html`: catches leftover `{{placeholders}}`.
+   Check that every `<img>` loads, that Unsplash photos use the returned `images.unsplash.com` URLs, that `credits.html` is linked from the footer, and that `review/` is gone.
 3. Compare the section sequence and hero against the template and any other site in the repo. If they match, recompose before polishing.
 4. Open the page at 1440, 768, and 390px widths. Check the hero intro plays once, scrolling is smooth, the nav switches state and hides or returns, the drawer opens and pauses scrolling, headings rise word by word, the statement lights up, stats count, the illustration builds in, FAQ items toggle, nothing scrolls horizontally, and every photo with text has its vignette.
 5. Check again with reduced motion turned on, and with JavaScript disabled: everything should be visible.
 6. Work through `references/ship-checklist.md`.
 
-## B8. Report
-Summarize the page type, the sections built, the assumptions made, any remaining `{{placeholders}}` (real facts the user must supply), and the missing assets (photos, logo, legal pages).
+## B9. Report
+Summarize the page type, the sections built, the assumptions made, any remaining `{{placeholders}}` (real facts the user must supply), the Unsplash photos used (suggest replacing them with the brand's own photography), and the missing assets (logo, legal pages, any placeholder photos).
 
 ---
 
@@ -159,6 +177,7 @@ Summarize the page type, the sections built, the assumptions made, any remaining
 - `references/motion.md`: motion principles, tokens, every animation, HTML API, framework recipes
 - `references/illustrations.md`: isometric hairline illustration rules, generator spec, compositions
 - `scripts/iso.py`: isometric illustration generator (presets: modules, stack, flow, single)
+- `scripts/images.py`: pulls photos from Unsplash per image slot, writes URLs and credits
 - `references/foundations.md`: color, type, spacing, radius, grid, effects, motion, icons, contrast
 - `references/components.md`: anatomy of every component and block, forms, states, layout variety
 - `references/copy.md`: voice, headline formulas, CTAs, content realism, banned words

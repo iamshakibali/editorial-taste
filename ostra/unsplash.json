@@ -1,0 +1,74 @@
+{
+  "hero-1": {
+    "src": "images/hero-1.svg",
+    "w": 1400,
+    "h": 1600,
+    "alt": "Whitewashed courtyard with a fig tree in morning light",
+    "placeholder": true,
+    "query": "whitewashed hotel courtyard morning light portugal"
+  },
+  "hero-2": {
+    "src": "images/hero-2.svg",
+    "w": 1000,
+    "h": 760,
+    "alt": "Linen bed against a stone wall with a sea window",
+    "placeholder": true,
+    "query": "linen bed stone wall window sea"
+  },
+  "hero-3": {
+    "src": "images/hero-3.svg",
+    "w": 1000,
+    "h": 760,
+    "alt": "Atlantic cliffs below the hotel",
+    "placeholder": true,
+    "query": "atlantic coast cliffs portugal"
+  },
+  "room-1": {
+    "src": "images/room-1.svg",
+    "w": 1000,
+    "h": 1250,
+    "alt": "Room with terracotta floor and a low oak bed",
+    "placeholder": true,
+    "query": "minimal hotel room terracotta floor"
+  },
+  "room-2": {
+    "src": "images/room-2.svg",
+    "w": 1000,
+    "h": 1250,
+    "alt": "Stone bathtub under a deep window",
+    "placeholder": true,
+    "query": "hotel bathroom stone bathtub window"
+  },
+  "room-3": {
+    "src": "images/room-3.svg",
+    "w": 1000,
+    "h": 1250,
+    "alt": "Private terrace with two chairs facing the sea",
+    "placeholder": true,
+    "query": "private terrace sea view chairs"
+  },
+  "room-4": {
+    "src": "images/room-4.svg",
+    "w": 1000,
+    "h": 1250,
+    "alt": "Cottage living room with a fireplace",
+    "placeholder": true,
+    "query": "rustic cottage interior fireplace"
+  },
+  "kitchen": {
+    "src": "images/kitchen.svg",
+    "w": 1600,
+    "h": 1200,
+    "alt": "Grilled fish served on a long wooden table",
+    "placeholder": true,
+    "query": "grilled fish restaurant table rustic"
+  },
+  "place": {
+    "src": "images/place.svg",
+    "w": 2400,
+    "h": 1000,
+    "alt": "The fishing village and coast seen from above",
+    "placeholder": true,
+    "query": "fishing village coast portugal aerial"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "series-1": {
+    "src": "images/series-1.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Open field guide showing hand drawn waders",
+    "placeholder": true,
+    "query": "bird field guide illustration book open"
+  },
+  "series-2": {
+    "src": "images/series-2.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Path across a misty moor",
+    "placeholder": true,
+    "query": "highland moor walking path mist"
+  },
+  "series-3": {
+    "src": "images/series-3.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Rock pool with seaweed at low tide",
+    "placeholder": true,
+    "query": "tidal rock pool seaweed close"
+  },
+  "series-4": {
+    "src": "images/series-4.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Mossy oak woodland in morning light",
+    "placeholder": true,
+    "query": "oak woodland moss morning light"
+  },
+  "book-lead": {
+    "src": "images/book-lead.svg",
+    "w": 2400,
+    "h": 1200,
+    "alt": "Hardback copy of Low Tide on an oak table",
+    "placeholder": true,
+    "query": "hardback book on wooden table window light"
+  },
+  "book-2": {
+    "src": "images/book-2.svg",
+    "w": 1200,
+    "h": 900,
+    "alt": "Linen bound copies of The Peat Year",
+    "placeholder": true,
+    "query": "stack of linen bound books"
+  },
+  "book-3": {
+    "src": "images/book-3.svg",
+    "w": 1200,
+    "h": 900,
+    "alt": "Field notebook with pencil sketches of lichens",
+    "placeholder": true,
+    "query": "pocket notebook pencil field sketch"
+  },
+  "author-1": {
+    "src": "images/author-1.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Portrait of Isla Moncrieff on the shore",
+    "placeholder": true,
+    "query": "portrait woman outdoors coat wind"
+  },
+  "author-2": {
+    "src": "images/author-2.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Portrait of Ruairidh Gunn in a woollen jumper",
+    "placeholder": true,
+    "query": "portrait man beard woollen jumper outdoors"
+  },
+  "author-3": {
+    "src": "images/author-3.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Portrait of Margaret Lyle in her garden",
+    "placeholder": true,
+    "query": "portrait older woman garden"
+  },
+  "author-4": {
+    "src": "images/author-4.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Portrait of Tomasz Wilk holding binoculars",
+    "placeholder": true,
+    "query": "portrait young man binoculars"
+  },
+  "journal": {
+    "src": "images/journal.svg",
+    "w": 1600,
+    "h": 1000,
+    "alt": "Printed sheets drying beside the press",
+    "placeholder": true,
+    "query": "printing press paper sheets"
+  },
+  "cta": {
+    "src": "images/cta.svg",
+    "w": 2400,
+    "h": 1200,
+    "alt": "Books wrapped in brown paper and string",
+    "placeholder": true,
+    "query": "parcel books brown paper string"
+  }
+}

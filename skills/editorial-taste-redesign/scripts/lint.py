@@ -5,6 +5,10 @@ Usage: python3 lint.py [--strict] <file|dir> [...]
   --strict  also fail on leftover {{placeholders}} (use before delivery)
 Exit code 1 if any ERROR is found; WARN entries are advisory.
 Add "lint-ok" in a comment on a line to accept a deliberate exception.
+
+Also checks the fixed type roles (hero h1 in .h2, .h0 only for the statement), one statement
+per page and never directly under the hero, radius 20 only on case cards, and that every
+var(--token) used without a fallback is defined somewhere in the linted files.
 """
 import os
 import re
@@ -54,6 +58,8 @@ def lint(path, strict):
     is_markup = os.path.splitext(path)[1].lower() in {".html", ".htm", ".jsx", ".tsx", ".vue", ".svelte", ".astro"}
     in_root = False
     in_svg_symbol = False
+    selector = ""
+    is_404 = os.path.basename(path).startswith("404")
     for n, line in enumerate(text.splitlines(), 1):
         s = line.strip()
         if s.startswith(":root"):
@@ -68,6 +74,25 @@ def lint(path, strict):
         def add(level, msg):
             if "lint-ok" not in line:
                 issues.append((level, n, msg))
+
+        if "{" in line and not in_root:
+            selector = line.split("{")[0].strip() or selector
+
+        # Radius 20 belongs to case cards only
+        if re.search(r"border(?:-[a-z-]+)?-radius\s*:[^;]*(?:\b20px|var\(--radius-20\))", line) and not in_root:
+            if "case" not in selector:
+                add("ERROR", f"radius 20 on '{selector}'. 20 is for case cards only; photos, frames, and panels use 10")
+
+        # Fixed type roles (markup)
+        if is_markup and not is_404:
+            for m in re.finditer(r"<h1\b[^>]*>", line):
+                cls = re.search(r'class(?:Name)?="([^"]*)"', m.group(0))
+                classes = cls.group(1).split() if cls else []
+                if "h2" not in classes:
+                    add("ERROR", "the page h1 (hero headline) must use .h2")
+            for m in re.finditer(r"<[a-z0-9]+\b[^>]*class(?:Name)?=\"[^\"]*\bh0\b[^\"]*\"[^>]*>", line):
+                if "data-words" not in m.group(0):
+                    add("ERROR", ".h0 is reserved for the statement (data-words)")
 
         # Elevation
         if re.search(r"(box|text)-shadow\s*:\s*(?!none)", line, re.I):
@@ -151,7 +176,50 @@ def lint(path, strict):
                         v = abs(float(px))
                         if v % 5 != 0 and v not in allowed:
                             add("WARN", f"{label} {px}px is off the 5px scale")
+    if is_markup and not is_404:
+        issues += structure(text)
     return issues
+
+
+def structure(text):
+    """Page-level checks: one statement, never directly under the hero."""
+    out = []
+    words = [m.start() for m in re.finditer(r"\bdata-words\b", text)]
+    line_of = lambda pos: text.count("\n", 0, pos) + 1
+    if len(words) > 1:
+        out.append(("ERROR", line_of(words[1]), "more than one statement (data-words). One per page"))
+    main = re.search(r"<main\b", text)
+    if words and main:
+        sections = [m.start() for m in re.finditer(r"<section\b", text) if m.start() > main.start()]
+        owner = [i for i, pos in enumerate(sections) if pos < words[0]]
+        if owner and owner[-1] == 1:
+            out.append(("ERROR", line_of(words[0]),
+                        "statement sits directly under the hero. Put at least one section between them"))
+    return out
+
+
+TOKEN_DEF = re.compile(r"(--[a-zA-Z0-9-]+)\s*:")
+TOKEN_USE = re.compile(r"var\(\s*(--[a-zA-Z0-9-]+)\s*\)")
+
+
+def token_issues(files):
+    """var(--x) with no fallback must be defined in one of the linted files."""
+    defined, uses = set(), []
+    for f in files:
+        try:
+            text = open(f, encoding="utf-8").read()
+        except OSError:
+            continue
+        defined.update(TOKEN_DEF.findall(text))
+        for n, line in enumerate(text.splitlines(), 1):
+            if "lint-ok" in line:
+                continue
+            for name in TOKEN_USE.findall(line):
+                uses.append((f, n, name))
+    if "--bg-base" not in defined:  # the token file isn't among the linted files: can't judge
+        return []
+    return [(f, n, "ERROR", f"undefined token {name}. It renders as nothing; use a token from styles.css")
+            for f, n, name in uses if name not in defined]
 
 
 def expand(paths):
@@ -173,11 +241,15 @@ def main(argv):
         print(__doc__)
         return 2
     errors = warns = 0
-    for path in expand(paths):
+    files = list(expand(paths))
+    for path in files:
         for level, n, msg in lint(path, strict):
             errors += level == "ERROR"
             warns += level == "WARN"
             print(f"{path}:{n}: {level}: {msg}")
+    for path, n, level, msg in token_issues(files):
+        errors += 1
+        print(f"{path}:{n}: {level}: {msg}")
     print(f"\n{errors} error(s), {warns} warning(s)." if errors or warns else "\nNo issues.")
     return 1 if errors else 0
 

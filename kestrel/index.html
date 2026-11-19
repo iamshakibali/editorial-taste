@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kestrel — Quiet electric outboards</title>
+  <meta name="description" content="Kestrel builds quiet electric outboard motors for small boats, from 3 to 10 kW, with swappable batteries, a 41 km range, and no fuel, oil, or noise." />
+  <link rel="canonical" href="https://kestrel.example/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#EDEDED" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kestrel — Quiet electric outboards" />
+  <meta property="og:description" content="Electric outboards for small boats. 3 to 10 kW, swappable batteries, 41 km range." />
+  <meta property="og:image" content="https://kestrel.example/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css" integrity="sha384-gvLq/iOMNnPchdosgVym5huSVkKipHCQaqSw2Eg0V52Mzmlf169ZOsXcNc2cNu8x" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" integrity="sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw" crossorigin="anonymous" defer></script>
+  <script src="motion.js" defer></script>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="logo" viewBox="0 0 125 24"><text x="0" y="20" fill="currentColor" font-family="Geist, sans-serif" font-weight="700" font-size="24" letter-spacing="-0.5">KESTREL</text></symbol>
+    <symbol id="i-arrow" viewBox="0 0 12 12"><path d="M1 6h10M7 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 14 14"><path d="M7 1v12M1 7h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="6.5"/><circle cx="8" cy="6.6" r="2.2"/><path d="M3.9 13a4.6 4.6 0 0 1 8.2 0"/></g></symbol>
+    <symbol id="i-menu" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+  </svg>
+
+  <a class="sr-only" href="#main">Skip to content</a>
+
+  <!-- ===== Navigation (solid from the start: the hero opens on a light surface) ===== -->
+  <header class="nav is-solid" id="nav">
+    <div class="container nav__inner">
+      <a class="logo" href="/" aria-label="Kestrel home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+      <div class="nav__right">
+        <nav aria-label="Primary">
+          <ul class="nav__links">
+            <li><a class="nav__link" href="#how">How it works</a></li>
+            <li><a class="nav__link" href="#range">Range</a></li>
+            <li><a class="nav__link" href="#pricing">Pricing</a></li>
+            <li><a class="nav__link" href="#journal">Journal</a></li>
+            <li><a class="nav__link" href="#contact">Test ride</a></li>
+          </ul>
+        </nav>
+        <div class="nav__utils">
+          <a class="icon-btn" href="#contact" aria-label="Owner account"><svg><use href="#i-user"/></svg></a>
+          <button class="icon-btn nav__menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer" id="menuBtn"><svg><use href="#i-menu"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawer on-dark" id="drawer" aria-hidden="true">
+    <ul class="drawer__links h4">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#range">Range</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#journal">Journal</a></li>
+      <li><a href="#contact">Test ride</a></li>
+    </ul>
+    <div class="drawer__meta label-lg">Owners · Service · Dealers</div>
+  </div>
+
+  <main id="main">
+
+    <!-- ===== Hero H4: split screen ===== -->
+    <section class="xhero" aria-labelledby="hero-title">
+      <div class="xhero__text">
+        <div class="xhero__copy">
+          <span class="eyebrow muted reveal" style="--d: .1s">Electric outboards · 3 to 10 kW</span>
+          <h1 class="h1" id="hero-title" data-reveal="text" style="--d: .15s">Hear the water, not the motor.</h1>
+          <p class="body-lg muted reveal" style="--d: .55s">Kestrel makes electric outboards for dinghies, day boats, and small launches. No fuel, no oil, no winterising. Lift the battery out, charge it at home, and go.</p>
+          <div class="btn-row reveal" style="--d: .7s">
+            <a class="btn btn--primary btn--wide" href="#contact">Book a test ride</a>
+            <a class="btn btn--secondary btn--wide" href="#pricing">Compare models</a>
+          </div>
+        </div>
+        <dl class="xhero__stats" data-stagger="90">
+          <div class="reveal" style="--d: .8s"><dt class="label-lg muted">Range at 5 knots</dt><dd class="h3" data-count>41 km</dd></div>
+          <div class="reveal" style="--d: .8s"><dt class="label-lg muted">Noise at cruise</dt><dd class="h3" data-count>38 dB</dd></div>
+          <div class="reveal" style="--d: .8s"><dt class="label-lg muted">Battery weight</dt><dd class="h3" data-count>11.6 kg</dd></div>
+        </dl>
+      </div>
+      <div class="xhero__media">
+        <img src="images/hero.jpg" alt="Kestrel 6 outboard mounted on a wooden day boat at a misty mooring" fetchpriority="high" />
+      </div>
+    </section>
+
+    <!-- ===== Statement ===== -->
+    <section class="statement surface-white" aria-label="Kestrel in one statement">
+      <div class="container">
+        <p class="h0 statement__text" data-words>A small boat should feel like rowing with a tailwind. Quiet enough to talk, simple enough to forget it is there.</p>
+      </div>
+    </section>
+
+    <!-- ===== How it works: sticky split ===== -->
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container sticky-split">
+        <div class="sticky-split__aside reveal">
+          <span class="eyebrow intro__eyebrow">01 — How it works</span>
+          <h2 class="h3" id="how-title" data-reveal="text">Three parts, no tools.</h2>
+          <p class="body-md muted">Every Kestrel is a battery, a controller in the tiller, and a sealed motor in the leg. Each part comes off in under a minute.</p>
+          <a class="btn btn--secondary btn--icon-right" href="#pricing">See the models <svg><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="sticky-split__main">
+          <figure class="illo" data-reveal="iso">
+<svg class="iso" xmlns="http://www.w3.org/2000/svg" viewBox="-151.92 -88 650.26 456" role="img" aria-labelledby="iso-motor-title">
+<title id="iso-motor-title">Battery, controller, and motor connected in sequence, the motor active</title>
+<style>.iso-grid line { stroke: #D4D4D4; stroke-width: .75; }
+.iso-face { stroke: #A3A3A3; stroke-width: 1; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.iso-top { fill: #FFFFFF; } .iso-left { fill: #F5F5F5; } .iso-right { fill: #E5E5E5; }
+.is-active .iso-face { stroke: #151515; } .is-active .iso-top { fill: #F5F5F5; }
+.iso-vertex { fill: #151515; }
+.iso-label { font: 400 11px "Geist Mono", ui-monospace, SFMono-Regular, monospace; letter-spacing: 1.6px; fill: #404040; }
+.iso-led { fill: #D4D4D4; } .is-active .iso-led { fill: #737373; }
+.iso-path { fill: none; stroke: #737373; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.iso-path.is-dashed { stroke-dasharray: 3 4; }
+.iso-signal { fill: #FF4D2E; }
+.iso-ring { fill: none; stroke: #FF4D2E; stroke-opacity: .5; stroke-width: 1; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.iso-pulse { fill: none; stroke: #FF4D2E; stroke-width: 1; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .iso-pulse { animation: isoPulse 2.4s cubic-bezier(.16, 1, .3, 1) infinite; }
+}
+@keyframes isoPulse { 0% { opacity: .6; transform: scale(.5); } 100% { opacity: 0; transform: scale(1.6); } }</style>
+<defs>
+<radialGradient id="iso-motor-fade" cx="50%" cy="50%" r="55%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".65" stop-color="#FFFFFF" stop-opacity=".9"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+<mask id="iso-motor-mask"><rect x="-151.92" y="-88" width="650.26" height="456" fill="url(#iso-motor-fade)"/></mask>
+</defs>
+<g class="iso-grid" mask="url(#iso-motor-mask)"><line x1="155.88" y1="-1290" x2="-2338.27" y2="150"/><line x1="190.53" y1="-1290" x2="2684.68" y2="150"/><line x1="190.53" y1="-1270" x2="-2303.63" y2="170"/><line x1="155.88" y1="-1270" x2="2650.04" y2="170"/><line x1="225.17" y1="-1250" x2="-2268.99" y2="190"/><line x1="121.24" y1="-1250" x2="2615.4" y2="190"/><line x1="259.81" y1="-1230" x2="-2234.35" y2="210"/><line x1="86.6" y1="-1230" x2="2580.76" y2="210"/><line x1="294.45" y1="-1210" x2="-2199.7" y2="230"/><line x1="51.96" y1="-1210" x2="2546.11" y2="230"/><line x1="329.09" y1="-1190" x2="-2165.06" y2="250"/><line x1="17.32" y1="-1190" x2="2511.47" y2="250"/><line x1="363.73" y1="-1170" x2="-2130.42" y2="270"/><line x1="-17.32" y1="-1170" x2="2476.83" y2="270"/><line x1="398.37" y1="-1150" x2="-2095.78" y2="290"/><line x1="-51.96" y1="-1150" x2="2442.19" y2="290"/><line x1="433.01" y1="-1130" x2="-2061.14" y2="310"/><line x1="-86.6" y1="-1130" x2="2407.55" y2="310"/><line x1="467.65" y1="-1110" x2="-2026.5" y2="330"/><line x1="-121.24" y1="-1110" x2="2372.91" y2="330"/><line x1="502.29" y1="-1090" x2="-1991.86" y2="350"/><line x1="-155.88" y1="-1090" x2="2338.27" y2="350"/><line x1="536.94" y1="-1070" x2="-1957.22" y2="370"/><line x1="-190.53" y1="-1070" x2="2303.63" y2="370"/><line x1="571.58" y1="-1050" x2="-1922.58" y2="390"/><line x1="-225.17" y1="-1050" x2="2268.99" y2="390"/><line x1="606.22" y1="-1030" x2="-1887.94" y2="410"/><line x1="-259.81" y1="-1030" x2="2234.35" y2="410"/><line x1="640.86" y1="-1010" x2="-1853.29" y2="430"/><line x1="-294.45" y1="-1010" x2="2199.7" y2="430"/><line x1="675.5" y1="-990" x2="-1818.65" y2="450"/><line x1="-329.09" y1="-990" x2="2165.06" y2="450"/><line x1="710.14" y1="-970" x2="-1784.01" y2="470"/><line x1="-363.73" y1="-970" x2="2130.42" y2="470"/><line x1="744.78" y1="-950" x2="-1749.37" y2="490"/><line x1="-398.37" y1="-950" x2="2095.78" y2="490"/><line x1="779.42" y1="-930" x2="-1714.73" y2="510"/><line x1="-433.01" y1="-930" x2="2061.14" y2="510"/><line x1="814.06" y1="-910" x2="-1680.09" y2="530"/><line x1="-467.65" y1="-910" x2="2026.5" y2="530"/><line x1="848.7" y1="-890" x2="-1645.45" y2="550"/><line x1="-502.29" y1="-890" x2="1991.86" y2="550"/><line x1="883.35" y1="-870" x2="-1610.81" y2="570"/><line x1="-536.94" y1="-870" x2="1957.22" y2="570"/><line x1="917.99" y1="-850" x2="-1576.17" y2="590"/><line x1="-571.58" y1="-850" x2="1922.58" y2="590"/><line x1="952.63" y1="-830" x2="-1541.53" y2="610"/><line x1="-606.22" y1="-830" x2="1887.94" y2="610"/><line x1="987.27" y1="-810" x2="-1506.88" y2="630"/><line x1="-640.86" y1="-810" x2="1853.29" y2="630"/><line x1="1021.91" y1="-790" x2="-1472.24" y2="650"/><line x1="-675.5" y1="-790" x2="1818.65" y2="650"/><line x1="1056.55" y1="-770" x2="-1437.6" y2="670"/><line x1="-710.14" y1="-770" x2="1784.01" y2="670"/><line x1="1091.19" y1="-750" x2="-1402.96" y2="690"/><line x1="-744.78" y1="-750" x2="1749.37" y2="690"/><line x1="1125.83" y1="-730" x2="-1368.32" y2="710"/><line x1="-779.42" y1="-730" x2="1714.73" y2="710"/><line x1="1160.47" y1="-710" x2="-1333.68" y2="730"/><line x1="-814.06" y1="-710" x2="1680.09" y2="730"/><line x1="1195.12" y1="-690" x2="-1299.04" y2="750"/><line x1="-848.7" y1="-690" x2="1645.45" y2="750"/><line x1="1229.76" y1="-670" x2="-1264.4" y2="770"/><line x1="-883.35" y1="-670" x2="1610.81" y2="770"/><line x1="1264.4" y1="-650" x2="-1229.76" y2="790"/><line x1="-917.99" y1="-650" x2="1576.17" y2="790"/><line x1="1299.04" y1="-630" x2="-1195.12" y2="810"/><line x1="-952.63" y1="-630" x2="1541.53" y2="810"/><line x1="1333.68" y1="-610" x2="-1160.47" y2="830"/><line x1="-987.27" y1="-610" x2="1506.88" y2="830"/><line x1="1368.32" y1="-590" x2="-1125.83" y2="850"/><line x1="-1021.91" y1="-590" x2="1472.24" y2="850"/><line x1="1402.96" y1="-570" x2="-1091.19" y2="870"/><line x1="-1056.55" y1="-570" x2="1437.6" y2="870"/><line x1="1437.6" y1="-550" x2="-1056.55" y2="890"/><line x1="-1091.19" y1="-550" x2="1402.96" y2="890"/><line x1="1472.24" y1="-530" x2="-1021.91" y2="910"/><line x1="-1125.83" y1="-530" x2="1368.32" y2="910"/><line x1="1506.88" y1="-510" x2="-987.27" y2="930"/><line x1="-1160.47" y1="-510" x2="1333.68" y2="930"/><line x1="1541.53" y1="-490" x2="-952.63" y2="950"/><line x1="-1195.12" y1="-490" x2="1299.04" y2="950"/><line x1="1576.17" y1="-470" x2="-917.99" y2="970"/><line x1="-1229.76" y1="-470" x2="1264.4" y2="970"/><line x1="1610.81" y1="-450" x2="-883.35" y2="990"/><line x1="-1264.4" y1="-450" x2="1229.76" y2="990"/><line x1="1645.45" y1="-430" x2="-848.7" y2="1010"/><line x1="-1299.04" y1="-430" x2="1195.12" y2="1010"/><line x1="1680.09" y1="-410" x2="-814.06" y2="1030"/><line x1="-1333.68" y1="-410" x2="1160.47" y2="1030"/><line x1="1714.73" y1="-390" x2="-779.42" y2="1050"/><line x1="-1368.32" y1="-390" x2="1125.83" y2="1050"/><line x1="1749.37" y1="-370" x2="-744.78" y2="1070"/><line x1="-1402.96" y1="-370" x2="1091.19" y2="1070"/><line x1="1784.01" y1="-350" x2="-710.14" y2="1090"/><line x1="-1437.6" y1="-350" x2="1056.55" y2="1090"/><line x1="1818.65" y1="-330" x2="-675.5" y2="1110"/><line x1="-1472.24" y1="-330" x2="1021.91" y2="1110"/><line x1="1853.29" y1="-310" x2="-640.86" y2="1130"/><line x1="-1506.88" y1="-310" x2="987.27" y2="1130"/><line x1="1887.94" y1="-290" x2="-606.22" y2="1150"/><line x1="-1541.53" y1="-290" x2="952.63" y2="1150"/><line x1="1922.58" y1="-270" x2="-571.58" y2="1170"/><line x1="-1576.17" y1="-270" x2="917.99" y2="1170"/><line x1="1957.22" y1="-250" x2="-536.94" y2="1190"/><line x1="-1610.81" y1="-250" x2="883.35" y2="1190"/><line x1="1991.86" y1="-230" x2="-502.29" y2="1210"/><line x1="-1645.45" y1="-230" x2="848.7" y2="1210"/><line x1="2026.5" y1="-210" x2="-467.65" y2="1230"/><line x1="-1680.09" y1="-210" x2="814.06" y2="1230"/><line x1="2061.14" y1="-190" x2="-433.01" y2="1250"/><line x1="-1714.73" y1="-190" x2="779.42" y2="1250"/><line x1="2095.78" y1="-170" x2="-398.37" y2="1270"/><line x1="-1749.37" y1="-170" x2="744.78" y2="1270"/><line x1="2130.42" y1="-150" x2="-363.73" y2="1290"/><line x1="-1784.01" y1="-150" x2="710.14" y2="1290"/><line x1="2165.06" y1="-130" x2="-329.09" y2="1310"/><line x1="-1818.65" y1="-130" x2="675.5" y2="1310"/><line x1="2199.7" y1="-110" x2="-294.45" y2="1330"/><line x1="-1853.29" y1="-110" x2="640.86" y2="1330"/><line x1="2234.35" y1="-90" x2="-259.81" y2="1350"/><line x1="-1887.94" y1="-90" x2="606.22" y2="1350"/><line x1="2268.99" y1="-70" x2="-225.17" y2="1370"/><line x1="-1922.58" y1="-70" x2="571.58" y2="1370"/><line x1="2303.63" y1="-50" x2="-190.53" y2="1390"/><line x1="-1957.22" y1="-50" x2="536.94" y2="1390"/><line x1="2338.27" y1="-30" x2="-155.88" y2="1410"/><line x1="-1991.86" y1="-30" x2="502.29" y2="1410"/><line x1="2372.91" y1="-10" x2="-121.24" y2="1430"/><line x1="-2026.5" y1="-10" x2="467.65" y2="1430"/><line x1="2407.55" y1="10" x2="-86.6" y2="1450"/><line x1="-2061.14" y1="10" x2="433.01" y2="1450"/><line x1="2442.19" y1="30" x2="-51.96" y2="1470"/><line x1="-2095.78" y1="30" x2="398.37" y2="1470"/><line x1="2476.83" y1="50" x2="-17.32" y2="1490"/><line x1="-2130.42" y1="50" x2="363.73" y2="1490"/><line x1="2511.47" y1="70" x2="17.32" y2="1510"/><line x1="-2165.06" y1="70" x2="329.09" y2="1510"/><line x1="2546.11" y1="90" x2="51.96" y2="1530"/><line x1="-2199.7" y1="90" x2="294.45" y2="1530"/><line x1="2580.76" y1="110" x2="86.6" y2="1550"/><line x1="-2234.35" y1="110" x2="259.81" y2="1550"/><line x1="2615.4" y1="130" x2="121.24" y2="1570"/><line x1="-2268.99" y1="130" x2="225.17" y2="1570"/><line x1="2650.04" y1="150" x2="155.88" y2="1590"/><line x1="-2303.63" y1="150" x2="190.53" y2="1590"/></g>
+<polyline class="iso-path is-dashed" points="51.96,90 121.24,130"/>
+<polyline class="iso-path is-dashed" points="225.17,190 294.45,230"/>
+<g class="iso-block" style="--d: 0ms">
+<polygon class="iso-face iso-left" points="-103.92,20 0,80 0,120 -103.92,60"/>
+<polygon class="iso-face iso-right" points="103.92,20 0,80 0,120 103.92,60"/>
+<polygon class="iso-face iso-top" points="0,-40 103.92,20 0,80 -103.92,20"/>
+<circle class="iso-vertex" cx="0" cy="-28" r="2"/>
+<circle class="iso-vertex" cx="83.14" cy="20" r="2"/>
+<circle class="iso-vertex" cx="0" cy="68" r="2"/>
+<circle class="iso-vertex" cx="-83.14" cy="20" r="2"/>
+<g transform="matrix(0.87 0.5 0 1 -103.92 20)">
+<text class="iso-label" x="14" y="18">BATTERY</text>
+<circle class="iso-led" cx="17" cy="29" r="2.4"/>
+<circle class="iso-led" cx="26" cy="29" r="2.4"/>
+<circle class="iso-led" cx="35" cy="29" r="2.4"/>
+</g>
+</g>
+<g class="iso-block" style="--d: 120ms">
+<polygon class="iso-face iso-left" points="69.28,120 173.21,180 173.21,220 69.28,160"/>
+<polygon class="iso-face iso-right" points="277.13,120 173.21,180 173.21,220 277.13,160"/>
+<polygon class="iso-face iso-top" points="173.21,60 277.13,120 173.21,180 69.28,120"/>
+<circle class="iso-vertex" cx="173.21" cy="72" r="2"/>
+<circle class="iso-vertex" cx="256.34" cy="120" r="2"/>
+<circle class="iso-vertex" cx="173.21" cy="168" r="2"/>
+<circle class="iso-vertex" cx="90.07" cy="120" r="2"/>
+<g transform="matrix(0.87 0.5 0 1 69.28 120)">
+<text class="iso-label" x="14" y="18">CONTROLLER</text>
+<circle class="iso-led" cx="17" cy="29" r="2.4"/>
+<circle class="iso-led" cx="26" cy="29" r="2.4"/>
+<circle class="iso-led" cx="35" cy="29" r="2.4"/>
+</g>
+</g>
+<g class="iso-block is-active" style="--d: 240ms">
+<polygon class="iso-face iso-left" points="242.49,196 346.41,256 346.41,320 242.49,260"/>
+<polygon class="iso-face iso-right" points="450.33,196 346.41,256 346.41,320 450.33,260"/>
+<polygon class="iso-face iso-top" points="346.41,136 450.33,196 346.41,256 242.49,196"/>
+<circle class="iso-vertex" cx="346.41" cy="148" r="2"/>
+<circle class="iso-vertex" cx="429.55" cy="196" r="2"/>
+<circle class="iso-vertex" cx="346.41" cy="244" r="2"/>
+<circle class="iso-vertex" cx="263.27" cy="196" r="2"/>
+<g transform="matrix(0.87 0.5 0 1 242.49 196)">
+<text class="iso-label" x="14" y="18">MOTOR</text>
+</g>
+<ellipse class="iso-ring" cx="346.41" cy="196" rx="26.45" ry="15.27"/>
+<ellipse class="iso-pulse" cx="346.41" cy="196" rx="26.45" ry="15.27"/>
+<ellipse class="iso-signal" cx="346.41" cy="196" rx="5.6" ry="3.4"/>
+</g>
+</svg>
+          </figure>
+          <ol class="rows" data-stagger="80">
+            <li class="rows__item reveal">
+              <span class="label-lg muted">01</span>
+              <h3 class="h5">Battery</h3>
+              <p class="body-md muted">A 1.4 kWh pack that floats, with a handle and a charge gauge on top. A full charge from a household socket takes 4 hours 20 minutes.</p>
+            </li>
+            <li class="rows__item reveal">
+              <span class="label-lg muted">02</span>
+              <h3 class="h5">Controller</h3>
+              <p class="body-md muted">A twist tiller with a screen that shows range left at your current speed, not just percent. It pairs with your phone for trip logs.</p>
+            </li>
+            <li class="rows__item reveal">
+              <span class="label-lg muted">03</span>
+              <h3 class="h5">Motor</h3>
+              <p class="body-md muted">A brushless motor sealed in the lower leg, cooled by the water around it. No gearbox oil, no impeller, no annual service.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Range: dark big-number band ===== -->
+    <section class="section section--dark on-dark" id="range" aria-labelledby="range-title">
+      <div class="container big-number">
+        <div class="big-number__figure reveal">
+          <span class="eyebrow intro__eyebrow">02 — Range</span>
+          <p class="h0" data-count>41 km</p>
+          <h2 class="body-lg muted" id="range-title">On one battery at 5 knots, measured on Lake Bled with a 4.2 m dinghy and two people aboard.</h2>
+        </div>
+        <ul class="facts" data-stagger="80">
+          <li class="reveal"><span class="label-lg muted">Swap</span><p class="h5">Carry a second battery and double it. Swapping takes 20 seconds, on the water.</p></li>
+          <li class="reveal"><span class="label-lg muted">Charge</span><p class="h5">From 10% to 80% in 2 hours 10 minutes on the fast charger.</p></li>
+          <li class="reveal"><span class="label-lg muted">Cold</span><p class="h5">Rated from minus 10 °C. Range drops about 14% at freezing.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Details: alternating rows ===== -->
+    <section class="section" id="details" aria-labelledby="details-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">03 — Details</span>
+            <h2 class="h3" id="details-title" data-reveal="text">Built to be left alone.</h2>
+          </div>
+        </div>
+        <div class="alt">
+          <article class="alt__row">
+            <div class="alt__media" data-reveal="image"><img src="images/feature-1.jpg" alt="Close view of the Kestrel tiller screen showing 18 km range left" loading="lazy" /></div>
+            <div class="alt__text reveal">
+              <span class="label-lg muted">Tiller</span>
+              <h3 class="h4">Range in kilometres, not percent.</h3>
+              <p class="body-md muted">The screen recalculates every two seconds from your speed and the current. Slow down by half a knot and watch the number climb.</p>
+            </div>
+          </article>
+          <article class="alt__row alt__row--reverse">
+            <div class="alt__media" data-reveal="image"><img src="images/feature-2.jpg" alt="Kestrel battery being lifted out of a boat by its handle" loading="lazy" /></div>
+            <div class="alt__text reveal">
+              <span class="label-lg muted">Battery</span>
+              <h3 class="h4">Light enough to carry up the jetty.</h3>
+              <p class="body-md muted">At 11.6 kg the pack weighs less than a full fuel can. It floats if dropped, and it is sealed to IP68.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Pricing: hairline columns ===== -->
+    <section class="section surface-white" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="intro reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">04 — Models</span>
+            <h2 class="h3" id="pricing-title" data-reveal="text">Three sizes, one system.</h2>
+          </div>
+          <div class="intro__aside">
+            <p class="body-md muted">Every model uses the same battery and tiller. Prices include one battery, the charger, and VAT.</p>
+          </div>
+        </div>
+        <div class="plans" data-stagger="80">
+          <article class="plan reveal">
+            <span class="label-lg">Kestrel 3</span>
+            <p class="h1">€2,490</p>
+            <p class="body-md muted">Dinghies and tenders up to 4 m.</p>
+            <ul class="plan__list body-md">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>3 kW, like a 6 hp petrol</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>17.8 kg with battery</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Short shaft</li>
+            </ul>
+            <a class="btn btn--secondary btn--wide" href="#contact">Choose Kestrel 3</a>
+          </article>
+          <article class="plan plan--featured reveal">
+            <span class="label-lg">Kestrel 6 · Most chosen</span>
+            <p class="h1">€3,690</p>
+            <p class="body-md muted">Day boats and sailboats up to 6 m.</p>
+            <ul class="plan__list body-md">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>6 kW, like a 9.9 hp petrol</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>22.4 kg with battery</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Short or long shaft</li>
+            </ul>
+            <a class="btn btn--primary btn--wide" href="#contact">Choose Kestrel 6</a>
+          </article>
+          <article class="plan reveal">
+            <span class="label-lg">Kestrel 10</span>
+            <p class="h1">€5,280</p>
+            <p class="body-md muted">Launches and workboats up to 7.5 m.</p>
+            <ul class="plan__list body-md">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>10 kW, like a 20 hp petrol</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Two batteries in parallel</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Remote throttle option</li>
+            </ul>
+            <a class="btn btn--secondary btn--wide" href="#contact">Choose Kestrel 10</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Quote band ===== -->
+    <section class="section quote-band" aria-label="What owners say">
+      <div class="container">
+        <figure class="quote reveal">
+          <blockquote>“I keep the same boat, the same mooring, the same Sunday route. The only thing that changed is that I can hear the herons now.”</blockquote>
+          <figcaption class="label-lg muted">Ingrid Halvorsen · Kestrel 6 owner, Hardangerfjord</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Journal: list rows ===== -->
+    <section class="section" id="journal" aria-labelledby="journal-title">
+      <div class="container">
+        <div class="intro intro--simple reveal">
+          <div>
+            <span class="eyebrow intro__eyebrow">05 — Journal</span>
+            <h2 class="h3" id="journal-title" data-reveal="text">Notes from the water.</h2>
+          </div>
+        </div>
+        <ul class="index" data-stagger="70">
+          <li class="reveal"><a class="index__row" href="#journal"><span class="index__num">Oct 14, 2026</span><span class="h4">How cold water changes your range</span><span class="tag">Battery</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li class="reveal"><a class="index__row" href="#journal"><span class="index__num">Sep 2, 2026</span><span class="h4">Converting a 1968 clinker launch to electric</span><span class="tag">Owners</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li class="reveal"><a class="index__row" href="#journal"><span class="index__num">Jul 21, 2026</span><span class="h4">Which shaft length fits your transom</span><span class="tag">Guides</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== FAQ: single centered column ===== -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-narrow">
+        <div class="reveal">
+          <span class="eyebrow intro__eyebrow">06 — Questions</span>
+          <h2 class="h3" id="faq-title" data-reveal="text">Before you switch.</h2>
+        </div>
+        <div class="faq__list reveal">
+          <details class="faq__item">
+            <summary class="h6">Will it fit my boat? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">Kestrel mounts on any standard outboard bracket or transom from 30 to 70 mm thick. Measure from the top of the transom to the bottom of the hull: under 43 cm is short shaft, over is long.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">Can I leave it in salt water? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">Yes. The leg is anodised aluminium with a zinc anode. Tilt it out of the water when moored for more than a week, and rinse it with fresh water a few times a season.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">How long does the battery last? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">The cells are rated for 1,500 full cycles to 80% capacity. Most owners use around 60 cycles a year, so the warranty covers 5 years or 800 cycles, whichever comes first.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">Do I need a licence? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">That depends on your country. In most of Europe, electric motors under 15 kW need no licence on inland and coastal waters. Check with your local authority before you buy.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">Where can I get it serviced? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">There is very little to service. For repairs, we have 46 partner yards across Europe, and we collect from anywhere else within 5 working days.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="h6">Can I try one first? <svg aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <p class="body-md">Yes. Book a free test ride at a partner yard below. Rides take 40 minutes, and you can bring your own boat.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA: split with form panel ===== -->
+    <section class="section" id="contact" aria-labelledby="cta-title">
+      <div class="container cta-split">
+        <div class="cta-split__text reveal">
+          <span class="eyebrow intro__eyebrow">07 — Test ride</span>
+          <h2 class="h2" id="cta-title" data-reveal="text">Try it on your own water.</h2>
+          <p class="body-md muted">Tell us where you sail and we will match you with the nearest partner yard. A Kestrel advisor replies within one working day.</p>
+        </div>
+        <form class="form-panel reveal" id="rideForm" novalidate>
+          <div class="field">
+            <label class="label-lg" for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+            <p class="field__msg label-lg" id="name-msg" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label class="label-lg" for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+            <p class="field__msg label-lg" id="email-msg" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label class="label-lg" for="harbour">Harbour or lake</label>
+            <input id="harbour" name="harbour" type="text" placeholder="e.g. Lake Geneva" required />
+            <p class="field__msg label-lg" id="harbour-msg" aria-live="polite"></p>
+          </div>
+          <button class="btn btn--primary" type="submit">Book a test ride</button>
+          <p class="form-panel__note label-lg" id="formNote" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer: light minimal ===== -->
+  <footer class="footer-light">
+    <div class="container footer-light__inner">
+      <a class="logo" href="/" aria-label="Kestrel home"><svg aria-hidden="true"><use href="#logo"/></svg></a>
+      <ul class="footer-light__links body-sm">
+        <li><a class="u-link" href="#how">How it works</a></li>
+        <li><a class="u-link" href="#pricing">Models</a></li>
+        <li><a class="u-link" href="#journal">Journal</a></li>
+        <li><a class="u-link" href="#faq">Questions</a></li>
+        <li><a class="u-link" href="#contact">Test ride</a></li>
+      </ul>
+      <div class="footer-light__legal label-lg muted">
+        <span>© 2026 Kestrel Marine</span>
+        <span><a href="#contact">Privacy</a> · <a href="#contact">Terms</a> · <a href="#contact">Warranty</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const toggleDrawer = (open) => {
+      drawer.classList.toggle('is-open', open);
+      drawer.setAttribute('aria-hidden', String(!open));
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (window.__lenis) open ? window.__lenis.stop() : window.__lenis.start();
+      nav.classList.toggle('on-dark', open);
+      nav.classList.toggle('is-solid', !open);
+    };
+    menuBtn.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('is-open')));
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleDrawer(false)));
+
+    // Test ride form: inline validation, state never shown by color alone
+    const form = document.getElementById('rideForm');
+    const check = (input) => {
+      const msg = document.getElementById(input.id + '-msg');
+      const ok = input.checkValidity() && input.value.trim();
+      input.setAttribute('aria-invalid', String(!ok));
+      input.setAttribute('aria-describedby', msg.id);
+      msg.textContent = ok ? '' : (input.type === 'email' ? '! Enter an email like name@example.com' : '! This field is required');
+      return ok;
+    };
+    form.querySelectorAll('input').forEach(i => i.addEventListener('blur', () => i.value && check(i)));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fields = [...form.querySelectorAll('input')];
+      const valid = fields.map(check).every(Boolean);
+      const note = document.getElementById('formNote');
+      if (!valid) { note.textContent = ''; fields.find(i => i.getAttribute('aria-invalid') === 'true').focus(); return; }
+      note.textContent = 'Thanks. An advisor will email you within one working day.';
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -21,21 +21,29 @@
   --neutral-600: #525252;
   --neutral-700: #404040;
   --neutral-800: #262626;
+  --neutral-850: #1f1f1f;
   --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+  --neutral-975: #050505;
   --neutral-black: #000000;
 
   /* Base alpha ramps */
   --light-100: #ededed;
   --light-88: #ededede0;
   --light-64: #edededa3;
+  --light-48: #ededed7a;
   --light-32: #ededed52;
   --light-16: #ededed29;
   --light-8: #ededed14;
+  --light-4: #ededed0a;
   --dark-100: #151515;
   --dark-88: #151515e0;
   --dark-64: #151515a3;
+  --dark-48: #1515157a;
+  --dark-32: #15151552;
   --dark-16: #15151529;
   --dark-8: #15151514;
+  --dark-4: #1515150a;
 
   /* Semantic */
   --bg-base: var(--light-100);
@@ -56,6 +64,7 @@
   --space-35: 35px;
   --space-40: 40px;
   --space-50: 50px;
+  --space-60: 60px;
   --space-75: 75px;
   --space-100: 100px;
 
@@ -75,6 +84,8 @@
 
   /* Effects */
   --blur-glass: blur(16px);
+  --blur-chip: blur(15px);
+  --signal: #ff4d2e;
   --vignette-bottom: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.98) 100%);
   --vignette-top: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%);
   /* Motion: weighted, decelerating, never browser `ease`/`linear` (see references/motion.md) */
@@ -160,7 +171,7 @@ img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 h1, h2, h3, h4, h5, h6, p { margin: 0; }
-ul { list-style: none; margin: 0; padding: 0; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
 
 :focus-visible {
   outline: 2px solid var(--tone-strong);

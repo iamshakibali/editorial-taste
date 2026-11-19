@@ -1,0 +1,15 @@
+[
+  {"name": "series-1", "query": "bird field guide illustration book open", "w": 800, "h": 1000, "alt": "Open field guide showing hand drawn waders"},
+  {"name": "series-2", "query": "highland moor walking path mist", "w": 800, "h": 1000, "alt": "Path across a misty moor"},
+  {"name": "series-3", "query": "tidal rock pool seaweed close", "w": 800, "h": 1000, "alt": "Rock pool with seaweed at low tide"},
+  {"name": "series-4", "query": "oak woodland moss morning light", "w": 800, "h": 1000, "alt": "Mossy oak woodland in morning light"},
+  {"name": "book-lead", "query": "hardback book on wooden table window light", "w": 2400, "h": 1200, "alt": "Hardback copy of Low Tide on an oak table"},
+  {"name": "book-2", "query": "stack of linen bound books", "w": 1200, "h": 900, "alt": "Linen bound copies of The Peat Year"},
+  {"name": "book-3", "query": "pocket notebook pencil field sketch", "w": 1200, "h": 900, "alt": "Field notebook with pencil sketches of lichens"},
+  {"name": "author-1", "query": "portrait woman outdoors coat wind", "w": 800, "h": 1000, "alt": "Portrait of Isla Moncrieff on the shore"},
+  {"name": "author-2", "query": "portrait man beard woollen jumper outdoors", "w": 800, "h": 1000, "alt": "Portrait of Ruairidh Gunn in a woollen jumper"},
+  {"name": "author-3", "query": "portrait older woman garden", "w": 800, "h": 1000, "alt": "Portrait of Margaret Lyle in her garden"},
+  {"name": "author-4", "query": "portrait young man binoculars", "w": 800, "h": 1000, "alt": "Portrait of Tomasz Wilk holding binoculars"},
+  {"name": "journal", "query": "printing press paper sheets", "w": 1600, "h": 1000, "alt": "Printed sheets drying beside the press"},
+  {"name": "cta", "query": "parcel books brown paper string", "w": 2400, "h": 1200, "alt": "Books wrapped in brown paper and string"}
+]

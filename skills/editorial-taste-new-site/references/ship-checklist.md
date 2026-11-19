@@ -39,6 +39,7 @@ Run this before reporting work as done. Fix failures, or list them explicitly in
 - [ ] Semantic landmarks: `header`, `nav`, `main`, `section` with `aria-labelledby`, `footer`
 - [ ] A skip link to `#main`
 - [ ] Alt text on every meaningful image (`alt=""` on decorative ones)
+- [ ] Every photo is a local file; fetched photos are on-subject, `credits.html` is linked from the footer when any photo needs attribution, and `review/` is deleted
 - [ ] Contrast of at least 4.5:1 for body text and 3:1 for large text and UI parts. Check text on photos against the lightest area behind it
 - [ ] Touch targets of at least 44×44 on mobile
 - [ ] `prefers-reduced-motion` turns off reveals, zooms, and the word-by-word statement

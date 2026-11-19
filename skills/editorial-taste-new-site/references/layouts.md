@@ -21,7 +21,17 @@ Choose from the brand and the content, not from habit:
 - One product or offer → H4/H8 with the action in the first view.
 - Many offers or audiences → H6 index hero or a mosaic.
 
-## 2. Variation rules
+## 2. What never varies
+Layouts vary. These rules from `SKILL.md` and `foundations.md` don't, in any pattern, new or old:
+- **Type roles.** The hero headline is always `.h2` (the page's `h1`). `.h0` is used only by the one statement. Section titles `.h3`, card titles `.h4`/`.h5`, stat values and prices `.h1`, quotes `.h2`.
+- **Statement.** One per page, 2 to 4 lines, `data-words`. Never directly under the hero: at least one section (stats, proof, or content) sits between them. Never the hero itself.
+- **Radii.** Buttons 8, cards 10, **case cards 20 and nothing else**, chips and pills full, nav icons 4. Photos, mosaics, inset hero frames, image bands, form panels, plan highlights, and illustration panels all use 10 (or 0 when full-bleed).
+- **Spacing.** Only `--space-*` tokens and the sanctioned compact values (8, 12, 32, 56, 96). Section padding `--section-pad`, title to content `--section-gap`, gutters `--grid-gutter`.
+- **Color, depth, type voices, motion.** Neutral ramps only, glass instead of shadows, vignettes only behind text on photos, Geist Medium and Regular, Geist Mono for UI labels, the shared motion attributes and tokens.
+
+If a pattern seems to need a break from these, change the pattern, not the rule.
+
+## 3. Variation rules
 1. **Never reproduce the template composition.** Don't ship the template's section sequence (split hero → stats → statement → 3 product cards → 3 case cards → 2 split cards → illustration → 4 news → FAQ → CTA band) unchanged, even with new copy.
 2. **No default hero.** H1 (the template hero) is one option of eight. If a site already exists in the repo or the conversation, pick a different hero and different signature moves than that site used.
 3. **At least half the sections** use a pattern or variant that the template doesn't show.
@@ -30,27 +40,27 @@ Choose from the brand and the content, not from habit:
 6. **Order follows the argument**, not a list: hook → proof → how → offer → objections → action. Sections the content can't support are left out.
 7. **New patterns are allowed** when built only from the system: tokens, the type scale, hairlines, glass, vignettes, the radius rules, and the motion API. Name them with BEM classes beside the template's.
 
-## 3. Hero variants
-All heroes: one `h1`, one primary action plus at most one secondary, `data-reveal="text"` on the headline, one intro sequence.
+## 4. Hero variants
+All heroes: one `h1` set in `.h2`, one primary action plus at most one secondary, `data-reveal="text"` on the headline, one intro sequence.
 
 | | Hero | Recipe |
 |---|---|---|
 | H1 | **Split bottom** (template) | Full-bleed photo, top and bottom vignettes, H2 bottom left, paragraph and CTAs bottom right |
 | H2 | **Centered** | Full-bleed photo, vignette, centered tag → H2 (max 760) → light-88 subtitle → CTA row |
-| H3 | **Statement** | No photo. `--bg-base`, `.h0` headline spanning 10 of 12 columns, mono eyebrow above, a hairline row below with the paragraph (5 cols) and CTAs (aligned end). Then a full-width photo band (`aspect-ratio: 21/9`, radius 0 or 20 inset) that unmasks with `data-reveal="image"` |
+| H3 | **Type first** | Type first, photo second. `--bg-base`, a mono eyebrow, the `.h2` headline across 7 of 12 columns with generous space around it, then a hairline row with the paragraph (5 cols) and CTAs (aligned end). Below, a full-width photo band (`aspect-ratio: 21/9`, radius 0 full-bleed or 10 inset) that unmasks with `data-reveal="image"` |
 | H4 | **Split screen** | 100svh, two columns 1:1 (or 5/7). Text side on `--bg-base`: eyebrow, H2, paragraph, CTAs, pinned to the bottom with a stat row. Image side full height, no radius, no vignette (no text on it) |
-| H5 | **Inset frame** | Photo inside the container with `border-radius: var(--radius-20)`, ~85svh, 20px from the nav. Headline top left on a top vignette, a glass panel bottom right (`--light-16` + blur) holding paragraph and CTAs |
+| H5 | **Inset frame** | Photo inside the container with `border-radius: var(--radius-10)`, ~85svh, 20px from the nav. Headline top left on a top vignette, a glass panel bottom right (`--light-16` + blur) holding paragraph and CTAs |
 | H6 | **Index** | 5/7 grid on `--bg-base`. Left: eyebrow, H2, paragraph, CTA. Right: a numbered list of offers in H4 with hairline dividers and mono numbers; hovering a row swaps a small preview image (opacity and clip-path only) |
 | H7 | **Mosaic** | Headline row (H2 left, paragraph and CTA right) over a 12-col image grid: one large image (7 cols, tall) and two stacked (5 cols). Radii 10, gutter 20. Images unmask in sequence with `data-stagger` |
 | H8 | **Dark product** | `--neutral-black` surface, nav on dark. Centered or left H2 in white, light-64 paragraph, CTAs, and below them a single product photo or isometric illustration on a glass plate. The rest of the page returns to light |
 
-## 4. Section patterns by job
+## 5. Section patterns by job
 Pick the pattern that fits the content. The **(T)** mark means the template shows it.
 
 **Proof (numbers)**
 - Stat row, centered, 4 items (T).
 - Stat bar inside the hero bottom edge, left aligned, separated by vertical hairlines.
-- Big number: one `.h0` figure in 5 cols with its caption, a list of three supporting facts in 7 cols.
+- Big number: one `.h1` figure in 5 cols with its caption, a list of three supporting facts in 7 cols.
 - Dark band: stats in white on `--neutral-black`, left aligned, labels in mono.
 
 **Proof (people and clients)**
@@ -67,7 +77,7 @@ Pick the pattern that fits the content. The **(T)** mark means the template show
 
 **Work**
 - Case cards 3-up, expandable (T).
-- Lead case: one full-bleed or inset (r20) case with vignette and overlay text, then two smaller case cards 1:1.
+- Lead case: one large case card (r20, it is a case card) with vignette and overlay text, then two smaller case cards 1:1.
 - Rail: horizontal scroll-snap row of case cards (`scroll-snap-type: x mandatory`, gutter 20, a peek of the next card, arrow buttons, keyboard scrollable).
 - Alternating: image 7 cols and text 5, then reversed, three times at most.
 
@@ -78,8 +88,8 @@ Pick the pattern that fits the content. The **(T)** mark means the template show
 - Timeline: horizontal row of 4–5 steps on a single hairline, mono numbers on the line, H5 + body below.
 
 **Story and brand**
-- Statement, word by word (T). One per page. It may also replace the hero headline in H3.
-- Image + caption: a single wide photo (`data-reveal="image"`) with a mono caption and a short paragraph offset to 7/12.
+- Statement, word by word (T). One per page, never directly under the hero.
+- Image + caption: a single wide photo (radius 10) (`data-reveal="image"`) with a mono caption and a short paragraph offset to 7/12.
 - Team grid: 4-up portraits (radius 10, aspect 4/5), H6 name, muted role in mono.
 
 **Journal**
@@ -94,8 +104,8 @@ Pick the pattern that fits the content. The **(T)** mark means the template show
 
 **Action**
 - Full-bleed CTA band with photo (T).
-- Split CTA: H2 and line on the left, a form on a `--bg-lift` panel (radius 20) on the right.
-- Type CTA: dark band, giant `.h0` line with an inline arrow button, no photo.
+- Split CTA: H2 and line on the left, a form on a `--bg-lift` panel (radius 10) on the right.
+- Type CTA: dark band, a `.h2` line across 8 columns, a hairline, then the supporting line and a light button. No photo.
 - Contact sheet: address, email, hours in mono columns with a map-free studio photo.
 
 **Footer**
@@ -103,7 +113,7 @@ Pick the pattern that fits the content. The **(T)** mark means the template show
 - Light minimal: one row of logo, links, legal on `--bg-base` with a top hairline.
 - Dark with a final subscribe form and a 4-col sitemap.
 
-## 5. Recipes for patterns not in the template
+## 6. Recipes for patterns not in the template
 Reuse tokens only. Keep the template's motion attributes: `.reveal`, `data-stagger`, `data-reveal="text|image|iso"`, `data-count`, `data-words`.
 
 ```css
@@ -139,10 +149,10 @@ Reuse tokens only. Keep the template's motion attributes: `.reveal`, `data-stagg
 
 Every new pattern collapses cleanly: multi-column grids → 1 column at ≤767 (sticky becomes static, rails keep scrolling), 12-col splits → stacked at ≤1024. Check it at 1440, 768, and 390 like the rest.
 
-## 6. Example compositions
+## 7. Example compositions
 These are examples of range, not menus to copy.
 
-- **Architecture studio, photo-led**: H5 inset frame → statement → lead case + 2 → sticky split approach → quote band → team grid → journal list → split CTA → light footer.
-- **SaaS product, type-led**: H3 statement hero with product band → logo wall → index rows of features → illustration split → pricing → FAQ two columns → type CTA → dark footer.
+- **Architecture studio, photo-led**: H5 inset frame → stat bar → statement → lead case + 2 → sticky split approach → quote band → team grid → journal list → split CTA → light footer.
+- **SaaS product, type-led**: H3 type-first hero with product band → logo wall → index rows of features → illustration split → pricing → FAQ two columns → type CTA → dark footer.
 - **Consumer brand, one product**: H4 split screen → big number proof → alternating features → quote band → FAQ single column → full-bleed CTA band → dark footer.
 - **Energy company, many audiences**: H6 index hero → dark stat band → feature + list offers → statement → timeline → journal feature + two → FAQ 5/7 → CTA band → dark footer.

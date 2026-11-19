@@ -12,14 +12,15 @@ Work through **Part A (what the page says)** before **Part B (how it looks)**.
 ## Non-negotiable rules
 
 1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Express hierarchy with alpha steps. The single exception is `--signal`, one dot per isometric illustration.
-2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. No bold headings and no italics.
-3. **5px rhythm.** Spacing and radii come from the 5-step scale (the compact-scale exceptions are 8, 12, 32, 56, and 96). Nested radii: `inner = outer − gap`.
+2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. No bold headings and no italics. **Type roles are fixed**: the hero headline (`h1`) is always `.h2`, `.h0` belongs only to the statement, section titles are `.h3`, stat values and prices `.h1`.
+3. **5px rhythm.** Spacing and radii come from the 5-step scale through the `--space-*` tokens (the compact-scale exceptions are 8, 12, 32, 56, and 96). Never reference a token that `styles.css` doesn't define. Nested radii: `inner = outer − gap`.
 4. **Glass, not shadow.** No `box-shadow`. For depth, use translucent fills plus `backdrop-filter: blur(16px)`. The only gradients allowed are black vignettes over photos.
 5. **Text on photos always sits on a vignette.** Use a white logo on photos and a dark logo on light surfaces.
-6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. Don't mix radii within a row.
+6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. **20 is for case cards only**: photos, frames, mosaics, panels, and forms use 10. Don't mix radii within a row.
 7. **Motion is buttery and restrained**: expo-out (`--ease-out`), 200/450/800/1200ms, compositor-only properties, one hero sequence, reveals that play once, and full reduced-motion and no-JS fallbacks (`references/motion.md`).
-8. **Every site gets its own layout.** Choose the hero, signature moves, surface rhythm, and section patterns per site (`references/layouts.md`). Shipping the template's composition with new copy is a failure, not a starting point.
-9. **Never invent facts** for a real business. Missing prices, stats, testimonials, and logos stay as marked `{{placeholders}}`.
+8. **One statement per page, never directly under the hero.** At least one section sits between them.
+9. **Every site gets its own layout.** Choose the hero, signature moves, surface rhythm, and section patterns per site (`references/layouts.md`). Shipping the template's composition with new copy is a failure, not a starting point. Layouts vary, the rules above never do (`references/layouts.md` §2).
+10. **Never invent facts** for a real business. Missing prices, stats, testimonials, and logos stay as marked `{{placeholders}}`.
 
 ---
 
@@ -90,7 +91,7 @@ Follow the matching section of `references/frameworks.md`:
 Keep the template's class names for the components you reuse, so the CSS, motion, and illustration styles work unchanged. New patterns get their own BEM classes.
 
 ## B2. Take the system from the template, not the layout
-From `templates/`, copy `styles.css` (tokens, base, every component), `motion.js`, `404.html`, and `favicon.svg`. Read `index.html` as a component reference only: copy the nav, drawer, and footer markup and any component you need, then compose the page from your layout signature. Add CSS for new patterns in a separate block of `styles.css` (recipes in `references/layouts.md` §5) and delete CSS for components the page doesn't use. The reference `index.html` demonstrates:
+From `templates/`, copy `styles.css` (tokens, base, every component), `motion.js`, `404.html`, and `favicon.svg`. Read `index.html` as a component reference only: copy the nav, drawer, and footer markup and any component you need, then compose the page from your layout signature. Add CSS for new patterns in a separate block of `styles.css` (recipes in `references/layouts.md` §6) and delete CSS for components the page doesn't use. The reference `index.html` demonstrates:
 
 Nav (glass over the hero, solid on scroll, hides on scroll down, mobile drawer with staggered links) → Hero (choreographed intro) → Highlight numbers (count-up) → **Statement** (word-by-word reveal) → Product cards → Case cards (expandable) → Split cards (image unmask) → **How it works** (isometric illustration that builds in) → Journal → **FAQ** → CTA band (parallax) with an email form → Footer, plus Lenis smooth scroll, page transitions, meta and OG tags, a skip link, and full reduced-motion and no-JS fallbacks.
 
@@ -113,7 +114,7 @@ python3 <skill-dir>/scripts/images.py images.json --out <project-dir>
 ## B4. Build section by section
 Build in the order of your planned outline, hero first, then 404. For each section:
 - Replace its `{{placeholders}}` with the planned copy, and point images at the photos fetched in B3. The user's own photos always win over fetched ones.
-- **Use the planned pattern**, from `references/layouts.md` or built from the system. Leave out sections the content doesn't support. Follow the variation rules in `references/layouts.md` §2: adjacent sections differ in grid and surface, and at least half the sections use patterns the template doesn't show.
+- **Use the planned pattern**, from `references/layouts.md` or built from the system. Leave out sections the content doesn't support. Keep the fixed rules in `references/layouts.md` §2 and follow the variation rules in §3: adjacent sections differ in grid and surface, and at least half the sections use patterns the template doesn't show.
 - Swap the `#logo` symbol for the client's SVG logo (keep `fill="currentColor"`), and update the favicon letter.
 - Keep diffs per section. Don't regenerate the whole page on every iteration.
 

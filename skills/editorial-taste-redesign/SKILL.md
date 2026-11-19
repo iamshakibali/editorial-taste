@@ -10,11 +10,11 @@ Restyles an existing site in the Editorial Taste style: **monochrome, editorial,
 ## Non-negotiable rules
 
 1. **No accent colors.** Use only the neutral ramp, `--light-*` (#EDEDED alpha), `--dark-*` (#151515 alpha), and semantic tokens. Brand accent colors are removed from the UI; the brand's color lives in its photography. If the user insists on keeping a brand color, confine it to the logo.
-2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. Never use bold headings.
+2. **Two type voices.** Geist Medium for headings, Geist Regular for body. **Geist Mono only** for buttons, nav, labels, tags, and eyebrows. Never use bold headings. Type roles are fixed: the hero headline (`h1`) is `.h2`, `.h0` belongs only to the statement, section titles are `.h3`, stat values `.h1`.
 3. **5px rhythm** for spacing and radii (the compact-scale exceptions are 8, 12, 32, 56, and 96).
 4. **Glass, not shadow.** Remove every shadow; use translucent fills plus `backdrop-filter: blur(16px)`, or a `--border-subtle` hairline. The only gradients allowed are black vignettes over photos.
 5. **Text on photos always sits on a vignette.**
-6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. Nested radii: `inner = outer − gap`.
+6. **Radii:** buttons 8 · cards 10 · case cards 20 · chips and pills full. 20 is for case cards only; photos, frames, and panels use 10. Nested radii: `inner = outer − gap`.
 7. **Motion is buttery and restrained**: expo-out (`--ease-out`), 200/450/800/1200ms, compositor-only properties, one hero sequence, reveals that play once, and full reduced-motion and no-JS fallbacks (`references/motion.md`).
 8. **Preserve before polishing.** Never drop content, links, or accessibility features in exchange for looks.
 
@@ -63,7 +63,7 @@ Keep the existing content and pick the closest block for each section (see `refe
 | Pricing | News-card surfaces (r10, white), H4 plan name, H1 price, Body Medium list, Primary CTA on the featured plan only. No colored badges; use a mono tag chip |
 | FAQ | Hairline-divided list (`--border-subtle`), H6 questions, Body Medium answers, a mono "+" toggle |
 | Newsletter / contact CTA | CTA band |
-| Mission / about / manifesto paragraph | **Statement**: one H0 line of 2–4 lines with a word-by-word reveal (`references/components.md`) |
+| Mission / about / manifesto paragraph | **Statement**: one H0 line of 2–4 lines with a word-by-word reveal, one per page and never directly under the hero (`references/components.md`) |
 | Forms | See Forms in `references/components.md`: 40px inputs, radius 8, mono labels, inline errors, focus ring |
 | Repeated "three icon cards" sections | Vary them: a 5/7 split list, feature + list, or split cards (see Layout variety) |
 

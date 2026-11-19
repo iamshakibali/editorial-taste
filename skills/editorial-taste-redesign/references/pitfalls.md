@@ -31,6 +31,7 @@ These patterns make a site look template-made or AI-generated. On a redesign, li
 | Glassmorphism on light backgrounds | Glass only over photos. On light surfaces use `--dark-8` |
 | Soft drop shadows on every card | No shadow. Separate with surface tone (`--neutral-200` vs white) or a hairline |
 | Rounded-2xl everything | 8 for buttons, 10 for cards, 20 for case cards |
+| Every site gets the template's split hero and the same section order | A layout signature per site: a different hero variant, signature moves, and section patterns from `layouts.md` |
 | Inter/Roboto with semibold headings | Geist Medium with negative tracking |
 | "Get started", "Learn more" | Verb plus object ("Book a site visit") |
 | Filler copy ("seamless", "next-level") | Concrete nouns and numbers (see `copy.md`) |

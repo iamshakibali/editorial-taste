@@ -49,7 +49,7 @@ Post a short audit, then proceed without waiting unless the user asked to review
 Include the stack, the section-to-block map (step 2), what will be kept as is, and the assets needed (photography, logo SVG).
 
 ### 2. Map content to Editorial Taste blocks
-Keep the existing content and pick the closest block for each section (see `references/components.md`):
+Keep the existing content and pick the closest block for each section (see `references/components.md`, and `references/layouts.md` for hero variants and section patterns that suit the content; don't force every redesign into the same layout):
 
 | Existing section | Editorial Taste block |
 |---|---|
@@ -138,6 +138,7 @@ Do this after the visual pass, following `references/motion.md`:
 ## Reference files
 - `references/foundations.md`: color, type, spacing, radius, grid, effects, motion, icons, contrast
 - `references/components.md`: anatomy of every component and block, forms, states, layout variety
+- `references/layouts.md`: hero variants, section patterns by job, variation rules, recipes
 - `references/pitfalls.md`: common mistakes plus the generic-pattern diagnosis table
 - `references/copy.md`: voice, CTAs, content realism, banned words (for copy passes)
 - `references/ship-checklist.md`: final QA, SEO, and ship requirements

@@ -138,6 +138,6 @@ Align shared elements across side-by-side cards: titles, tags, and buttons start
 | **CTA band** | Photo + vignette, 560 tall (mobile 520), centered tag → H2 → line → CTA row → optional email form |
 | **Footer** | Dark (`--neutral-black`/`--dark-100`), brand blurb + 3 link columns (Label Large headers, Body Small links), bottom bar in light-64, a giant faint wordmark (light-8) |
 
-Default page order: Nav → Hero → Highlight numbers → Statement → Product cards → Case cards → Split cards → Illustration split (How it works) → Journal → FAQ → CTA band → Footer. Drop blocks the content doesn't need; never invent content to fill a block.
+These are the blocks the starter template demonstrates. They are not a default page order: compose each page from `layouts.md`, which adds more hero variants and section patterns. Drop blocks the content doesn't need; never invent content to fill a block.
 
 Responsive: 3- and 4-column grids → 2 columns at ≤1024 → 1 column at ≤767.

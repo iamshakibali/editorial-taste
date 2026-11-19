@@ -4,7 +4,7 @@ Two Claude Code skills for monochrome, editorial, photography-led websites: Geis
 
 | Skill | Use it to |
 |---|---|
-| `editorial-taste-new-site` | Build a new site or landing page. Asks which stack to use (Astro, Next.js/React, plain HTML, Vue, Svelte), runs intake, picks a page type, writes editorial copy, and builds from a tested starter template with a full motion system and generated isometric illustrations |
+| `editorial-taste-new-site` | Build a new site or landing page. Asks which stack to use (Astro, Next.js/React, plain HTML, Vue, Svelte), runs intake, picks a page type, writes editorial copy, and composes a fresh layout per site on top of a tested starter system with a full motion system and generated isometric illustrations |
 | `editorial-taste-redesign` | Restyle an existing site (HTML, React, Next.js, Tailwind, shadcn, MUI). Audits and diagnoses generic patterns, maps old styles to tokens, restyles section by section, then runs a motion pass and replaces clip-art with hairline illustrations, without breaking content or behavior |
 
 Both work in code and in Figma.
@@ -63,6 +63,7 @@ skills/
 | `illustrations.md` | Isometric hairline illustration rules, generator spec, compositions |
 | `foundations.md` | Color, type, spacing, radius, grid, effects, motion, icons, contrast |
 | `components.md` | Buttons, nav, cards, statement, FAQ, forms, states, layout variety, page blocks |
+| `layouts.md` | Layout signature, variation rules, 8 hero variants, section patterns by job, recipes, example compositions |
 | `copy.md` | Voice, headline formulas, CTAs, content realism, banned filler |
 | `ship-checklist.md` | Style, content, states, accessibility, SEO, and responsive QA |
 | `frameworks.md` | Next.js, Tailwind v3/v4, shadcn, MUI |
